@@ -1,0 +1,92 @@
+@import "../App.css";
+
+:root{
+	--fontName: Arial;
+	--fontColor: #008800;
+}
+
+.Heading{
+	color: var(--fontColor);
+	font-family: Times;
+	margin-bottom: 30px;
+
+	font-size: 80px;
+}
+
+.InfoText{
+	text-align: justify;
+	text-justify: inter-word;
+	font-family: hand_written_font;
+	font-size: 18px;
+	color: var(--fontColor);
+	width: 80vw;
+	
+	margin-bottom: 30px;
+	margin-top: 20px;
+	margin-right: auto;
+	margin-left: auto;
+}
+.MainImage{
+	
+}
+
+.SecondImageBlock{
+	display: flex;
+	margin: 0 auto;
+	width: 1045px;
+	justify-self: center;
+	justify-items: center;
+}
+
+.SecondImage{
+	background-color: blue;
+}
+
+.SecondImageHeading{
+	display: inline-block;
+}
+
+.SecondImageInfo{
+	font-family: hand_written_font;
+	font-size: 18px;
+	color: var(--fontColor);
+	margin-left: 20px;
+}
+
+.SecondImageListInfo{
+	text-align: left;
+}
+
+.SecondImageList{
+	max-width: 500px;
+}
+
+.RefManSeparator{
+	width: 60vw;
+	height: 1px;
+	
+	background-color: var(--separatorColor);
+	
+	margin: 50px auto;
+}
+
+/*.DownloadButton{
+	display: inline-block;
+
+	padding: 10px 20px;
+	font-size: 30px;
+	font-family: Arial;
+	color: white;
+	background-color: #c9915a;
+	cursor: pointer;
+}
+.DownloadButton:hover{
+	color: #00ff00;
+}*/
+
+.InstallationInfo{
+	font-size: 15px;
+/*	margin-top: 40px;
+	margin-left: auto;*/
+	margin: 0 auto;
+}

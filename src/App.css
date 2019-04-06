@@ -1,26 +1,170 @@
+:root {
+  --main-bg-color: #00AA00;
+  --headerLogoHeight: 180px;
+  --fontColor: #00AA00;
+  --separatorColor: #66CC66;
+}
+
 .App {
   text-align: center;
 }
 
 .App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
+	height: fit-content(300px);
   pointer-events: none;
 }
 
+.DownloadButton{
+	display: inline-block;
+
+	padding: 10px 20px;
+	font-size: 30px;
+	font-family: Arial;
+	color: white;
+	background-color: #c9915a;
+	cursor: pointer;
+}
+.DownloadButton:hover{
+	color: #00ff00;
+}
+
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+	background-color: #FFFFFF;
+	min-height: 40px;
+	width: 100vw;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	font-size: calc(10px + 2vmin);
+	color: white;
+  
+  	position: fixed;
+  	top: 0;
+  	padding: 10px;
+	z-index: 999;
+}
+
+.LogoHeader{
+	width: 100vw;
+	display: grid;
+	grid-template-rows:  fit-content(100px)  fit-content(100px);/*1fr 2fr;*/
+	grid-gap: 10px;
+	align-items: center;
+	justivy-items: center;
+	transition: 1s;
+	
+	overflow: hidden;
+}
+.LogoHeader_content{
+	align-self: center; /*align - alignes y-axis*/
+   justify-self: center; /*justify - alignes x-axis*/
+}
+.LogoHeader > img{
+  	height: 120px;
+
+}
+.LogoHeader > div{
+
+}
+.LogoHeader.Hide{
+	animation-name: logoHeader_fadeOut;
+	animation-duration: 1s;
+	animation-fill-mode: forwards;
+}
+.LogoHeader.Show{
+	animation-name: logoHeader_fadeIn;
+	animation-duration: 1s;
+	animation-fill-mode: forwards;
 }
 
 .App-link {
   color: #61dafb;
+  font-weight: bold;
+  font-family: Mr De Haviland;
+}
+.Separator{
+	display: inline-block;
+	width: 80vw;
+	height: 2px;
+	background-color: var(--separatorColor);
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+.SmallSeparator{
+	width: 60vw;
+	height: 1px;
+	
+	background-color: var(--separatorColor);
+	
+	margin: 50px auto;
+}
+
+.MrSoirHeading {
+	color: var(--main-bg-color);/*#FFB76B;*/
+	font-family: hand_written_font;
+	font-weight: lighter;
+	font-size: min(10vmin, 50);
+/*	width: 10000vw;*/
+	
+}
+
+.TopMargin{
+	height: 300px;
+}
+.HugeDiv {
+	width: 100vw;
+/*	height: 100000px;*/
+	text-align: center;
+/*	background: linear-gradient(#8ba881, #f69d3c);*/
+/*	overflow: scroll;*/
+}
+
+.ContactInfoBox{
+	text-align: left;
+	font-family: Times;
+	color: white;
+	padding: 50px 7vw;
+	background-color: #DBA25A;
+	margin-bottom: 40px;
+}
+.ContactHeading{
+	font-size: 35px;
+}
+.ContactText{
+	font-size: 20px;
+	padding: 5px 0px;
+}
+
+@keyframes indicator_fading {
+  0%   {background-color: transparent;}
+  100% {background-color: var(--main-bg-color);}
+}
+@keyframes indicator_fading_out {
+  0%   {background-color: var(--main-bg-color);}
+  100% {background-color: transparent;}
+}
+
+@font-face {
+  font-family: hand_written_font;
+  src: url(./fonts/Apple Chancery Italic.ttf);
+}
+
+@keyframes logoHeader_fadeIn {
+  from {
+    height: 0px;
+  }
+  to {
+    height: var(--headerLogoHeight);
+  }
+}
+@keyframes logoHeader_fadeOut {
+  from {
+    height: var(--headerLogoHeight);
+  }
+  to {
+    height: 0px;
+  }
 }
 
 @keyframes App-logo-spin {

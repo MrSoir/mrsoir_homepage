@@ -1,0 +1,39 @@
+@import "./App.css";
+
+.SlideShow{
+    display: grid;
+    text-align: center;
+    grid-template-columns: fit-content(200px) fit-content(200px) fit-content(200px);
+    align-items: center;
+    justify-items: center;
+    justify-content: center;
+    
+    overflow: hidden;
+}
+
+.SlideImage{    
+    max-width: 800px;
+    transition-duration: 4s;
+}
+.SlideMainImages{
+	position: relative;
+	max-width: 800px;
+}
+.Img0{
+	position: absolute;
+	opacity: 1;
+}
+.Img1{
+	opacity: 0;
+}
+
+.NextButton{
+  max-width: 40px;
+  transition-duration: 3s;
+}
+.NextButton.Prev{
+	transform: rotate(180deg);
+}
+.Image{
+	cursor: pointer;
+}

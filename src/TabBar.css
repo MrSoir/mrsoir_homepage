@@ -1,0 +1,61 @@
+@import "App.css"; 
+
+
+.TabBar {
+/*	width: 10000vw;*/
+	display: inline;
+	overflow: hidden;
+/*	display: inline-block;*/
+}
+.TabElement{
+	display: inline-block;
+}
+.TabIndicator{
+	height: 2px;
+	width: 50%;
+	margin: auto;
+	background-color: transparent;
+	transition: 0.5s;
+	margin-bottom: 10px;
+	margin-top: 0px;
+}
+.TabIndicator.Hovered{
+	transition: 1s;
+	background-color: var(--main-bg-color);
+}
+.TabIndicator.Selected{
+	background-color: var(--main-bg-color);
+}
+
+.TabLink {
+	background-color: transparent;
+	color: var(--main-bg-color);
+	border-style: none;
+	border: none;
+  	font-size: calc(10px + 2vmin);
+  	font-family: hand_written_font;
+  	padding: 0px 30px;
+  	animation-name: example;
+   animation-duration: 5s;
+   margin: 1px;
+   display:block;
+   outline: none;
+   cursor: pointer;
+}
+
+.TabLink:hover {
+/*	background-color: #CCCCCC44;*/
+/*  	border: 1px solid #00FF00;*/
+}
+.TabLink:active {
+/*  	border: 1px solid #00FF00;*/
+}
+
+@keyframes indicator_fading {
+  0%   {background-color: transparent;}
+  100% {background-color: var(--main-bg-color);}
+}
+@keyframes indicator_fading_out {
+  0%   {background-color: var(--main-bg-color);}
+  100% {background-color: transparent;}
+}

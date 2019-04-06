@@ -1,0 +1,34 @@
+@import "../App.css";
+
+
+.PreviewList{
+}
+.PreviewListItem{
+	padding: 10px;
+/*	background-color: lightblue;*/
+}
+
+.PreviewText{
+	color: var(--fontColor);
+	font-family: hand_written_font;
+	font-size: 25px;
+	padding: 10px;
+}
+
+.Cursor{
+	cursor: pointer;
+}
+
+.PreviewContainer {
+}
+.MainSeparator{
+	background-color: var(--separatorColor);
+	width: 20vw;
+	height: 1px;
+}
+
+.PreviewImage{
+	width: 50px;
+	cursor: pointer;
+}
+

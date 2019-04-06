@@ -1,0 +1,31 @@
+@import "../App.css";
+
+.Notes{
+/*	text-align: center;
+	display: inline-block;*/
+}
+
+.Heading{
+	color: var(--fontColor);
+	font-family: Times;
+	margin-bottom: 30px;
+
+	font-size: 80px;
+}
+
+.InfoText{
+/*	text-align: justify;*/
+/*	text-justify: inter-word;*/
+	font-family: hand_written_font;
+	font-size: 18px;
+	color: var(--fontColor);
+}
+
+.InstallationInfo{
+	font-size: 15px;
+	font-family: hand_written_font;
+	color: var(--fontColor);
+	margin: 20px auto;
+	margin-bottom: 50px;
+	
+}

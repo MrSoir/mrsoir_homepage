@@ -1,0 +1,4 @@
+Multi-Windowing
+Display up to 4 windows simultaneously. This eliminates the need to jump from one tab to another and offers additional functionality, e.g. to move files just drag and drop them between windows - simple and intuitive.
+
+Of course you can resize the windows effortlessly as demonstrated in the following screenshot.
