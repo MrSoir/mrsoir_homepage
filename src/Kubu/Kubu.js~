@@ -1,19 +1,20 @@
 import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
-import {readTextFile} from '../StaticFunctions';
 import meta_info from './info.txt';
 import ImagedPreviews from '../ImagedPreviews/ImagedPreviews';
-//import './Kubu.css';
+import './Kubu.css';
 
 class Kubu extends Component{
-	constructor(){
-		super();
+	constructor(props){
+		super(props);
 	}
 	render(){
 		return (
-			<ImagedPreviews baseName="Kubu"
-								meta_info_path={meta_info}
-			/>
+			<div className="Kubu">
+				<ImagedPreviews baseName="Kubu"
+									 meta_info_path={meta_info}
+				/>
+			</div>
 		);
 	}
 }

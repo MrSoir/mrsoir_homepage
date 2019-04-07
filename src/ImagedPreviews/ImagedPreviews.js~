@@ -52,6 +52,7 @@ class ImagedPreviews extends Component{
 				composedTxt += '<br/>';
 			}
 		}
+		composedTxt = <span dangerouslySetInnerHTML={{__html: composedTxt}} />
 		return {
 			heading: heading,
 			text: composedTxt
@@ -59,7 +60,7 @@ class ImagedPreviews extends Component{
    }
 	render(){
 		return (
-		<ul className="PreviewList">
+		<div>
 			{this.data.map((da, id)=>
 				<Preview key={id} 
 							name={da.name}
@@ -69,7 +70,7 @@ class ImagedPreviews extends Component{
 							separator={id < this.data.length-1}
 				/>
 			)}
-		</ul>
+		</div>
 		);
 	}
 }
@@ -88,21 +89,21 @@ class Preview extends Component{
 	render(){
 		let sep = this.props.separator ? <div className="MainSeparator"></div> : '';
 		return (
-			<li className="PreviewListItem">
+			<div>
 				<div className="PreviewContainer">
 					<img 	src={this.props.image_path} 
 							alt="logo"
 							className="PreviewImage"
 							onClick={this.onClick} />
 					<div className="PreviewText">
-						<u>
+						<u className="PreviewTextHeading>
 							{this.props.heading}
 						</u>
 						: {this.props.text}
 					</div>
 				</div>
 				{sep}
-			</li>
+			</div>
 		);
 	}
 }

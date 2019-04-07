@@ -4,13 +4,15 @@ import {readTextFile} from '../StaticFunctions';
 import SlideShow from '../SlideShow';
 import meta_info from './info.txt';
 import './Ballin.css';
-import play_btn from './play_btn.png';
+import CurtainButton from '../CurtainButton';
 
 class Ballin extends Component{
 	constructor(props){
 		super(props);
+		
 		this.onImageClick = this.onImageClick.bind(this);
 		this.launchBallinGL = this.launchBallinGL.bind(this);
+		this.downloadBallinOriginal = this.downloadBallinOriginal.bind(this);
 		
 		this.state = {
 			ballin_gl_pics:   [],
@@ -18,12 +20,10 @@ class Ballin extends Component{
 		}
 	}
 	launchBallinGL(){
-		console.log('launching BallinGL...');
 		window.location.href = 'https://ballingl.firebaseapp.com/';
-/*		if (window.hist){
-			console.log('  -> pushing BallinGL to Router!');
-			window.hist.push('/BallinGL');
-		}*/
+	}
+	downloadBallinOriginal(){
+		window.open('https://github.com/MrSoir/Ballin_2D/archive/master.zip', '_blank');
 	}
 	componentWillMount() {
 		let txt = readTextFile(meta_info);
@@ -84,13 +84,11 @@ class Ballin extends Component{
 			<div className="Ballin">
 				<div className="BallinInfo">Ballin' GL</div>
 
-				<SlideShow img_paths={this.state.ballin_gl_pics} />
+				<SlideShow img_paths={this.state.ballin_gl_pics}/>
 				
 				{infoText_GL}
-				<div className="Button"
-					  onClick={this.launchBallinGL}>
-					Click me to play Ballin' GL!
-				</div>
+				<CurtainButton text="Click me to play Ballin' GL!"
+									onClick={this.launchBallinGL}/>
 				
 				<div className="BallinSeparator"/>
 				
@@ -98,12 +96,14 @@ class Ballin extends Component{
 				
 				<div className="BallinInfo">Ballin' Original</div>
 
-				<SlideShow img_paths={this.state.ballin_orig_pics} />
+				<SlideShow img_paths={this.state.ballin_orig_pics}
+							  width={700}
+							  height={600} />
 				
 				{infoText_Orig}
-				<div className="Button BtmMargin">
-					Click me to download Ballin'!
-				</div>
+				
+				<CurtainButton text="Download"
+								   onClick={this.downloadBallinOriginal}/>
 			</div>
 		);
 	}

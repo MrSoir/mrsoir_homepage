@@ -14,7 +14,7 @@
   pointer-events: none;
 }
 
-/*.DownloadButton{
+.DownloadButton{
 	display: inline-block;
 
 	padding: 10px 20px;
@@ -28,7 +28,7 @@
 .DownloadButton:hover{
 	color: #00ff00;
 	background: linear-gradient(#e66465, #9198e5);
-}*/
+}
 
 .App-header {
 	background-color: #FFFFFF;

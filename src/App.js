@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Switch, Route, Link, withRouter } from "react-router-dom";
+import { Switch, Route, withRouter } from "react-router-dom";
 import logo from './MrSoir_grass.png';
 //import logo from './logo.svg';
 import './App.css';
@@ -142,7 +142,7 @@ class App extends Component {
 				<div className="TopMargin">
 				</div>
 					
-				<div className="HugeDiv" ref={this.body}>
+				<div className="MainDiv" ref={this.body}>
 					<Switch>
 						<Route exact path='/' component={MainPage}/>
 						<Route exact path='/Main' component={MainPage}/>

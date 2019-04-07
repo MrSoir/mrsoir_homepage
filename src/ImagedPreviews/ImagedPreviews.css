@@ -1,42 +1,17 @@
 @import "../App.css";
 
-/*.Preview{
-	display: flex;
-	align-items: center;
-	justivy-items: center;
-	transition: 1s;
-	justify-content: space-around;
-	
-	overflow: hidden;
-}*/
-
-.PreviewList{
-	list-style:none;
-/*	background-color: lightgreen;*/
-}
-.PreviewListItem{
-	padding: 10px;
-/*	background-color: lightblue;*/
-}
-
-.PreviewText{
-	text-align: justify;
-	color: var(--fontColor);
-	font-family: hand_written_font;
-	font-size: 20px;
-	width: 300px;
-	padding: 10px;
-	padding-left: 20px;
-}
-
 .Cursor{
 	cursor: pointer;
 }
 
 .PreviewContainer {
-	display: flex;
-
-	justify-content: center;
+	position: relative;
+	
+	width: 80vw;
+	max-width: 1000px;
+	height: 400px;
+	
+	margin: auto;
 }
 .MainSeparator{
 	display: inline-block;
@@ -47,10 +22,27 @@
 	margin-bottom: 20px;
 }
 .PreviewImage{
-	max-width: 800px;
-	max-height: 600px;
-	width: auto;
-	height: auto;
+	position: absolute;
+	left: 0;
+	width: 70%;
+	height: 100%;
 	cursor: pointer;
+}
+
+.PreviewText{
+	position: absolute;
+	right: 0;
+	height: 100%;
+	width: 27%;
+	
+	text-align: justify;
+	color: var(--fontColor);
+	font-family: hand_written_font;
+	font-size: 17px;
+/*	padding: 10px;
+	padding-left: 20px;*/
+}
+.PreviewTextHeading{
+	font-size: 20px;
 }
 

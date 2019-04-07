@@ -1,14 +1,19 @@
 import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
-import {readTextFile} from '../StaticFunctions';
-import meta_info from './info.txt';
+//import meta_info from './info.txt';
 import MainImage from './MainImage.png';
 import SecondImage from './SecondImage.png';
+import CurtainButton from '../CurtainButton';
 import './ReferenceManager.css';
 
 class ReferenceManager extends Component{
-	constructor(){
-		super();
+	constructor(args){
+		super(args);
+		
+		this.downloadReferendeManager = this.downloadReferendeManager.bind(this);
+	}
+	downloadReferendeManager(){
+		window.open('https://github.com/MrSoir/ReferenceManager/archive/master.zip', '_blank');
 	}
 	render(){
 		let programInfo = <p>My Reference Manager does an entirely different job compared to the other reference 
@@ -93,9 +98,8 @@ class ReferenceManager extends Component{
 				
 				<div className="RefManSeparator"/>
 				
-				<div className="DownloadButton">
-					Download
-				</div>
+				<CurtainButton text="Download"
+									onClick={this.downloadReferendeManager}/>
 				
 				<div className="InfoText InstallationInfo">
 					{installationInfo}

@@ -1,4 +1,4 @@
 Render Entire File Structures
-with Kubu you can load and render entire tree structures. Thus, you don't have to jump from folder to folder. You can observe all files at a glance.
+with Kubu you can load and render entire file structures. There's no need anymore to jump from folder to folder to find your files. You can observe all files at a glance.
 
-Kubu puts emphasis on a clean and tidy look. This is achieved by a smart way of rendering (e.g. buttons are displayed context-dependent). As a result, most of the screen size is utilized for displaying content.
+Kubu puts emphasis on a clean and tidy look. This is achieved by a smart way of rendering, e.g. buttons are displayed only when they are needed. As a result, most of the screen size is utilized for displaying content.

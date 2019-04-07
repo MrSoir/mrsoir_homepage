@@ -4,50 +4,42 @@
 	cursor: pointer;
 }
 
-.PreviewsDiv{
-	margin-bottom: 50px;
-}
-
-.MainPreviewContainer{
+.PreviewContainer {
 	position: relative;
 	
-	width: 100vw;
+	width: 80vw;
 	max-width: 1000px;
 	height: 400px;
 	
 	margin: auto;
-	margin-top: 10px;
 }
-
-.MainPreviewImage{
+.MainSeparator{
+	display: inline-block;
+	background-color: var(--separatorColor);
+	width: 80vw;
+	height: 1px;
+	margin-top: 50px;
+	margin-bottom: 20px;
+}
+.PreviewImage{
 	position: absolute;
 	left: 0;
-	top: 0;
 	width: 70%;
 	height: 100%;
-	
 	cursor: pointer;
 }
 
-.MainPreviewText{
+.PreviewText{
 	position: absolute;
-	
 	right: 0;
-	top: 0;
-	width: 27%;
 	height: 100%;
+	width: 27%;
 	
 	text-align: justify;
 	color: var(--fontColor);
 	font-family: hand_written_font;
-	font-size: 20px;
-}
-.MainPreviewTextHeading{
-	font-size: 25px;
-}
-
-.MainSeparator{
-	background-color: var(--separatorColor);
-	height: 1px;
+	font-size: 17px;
+/*	padding: 10px;
+	padding-left: 20px;*/
 }
 

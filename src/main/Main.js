@@ -37,7 +37,7 @@ class MainPage extends Component{
 	}
 	render(){
 		return (
-		<div className="PreviewList">
+		<div className="PreviewsDiv">
 			{this.state.preview.map((pi, id)=>
 				<Preview key={id} 
 							name={pi.name}
@@ -69,16 +69,15 @@ class Preview extends Component{
 	
 	render(){
 		let sep = this.props.separator ? <div className="MainSeparator"></div> : '';
-		let link = this.props.link;
 		return (
-			<div className="PreviewListItem">
-				<div className="PreviewContainer">
+			<div className="">
+				<div className="MainPreviewContainer">
 					<img 	src={this.props.image_path} 
 							alt="logo"
-							className="PreviewImage"
+							className="MainPreviewImage"
 							onClick={this.loadPath} />
-					<div className="PreviewText">
-						<u className="Cursor" 
+					<div className="MainPreviewText">
+						<u className="MainPreviewTextHeading Cursor" 
 							onClick={this.loadPath}>
 							{this.props.name}
 						</u>

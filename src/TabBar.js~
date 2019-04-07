@@ -3,9 +3,9 @@ import { withRouter } from "react-router-dom";
 import './TabBar.css';
 
 class TabBar extends Component{
-/*	constructor(props){
+	constructor(props){
 		super(props);
-	}*/
+	}
 	tabClicked(tabid, tabCallback){
 		tabCallback(tabid);
 	}

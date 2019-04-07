@@ -1,39 +1,65 @@
 @import "./App.css";
 
 .SlideShow{
-    display: grid;
-    text-align: center;
-    grid-template-columns: fit-content(200px) fit-content(200px) fit-content(200px);
-    align-items: center;
-    justify-items: center;
-    justify-content: center;
-    
-    overflow: hidden;
-}
-
-.SlideImage{    
-    max-width: 800px;
-    transition-duration: 4s;
-}
-.SlideMainImages{
 	position: relative;
-	max-width: 800px;
+	display: inline-block;
+	
+	width: 80vw;
+	max-width: 1000px;
+	height: 500px;
+	
+	margin: auto;
 }
 .Img0{
 	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	
 	opacity: 1;
+	
+	transition-duration: 4s;
 }
 .Img1{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	
 	opacity: 0;
+	
+	transition-duration: 4s;
 }
 
 .NextButton{
-  max-width: 40px;
-  transition-duration: 3s;
+	position: absolute;
+	
+	font-size: 70px;
+	font-weight: bold;
+	
+	color: #c9915a;
+	
+	top: 50%;
+	margin-top: -30px;
+
+	transition-duration: 0.5s;
+	
+	z-index: 1;
+}
+.NextButton:hover{
+	color: #ff0000;
+}
+.NextButton.Next{
+	margin-right: 30px;
+	right: 0;
 }
 .NextButton.Prev{
-	transform: rotate(180deg);
+	margin-left: 30px;
+	left: 0;
+/*	transform: rotate(180deg);*/
 }
-.Image{
+.Cursor{
 	cursor: pointer;
 }

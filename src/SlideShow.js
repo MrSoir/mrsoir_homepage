@@ -1,30 +1,25 @@
 import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
 import './SlideShow.css';
-import next_btn from './next_btn.png';
-import next_btn_hover from './next_btn_hover.png';
-import next_btn_click from './next_btn_click.png';
 
 class SlideShow extends Component{
 	constructor(props){
 		super(props);
 		
+		this.mainRef = React.createRef();
 		this.imgRef0 = React.createRef();
 		this.imgRef1 = React.createRef();
-		this.prevBtn = React.createRef();
-		this.nextBtn = React.createRef();
+		
 		this.curFadingImgId = 0;
 		
 		this.setCurrentImagePath = this.setCurrentImagePath.bind(this);
 		this.onImageClick = this.onImageClick.bind(this);
 		this.onPrevClicked = this.onPrevClicked.bind(this);
 		this.onNextClicked = this.onNextClicked.bind(this);
+		
 		this.nextImage = this.nextImage.bind(this);
 		this.prevImage = this.prevImage.bind(this);
-		this.onPrevHover = this.onPrevHover.bind(this);
-		this.onNextHover = this.onNextHover.bind(this);
-		this.onPrevLeave = this.onPrevLeave.bind(this);
-		this.onNextLeave = this.onNextLeave.bind(this);
+		
 		this.startImageTimer = this.startImageTimer.bind(this);
 		this.stopImageTimer = this.stopImageTimer.bind(this);
 		this.curId = 0;
@@ -32,6 +27,14 @@ class SlideShow extends Component{
 		this.setCurrentImagePath();
 	}
 	componentDidMount(){
+		if(this.props.width){
+			let w = `${this.props.width}px`;
+			this.mainRef.current.style.maxWidth = w;
+		}
+		if(this.props.height){
+			let h = `${this.props.height}px`;
+			this.mainRef.current.style.maxHeight = h;
+		}
 		this.startImageTimer();
 	}
 	componentWillUnmount(){
@@ -94,51 +97,30 @@ class SlideShow extends Component{
 	onNextClicked(){
 		this.nextImage();
 	}
-	onPrevHover(){
-		const prevBtn = this.prevBtn.current;
-		prevBtn.src = next_btn_hover;
-	}
-	onNextHover(){
-		const nextBtn = this.nextBtn.current;
-		nextBtn.src = next_btn_hover;
-	}
-	onPrevLeave(){
-		const prevBtn = this.prevBtn.current;
-		prevBtn.src = next_btn;
-	}
-	onNextLeave(){
-		const nextBtn = this.nextBtn.current;
-		nextBtn.src = next_btn;
-	}
 	render(){
 		return(
-			<div className="SlideShow">
-				<img className="NextButton Prev Image" 
-					src={next_btn} 
-					ref={this.prevBtn}
-					onClick={this.onPrevClicked}
-					onMouseEnter={this.onPrevHover}
-					onMouseLeave={this.onPrevLeave}/>
-				
-				<div className="SlideMainImages">
-					<img className="SlideImage Image Img0" 
-						src={this.curImgPath.img_path} 
-						ref={this.imgRef0}
-						onClick={this.onImageClick}
-						alt="logo"/>
-					<img className="SlideImage Image Img1" 
-						src={this.props.img_paths[1].img_path} 
-						ref={this.imgRef1}
-						onClick={this.onImageClick}
-						alt="logo"/>
+			<div className="SlideShow"
+				  ref={this.mainRef}>
+				<div className="NextButton Prev Cursor"
+					onClick={this.onPrevClicked}>
+					&#11164;
 				</div>
 				
-				<img className="NextButton Image"
-					src={next_btn} 
-					ref={this.nextBtn}
-					onClick={this.onNextClicked}
-					onMouseEnter={this.onNextHover}
-					onMouseLeave={this.onNextLeave}/>
+				<img className="Img0 Cursor" 
+					src={this.curImgPath.img_path} 
+					ref={this.imgRef0}
+					onClick={this.onImageClick}
+					alt="logo"/>
+				<img className="Img1 Cursor" 
+					src={this.props.img_paths[1].img_path} 
+					ref={this.imgRef1}
+					onClick={this.onImageClick}
+					alt="logo"/>
+				
+				<div className="NextButton Next Cursor"
+					onClick={this.onNextClicked}>
+					&#x2B9E;
+				</div>
 			</div>
 		);
 	}

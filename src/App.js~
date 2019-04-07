@@ -8,7 +8,6 @@ import TabBar from './TabBar';
 import {readTextFile, arraysEqual} from './StaticFunctions';
 import MainPage from './main/Main';
 import Ballin from './Ballin/Ballin';
-import BallinGL from './BallinGL/BallinGL';
 import Kubu from './Kubu/Kubu';
 import ReferenceManager from './ReferenceManager/ReferenceManager';
 import Notes from './Notes/Notes';
@@ -143,12 +142,11 @@ class App extends Component {
 				<div className="TopMargin">
 				</div>
 					
-				<div className="HugeDiv" ref={this.body}>
+				<div className="MainDiv" ref={this.body}>
 					<Switch>
 						<Route exact path='/' component={MainPage}/>
 						<Route exact path='/Main' component={MainPage}/>
 						<Route exact path='/Ballin' component={Ballin}/>
-						{Route exact path='/BallinGL' component={BallinGL}/>
 						<Route exact path='/Kubu' component={Kubu}/>
 						<Route exact path='/ReferenceManager' component={ReferenceManager}/>
 						<Route exact path='/Notes' component={Notes}/>

@@ -2,6 +2,7 @@
 
 .Ballin{
 	text-align: center;
+	margin-bottom: 50px;
 }
 .BallinInfo{
 	color: var(--fontColor);
