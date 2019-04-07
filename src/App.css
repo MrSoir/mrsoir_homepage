@@ -149,7 +149,8 @@
 
 @font-face {
   font-family: hand_written_font;
-  src: url(./fonts/Apple Chancery Italic.ttf);
+/*  src: url(./fonts/Apple Chancery Italic.ttf);*/
+  src: local('Exo Regular'), local('Exo-Regular'), url(https://fonts.gstatic.com/s/exo/v8/4UaOrEtFpBISc36j.woff2) format('woff2');
 }
 
 @keyframes logoHeader_fadeIn {

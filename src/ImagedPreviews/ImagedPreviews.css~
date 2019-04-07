@@ -7,6 +7,8 @@
 .PreviewContainer {
 	position: relative;
 	
+	--fontSize: 50px;
+	
 	width: 80vw;
 	max-width: 1000px;
 	height: 400px;
@@ -38,8 +40,28 @@
 	text-align: justify;
 	color: var(--fontColor);
 	font-family: hand_written_font;
-	font-size: 17px;
+	font-size: calc(var(--fontSize) + 10px);
 /*	padding: 10px;
 	padding-left: 20px;*/
 }
+.PreviewTextHeading{
+	font-size: var(--fontSize);
+}
 
+@media (min-width:200px) {
+  .PreviewContainer {
+    --fontSize: 10px;
+  }
+}
+
+@media (min-width:600px) {
+  .PreviewContainer {
+    --fontSize: 14px;
+  }
+}
+
+@media (min-width:1000px) {
+  .PreviewContainer {
+    --fontSize: 20px;
+  }
+}
