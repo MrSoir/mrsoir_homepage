@@ -74,7 +74,7 @@ class SlideShow extends Component{
 			animationDuration: animationDuration,
 			delayDuration: delayDuration,
 			backgroundColor: [0,0,0, 0.0],
-			animationType: 'Wave'
+			animationType: 'Freak',
 		};
 		let startedSuccessfully = this.sldShw.startAnimation(slMeta);
 		if( !startedSuccessfully ){
@@ -113,7 +113,7 @@ class SlideShow extends Component{
 							className="ProgramDescription">
 							A little while ago I discovered WebGL2.0. It's an amazing framework to render 3D-graphics.
 							<br/>
-							Because I got bored by the standard CSS-animations, I wrote a little library to calculate and
+							Because I became bored by the standard CSS-animations, I wrote a little library to calculate and
 							render some advanced image transformations. The above demo shows it in action.
 							<br/><br/>
 							The library ist highly optimized. The demo renders 2^16 = 65.536 polygons every single frame and still achieves the maximum of 60 fps

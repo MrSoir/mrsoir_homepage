@@ -8,6 +8,10 @@ import {GlFunctionsInstantiator} from './glFunctions.js';
 /*import {parseOBJ} from './obj_parser.js';
 import {planeOBJstr} from './meshes/plane.js';*/
 import WaveAnimation from './WaveAnimation.js';
+import FlipAnimation from './FlipAnimation.js';
+import ShiftAnimation from './ShiftAnimation.js';
+import ScaleAnimation from './ScaleAnimation.js';
+import FreakAnimation from './FreakAnimation.js';
 import TriangleSplitter from './TriangleSplitter.js';
 
 
@@ -18,6 +22,10 @@ import TriangleSplitter from './TriangleSplitter.js';
 var ANIMATIONS = new Map();
 function _fillAnims(){
 	ANIMATIONS['Wave'] = WaveAnimation;
+	ANIMATIONS['Flip'] = FlipAnimation;
+	ANIMATIONS['Shift'] = ShiftAnimation;
+	ANIMATIONS['Scale'] = ScaleAnimation;
+	ANIMATIONS['Freak'] = FreakAnimation;
 }
 _fillAnims();
 
@@ -69,6 +77,37 @@ var vertexShaderSource = `#version 300 es
 		m[3][2] = translVec.z;
 		return m;
 	}
+		
+	mat4 rotateX(float rad){
+		mat4 m = mat4(1.0);
+		float c = cos(rad);
+		float s = sin(rad);
+		m[1][1] =  c;
+		m[1][2] = -s;
+		m[2][1] =  s;
+		m[2][2] =  c;
+		return m;
+	}
+	mat4 rotateY(float rad){
+		mat4 m = mat4(1.0);
+		float c = cos(rad);
+		float s = sin(rad);
+		m[0][0] =  c;
+		m[0][2] =  s;
+		m[2][0] = -s;
+		m[2][2] =  c;
+		return m;
+	}
+	mat4 rotateZ(float rad){
+		mat4 m = mat4(1.0);
+		float c = cos(rad);
+		float s = sin(rad);
+		m[0][0] =  c;
+		m[0][1] = -s;
+		m[1][0] =  s;
+		m[1][1] =  c;
+		return m;
+	}
 `;
 
 var fragmentShaderSource = `#version 300 es
@@ -103,12 +142,12 @@ var fragmentShaderSource = `#version 300 es
 
 class SlideShowGL{
 
-	constructor(canvasID){
+	constructor(canvasID, splitDepth=15){
 		let interpolF = v =>{
 			return [(v[0] + 1.0) * 0.5, 1.0 -(v[1] + 1.0) * 0.5];
 		};
 		
-		let vertices2D = TriangleSplitter.splitRect([-1,-1], [1,1], 15);
+		let vertices2D = TriangleSplitter.splitRect([-1,-1], [1,1], splitDepth);
 
 		console.log('vertices: ', vertices2D.length);
 		
@@ -139,7 +178,9 @@ class SlideShowGL{
 		};
 		this.glMeta = {
 			backgroundColor: [1.0,1.0,1.0, 1.0],
-			imgRatio: [1,1]
+			imgRatio: [1,1],
+			instancing: false,
+			instanceCount: 2
 		};
 		
 		if(!canvasID){
@@ -309,7 +350,11 @@ class SlideShowGL{
 		let primitiveType = this.gl.TRIANGLES;
 		let offset = 0;
 		let count = Math.floor(vertices.length / 3);
-		this.gl.drawArrays(primitiveType, offset, count);
+		if(this.glMeta.instancing){
+			this.gl.drawArraysInstanced(primitiveType, offset, count, this.glMeta.instanceCount);
+		}else{
+			this.gl.drawArrays(primitiveType, offset, count);
+		}
 	}
 	
 	setAnimationType(animTypeStr){
@@ -492,7 +537,7 @@ class SlideShowGL{
 					if(this.pictureData.imgsLoading === 0){
 						this.startAnimationLoop();
 					}
-				}, this.pictureData.delayDuration);
+				}, this.animationMeta.delayDuration);
 			}
 		};
 		innerGameLoop( performance.now() );

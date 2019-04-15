@@ -1,0 +1,105 @@
+/**
+ * @Copyright
+ * @package     2CSB - 2 Click Social Buttons - Module
+ * @author      Viktor Vogel <admin@kubik-rubik.de>
+ * @version     3.1.0 - 2015-07-30
+ * @link        https://joomla-extensions.kubik-rubik.de/2csb-2-click-social-buttons
+ *
+ * @license     GNU/GPL
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#social_bookmarks ul.social_share span.switch {
+    background-attachment: scroll;
+    background-color: transparent;
+    background-image: url("images/switch.png");
+    background-repeat: no-repeat;
+    cursor: pointer;
+    float: left;
+    height: 12px;
+    margin-bottom: 0;
+    margin-left: 0;
+    margin-right: 8px;
+    margin-top: 4px;
+    overflow: hidden;
+    text-indent: -9999em;
+    width: 23px;
+}
+
+#social_bookmarks ul.social_share span.switch.off {
+    background-position: 0 0;
+}
+
+#social_bookmarks ul.social_share span.switch.on {
+    background-position: 0 -12px;
+}
+
+#social_bookmarks ul.social_share li {
+    height: 25px;
+    overflow: hidden;
+    background: none;
+    padding: 0px !important;
+    margin: 0px !important;
+}
+
+#social_bookmarks {
+    margin: 2px 0;
+}
+
+#social_bookmarks ul.social_share li#facebook_button {
+    width: 125px;
+}
+
+#social_bookmarks ul.social_share li#twitter_button {
+    width: 100px;
+}
+
+#social_bookmarks ul.social_share li#googleplus_button {
+    width: 80px;
+}
+
+#social_bookmarks ul.social_share li#loadall_button {
+    width: 100px;
+}
+
+#social_bookmarks ul.social_share li#load_button_on {
+    height: 0px !important;
+}
+
+#social_bookmarks ul.social_share li#info_button {
+    padding-left: 30px !important;
+}
+
+.clear {
+    clear: both;
+}
+
+.tip-wrap {
+    background-color: transparent !important;
+}
+
+.tip {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.6) !important;
+    border-radius: 3px;
+    color: #FFFFFF;
+    width: 300px;
+    z-index: 13000;
+}
+
+.tip-title {
+    font-size: 11px;
+    font-weight: bold;
+    margin: 0;
+    padding: 8px 8px 4px;
+}
