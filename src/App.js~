@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Switch, Route, Link, withRouter } from "react-router-dom";
+import { Switch, Route, withRouter } from "react-router-dom";
 import logo from './MrSoir_grass.png';
 //import logo from './logo.svg';
 import './App.css';
@@ -11,6 +11,7 @@ import Ballin from './Ballin/Ballin';
 import Kubu from './Kubu/Kubu';
 import ReferenceManager from './ReferenceManager/ReferenceManager';
 import Notes from './Notes/Notes';
+import SlideShow from './SlideShow/SlideShow';
 
 var hist = null;
 

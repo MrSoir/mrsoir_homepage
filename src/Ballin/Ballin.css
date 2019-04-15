@@ -43,7 +43,7 @@
 
 .BallinSeparator{
 	width: 60vw;
-	height: 1px;
+	height: 2px;
 	
 	background-color: var(--separatorColor);
 	

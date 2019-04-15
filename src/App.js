@@ -11,6 +11,7 @@ import Ballin from './Ballin/Ballin';
 import Kubu from './Kubu/Kubu';
 import ReferenceManager from './ReferenceManager/ReferenceManager';
 import Notes from './Notes/Notes';
+import SlideShow from './SlideShow/SlideShow';
 
 var hist = null;
 
@@ -150,6 +151,7 @@ class App extends Component {
 						<Route exact path='/Kubu' component={Kubu}/>
 						<Route exact path='/ReferenceManager' component={ReferenceManager}/>
 						<Route exact path='/Notes' component={Notes}/>
+						<Route exact path='/SlideShow' component={SlideShow}/>
 					</Switch>
 				</div>
 				

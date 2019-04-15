@@ -11,9 +11,10 @@
 .MainPreviewContainer{
 	position: relative;
 	
-	width: 100vw;
+	width: 80vw;
+	height: 30vw;
 	max-width: 1000px;
-	height: 400px;
+	max-height: 400px;
 	
 	margin: auto;
 	margin-top: 20px;
@@ -47,7 +48,14 @@
 }
 
 .MainSeparator{
+/*	background-color: var(--separatorColor);
+	height: 1px;*/
+	
+	display: inline-block;
 	background-color: var(--separatorColor);
+	width: 80vw;
 	height: 1px;
+	margin-top: 50px;
+	margin-bottom: 20px;
 }
 

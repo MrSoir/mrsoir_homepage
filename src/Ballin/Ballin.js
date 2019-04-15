@@ -69,8 +69,7 @@ class Ballin extends Component{
 		to worry about...
 		<br/><br/>
 		Go get the most fun out of Ballin' GL I recommend playing it on your smartphone. 
-		On smartphones you can control the game with the motion sensors. 
-		Thus the smartphone itself becomes the controller.</div>;
+		On smartphones you can control the game with the smartphone's motion sensors &#x2192; the device itself becomes the controller.</div>;
 		
 		let infoText_Orig = <div className="Info">I wrote the first version 
 		of Ballin' in Java (Swing) in the course of a college assignment. 

@@ -1,0 +1,103 @@
+@import "../App.css";
+
+#SlideShow{
+/*	text-align: center;
+	display: inline-block;*/
+}
+
+#SliderShowCodeInfo{
+	margin-bottom: 50px;
+}
+
+.invisibleVertSep{
+	width: 100%;
+	height: 50px;
+}
+
+#SlideShowInfo{
+}
+
+#CredentialsDiv{
+	margin-top: -80px;
+	z-index: 10;
+}
+#ImageCredentialsHeading{
+	font-size: 15px;
+	font-weight: lighter;
+	color: #f4b342;
+}
+#ImageCredentials{
+	display: inline-block;
+	margin-bottom: 20px;
+	margin-top: 20px;
+}
+.ImageCredentialTag{
+	display: inline-block;
+	background: #00000011;
+	color: #f4b342;
+	padding: 3px 5px;
+	padding-bottom: 5px;
+	border-radius: 5px;
+	font-weight: bold;
+	font-size: 15px;
+	cursor: pointer;
+}
+.ImageCredentialInset{
+	display: inline-block;
+	width: 10px;
+	height: 100%;
+}
+
+.Heading{
+	color: var(--fontColor);
+	font-family: Times;
+	margin-bottom: 30px;
+
+	font-size: 80px;
+}
+
+#canvasDiv{
+	display: inline-block;
+	position: relative;
+	left: 0;
+	width: 80vw;
+	height: 60vw;
+	max-width: 1500px;
+	max-height: 800px;
+	z-index: 0;
+}
+#loadingDiv{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+}
+#loadingDivMsg{
+	position: relative;
+	top: 10%;
+	width: 100%;
+	font-size: 15vw;
+	font-weight: bold;
+	color: lime;
+	animation-name: loadingDivMsgAnim;
+	animation-duration: 4s;
+	animation-timing-function: linear;
+	animation-iteration-count: infinite;
+}
+@keyframes loadingDivMsgAnim {
+  0%   {color: #ff4400; font-size: 7vw; transform: rotate(0deg);}
+  25%  {transform: rotate(-10deg);}
+  50%  {color: #00ff00; font-size: 4vw; transform: rotate(0deg);}
+  75%  {transform: rotate( 10deg);}
+  100% {color: #ff4400; font-size: 7vw; transform: rotate(0deg);}
+}
+#slideShowCanvas{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+}

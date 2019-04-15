@@ -1,5 +1,6 @@
 Main
 Ballin
+SlideShow
 Kubu
 Notes
 Reference Manager

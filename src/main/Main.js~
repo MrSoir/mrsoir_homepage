@@ -68,8 +68,8 @@ class Preview extends Component{
 	}
 	
 	render(){
-		let sep = this.props.separator ? <div className="MainSeparator"></div> : '';
-		let link = this.props.link;
+//		let sep = this.props.separator ? <div className="MainSeparator"></div> : '';
+		let sep = <div className="MainSeparator2"></div>;
 		return (
 			<div className="">
 				<div className="MainPreviewContainer">

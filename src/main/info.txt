@@ -1,4 +1,5 @@
 Ballin
+SlideShow
 Kubu
 Notes
 ReferenceManager
