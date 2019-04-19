@@ -76,7 +76,7 @@ class SlideShow extends Component{
 								  this.state.selctdAnimID === 'Flip';
 		let imgPaths = this.imgPaths;
 		let animationDuration = 1000 * (fastAnimation ? 3 : 10);
-		let delayDuration = 5000;
+		let delayDuration = 2000;
 		let slMeta = {
 			// mandatory:
 			imgPaths: imgPaths,

@@ -31,7 +31,7 @@ class SlideShow extends Component{
 		this.loadingMsg = 'loading...';
 		
 		this.state = {
-			selctdAnimID: 'Flip'//'Gravity'
+			selctdAnimID: 'Gravity'
 		};
 	}
 	componentWillMount(){

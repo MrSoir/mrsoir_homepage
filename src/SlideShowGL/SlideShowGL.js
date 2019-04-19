@@ -202,7 +202,8 @@ class SlideShowGL{
 			delayDuration:     2000,
 			inAnimationDelay:  false,
 			stopAnimation: false,
-			animationIsRunning: false
+			animationIsRunning: false,
+			animationID: 0
 		};
 		this.glMeta = {
 			backgroundColor: [1.0,1.0,1.0, 1.0],
@@ -534,7 +535,8 @@ class SlideShowGL{
 	}
 	
 	stopAnimation(){
-		if(this.animationMeta.animationIsRunning){
+		if(this.animationMeta.animationIsRunning ||
+			this.animationMeta.inAnimationDelay){
 			this.animationMeta.stopAnimation = true;
 		}else{
 			if(this.onStoppingAnimation){
@@ -580,6 +582,7 @@ class SlideShowGL{
 		let lastTime = null;
 		this.animationMeta.stopAnimation = false;
 		this.animationMeta.animationIsRunning = true;
+		const curAnimID = this.animationMeta.animationID;
 		
 		let cntr = 0; // used to calc fps
 		
@@ -602,6 +605,10 @@ class SlideShowGL{
 			
 			lastTime = curTime;
 			
+			if(curAnimID != this.animationMeta.animationID){
+				return;
+			}
+			
 			if(this.pictureData.progress < 1.0){
 				window.requestAnimationFrame( innerGameLoop );
 			}else{
@@ -616,8 +623,14 @@ class SlideShowGL{
 				
 				setTimeout(()=>{
 					this.animationMeta.inAnimationDelay = false;
-					if(this.pictureData.imgsLoading === 0){
-						this.startAnimationLoop();
+					if(this.animationMeta.stopAnimation){
+						if(this.onStoppingAnimation){
+							this.onStoppingAnimation();
+						}
+					}else{
+						if(this.pictureData.imgsLoading === 0){
+							this.startAnimationLoop();
+						}
 					}
 				}, this.animationMeta.delayDuration);
 			}
