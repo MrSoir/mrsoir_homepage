@@ -147,6 +147,9 @@ class GlFunctionsInstantiator{
 	setUniform1f(name, data){
 		this._setUniform(name, data, (args)=>{this.gl.uniform1f(...args)});
 	}
+	setUniform1fv(name, data){
+		this._setUniform(name, data, (args)=>{this.gl.uniform1f(...args)});
+	}
 	setUniformVector2fv(name, data){
 		this._setUniform(name, data, (args)=>{this.gl.uniform2fv(...args)});
 	}
@@ -159,6 +162,9 @@ class GlFunctionsInstantiator{
 	
 	setUniform1i(name, data){
 		this._setUniform(name, data, (args)=>{this.gl.uniform1i(...args)});
+	}
+	setUniform1iv(name, data){
+		this._setUniform(name, data, (args)=>{this.gl.uniform1iv(...args)});
 	}
 	setUniformVector2iv(name, data){
 		this._setUniform(name, data, (args)=>{this.gl.uniform2iv(...args)});
@@ -361,9 +367,6 @@ class GlFunctionsInstantiator{
 	setTextureImage(name, img, glslName = undefined, textureID = 0){
 		let shaderProgram = this.shaderMeta.curShaderProgram.program;
 		
-		var texture = this.gl.createTexture();
-//		this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
-		
 		// following code necessary for multiple textures:
 		if(!glslName){
 			glslName = 'u_texture';
@@ -374,6 +377,7 @@ class GlFunctionsInstantiator{
 		 
 	  	// Now that the image has loaded make copy it to the texture.
 	  	this.gl.activeTexture(this.gl.TEXTURE0 + textureID);
+	  	var texture = this.gl.createTexture();
 	  	this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
 	  	
 	  	this.textures[name] = {

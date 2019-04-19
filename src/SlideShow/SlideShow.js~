@@ -74,8 +74,7 @@ class SlideShow extends Component{
 			animationDuration: animationDuration,
 			delayDuration: delayDuration,
 			backgroundColor: [0,0,0, 0.0],
-			splitDepth: 15,
-			animationType: 'Freak',
+			animationType: 'Gravity',
 		};
 		let startedSuccessfully = this.sldShw.startAnimation(slMeta);
 		if( !startedSuccessfully ){

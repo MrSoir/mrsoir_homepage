@@ -40,6 +40,10 @@ var vertexShaderSource = `
 		}
 	}
 	
+	vec4 genTranslateToCenter(vec3 center){
+		
+	}
+	
 	void main() {
 		int rotID = transformID;
 		

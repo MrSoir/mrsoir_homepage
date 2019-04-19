@@ -41,7 +41,7 @@ var vertexShaderSource = `
 	}
 	
 	void main() {
-		int rotID = animationCount;
+		int rotID = transformID;
 		
 		mat4 pictureRotation = genPictureRotate(rotID);
 		

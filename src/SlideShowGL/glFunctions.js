@@ -147,6 +147,9 @@ class GlFunctionsInstantiator{
 	setUniform1f(name, data){
 		this._setUniform(name, data, (args)=>{this.gl.uniform1f(...args)});
 	}
+	setUniform1fv(name, data){
+		this._setUniform(name, data, (args)=>{this.gl.uniform1fv(...args)});
+	}
 	setUniformVector2fv(name, data){
 		this._setUniform(name, data, (args)=>{this.gl.uniform2fv(...args)});
 	}
@@ -159,6 +162,9 @@ class GlFunctionsInstantiator{
 	
 	setUniform1i(name, data){
 		this._setUniform(name, data, (args)=>{this.gl.uniform1i(...args)});
+	}
+	setUniform1iv(name, data){
+		this._setUniform(name, data, (args)=>{this.gl.uniform1iv(...args)});
 	}
 	setUniformVector2iv(name, data){
 		this._setUniform(name, data, (args)=>{this.gl.uniform2iv(...args)});

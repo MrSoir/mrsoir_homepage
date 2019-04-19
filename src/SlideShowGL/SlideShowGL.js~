@@ -5,13 +5,16 @@
 // react:
 import * as glMatrix from 'gl-matrix';
 import {GlFunctionsInstantiator} from './glFunctions.js';
-/*import {parseOBJ} from './obj_parser.js';
-import {planeOBJstr} from './meshes/plane.js';*/
-import WaveAnimation from './WaveAnimation.js';
-import FlipAnimation from './FlipAnimation.js';
-import ShiftAnimation from './ShiftAnimation.js';
-import ScaleAnimation from './ScaleAnimation.js';
-import FreakAnimation from './FreakAnimation.js';
+/*import {parseOBJ} 		from './obj_parser.js';
+import {planeOBJstr} 	from './meshes/plane.js';*/
+import WaveAnimation 	from './WaveAnimation.js';
+import FlipAnimation 	from './FlipAnimation.js';
+import ShiftAnimation 	from './ShiftAnimation.js';
+import ScaleAnimation   from './ScaleAnimation.js';
+import FreakAnimation   from './FreakAnimation.js';
+import CycloneAnimation from './CycloneAnimation.js';
+import RandomAnimation  from './RandomAnimation.js';
+import GravityAnimation from './GravityAnimation.js';
 import TriangleSplitter from './TriangleSplitter.js';
 
 
@@ -26,6 +29,9 @@ function _fillAnims(){
 	ANIMATIONS['Shift'] = ShiftAnimation;
 	ANIMATIONS['Scale'] = ScaleAnimation;
 	ANIMATIONS['Freak'] = FreakAnimation;
+	ANIMATIONS['Cyclone'] = CycloneAnimation;
+	ANIMATIONS['Random'] = RandomAnimation;
+	ANIMATIONS['Gravity'] = GravityAnimation;
 }
 _fillAnims();
 
@@ -179,7 +185,7 @@ class SlideShowGL{
 		this.glMeta = {
 			backgroundColor: [1.0,1.0,1.0, 1.0],
 			imgRatio: [1,1],
-			instancing: true,
+			instancing: false,
 			instanceCount: 2
 		};
 		
