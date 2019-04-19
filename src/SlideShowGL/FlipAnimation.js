@@ -40,10 +40,6 @@ var vertexShaderSource = `
 		}
 	}
 	
-	vec4 genTranslateToCenter(vec3 center){
-		
-	}
-	
 	void main() {
 		int rotID = transformID;
 		
@@ -93,7 +89,7 @@ class FlipAnimation{
 		this.fragmentShaderSource = fragmentShaderSource;
 		
 		this._animMeta = {
-			transformID: 2,
+			transformID: 0,
 			animationCount: 4,
 		};
 		

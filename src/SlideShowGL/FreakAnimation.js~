@@ -118,9 +118,9 @@ var vertexShaderSource = `
 		float rndy = randoms.y - 0.5;
 		float rndz = randoms.z - 0.5;
 		
-		float xScaleFctr = 0.3;
+		float xScaleFctr = 0.8;
 		float yScaleFctr = 0.3;
-		float zScaleFctr = 0.0;
+		float zScaleFctr = 0.5;
 		
 		float trnslX = xScaleFctr * sin(trnsfrmPrgrs * PI) * yOffs * rndx;// * (1.0 + xScaleFctr * sin(progress * PI));
 		float trnslY = yScaleFctr * sin(trnsfrmPrgrs * PI) * yOffs * rndy;// yScaleFctr * sin(trnsfrmPrgrs * PI);// * (1.0 + yScaleFctr * sin(progress * PI));
@@ -130,7 +130,7 @@ var vertexShaderSource = `
 	}
 	
 	mat4 genPictureScale(float trnsfrmPrgrs){		
-		float sclFctr = 1.0 + sin(trnsfrmPrgrs * PI) * 2.0;
+		float sclFctr = 1.0 + sin(trnsfrmPrgrs * PI) * 3.0;
 		float sclX = sclFctr;
 		float sclY = sclFctr;
 		float sclZ = 1.0;

@@ -17,7 +17,6 @@ class SlideShow extends Component{
 		
 		this.startAnim = this.startAnim.bind(this);
 		this.stopAnim = this.stopAnim.bind(this);
-		this.setAnimationID = this.setAnimationID.bind(this);
 		
 		this.onImagesLoaded = this.onImagesLoaded.bind(this);
 		this.onErrorOccured = this.onErrorOccured.bind(this);
@@ -29,19 +28,13 @@ class SlideShow extends Component{
 
 		this.loadingDiv = React.createRef();
 		this.loadingMsg = 'loading...';
-		
-		this.state = {
-			selctdAnimID: 'Flip'//'Gravity'
-		};
 	}
-	componentWillMount(){
-		this.animationIDs = SlideShowGL.getAnimationIdentifiers();
-   		
+	componentWillMount(){		
 		let txt = readTextFile(meta_info);
 		
 		let info_lines = txt.split('\n').filter((tn)=>!!tn);
 		// first line in info_lines gives the number of images to render for Ballin'GL
-		let imgCount   = parseInt(info_lines[0].split(' ').filter(s=>!!s).slice(-1)[0]);
+		let imgCount = parseInt(info_lines[0].split(' ').filter(s=>!!s).slice(-1)[0]);
 		
    	let f = (id)=>{
    		let imgPath = process.env.PUBLIC_URL + '/SlideShow/pics/HippoPreview'  + id + '.png';
@@ -53,29 +46,28 @@ class SlideShow extends Component{
    	
 //   	window.addEventListener("resize", this.onCanvasResize);
    }
-   componentDidMount(){   	
-   	this.sldShw  = new SlideShowGL('slideShowCanvas');
+   componentDidMount(){
+   }
+   componentWillUnmount(){
+   	this.stopAnim();
+   }
+   createSlideShowGL(canvasID){
+      this.sldShw  = new SlideShowGL(canvasID);
    	this.sldShw.onImagesLoaded = this.onImagesLoaded;
    	this.sldShw.onWebGL_InitError = this.onImagesLoaded;
 		
 		if(this.sldShw.supportsWebGL2()){
-	   	this.startAnim();
+	   	this.startAnim(canvasID);
 	   }else{
-	   	this.onWebGL_InitError();
+	   	this.onWebGL_InitError(canvasID);
 	   }
-   }
-   componentWillUnmount(){
-   	this.stopAnim();
    }
 	downloadCode(){
 		window.open('https://github.com/MrSoir/SlideShowGL/archive/master.zip', '_blank');
 	}
 	startAnim(){
-		let fastAnimation = this.state.selctdAnimID === 'Scale' || 
-								  this.state.selctdAnimID === 'Cyclone' ||
-								  this.state.selctdAnimID === 'Flip';
 		let imgPaths = this.imgPaths;
-		let animationDuration = 1000 * (fastAnimation ? 3 : 10);
+		let animationDuration = 3*1000;
 		let delayDuration = 2000;
 		let slMeta = {
 			// mandatory:
@@ -84,8 +76,7 @@ class SlideShow extends Component{
 			animationDuration: animationDuration,
 			delayDuration: delayDuration,
 			backgroundColor: [0,0,0, 0.0],
-			animationType: this.state.selctdAnimID,
-			splitDepth: this.state.selctdAnimID === 'Scale' ? 9 : 15
+			animationType: 'Gravity'
 		};
 		let startedSuccessfully = this.sldShw.startAnimation(slMeta);
 		if( !startedSuccessfully ){
@@ -95,36 +86,19 @@ class SlideShow extends Component{
 	stopAnim(){
 		this.sldShw.stopAnimation();
 	}
-/*	onCanvasResize(){
-		console.log('canvas resized!!!');
-		sldShw.onCanvasResize();
-	}*/
 	
 	onErrorOccured(){
 		const warningNode = document.querySelectorAll('#loadingDivMsg')[0];
-		warningNode.innerHTML = `Sorry, your browser <br/> doesn't seem to like <br/> WebGL 2.0...`;
+		warningNode.innerHTML = 'Sorry, your browser <br/> doesn't seem to like <br/> WebGL 2.0...';
 	}
 	onWebGL_InitError(){
 		const warningNode = document.querySelectorAll('#loadingDivMsg')[0];
-		warningNode.innerHTML = `Sorry, your browser <br/> doesn't support <br/> WebGL 2.0!`;
+		warningNode.innerHTML = 'Sorry, your browser <br/> doesn't support <br/> WebGL 2.0!';
 	}
 	onImagesLoaded(){
 		const loadingDiv = this.loadingDiv.current;
 		loadingDiv.style.display = 'none';
 		loadingDiv.style.animationPlayState = 'paused';
-	}
-	setAnimationID(animID){
-		let state = this.state;
-		if(state.selctdAnimID != animID){
-			state.selctdAnimID = animID;
-			this.setState(state);
-			this.sldShw.onStoppingAnimation = (()=>{
-				this.sldShw.onStoppingAnimation = undefined;
-				this.startAnim();
-			}).bind(this);
-			this.sldShw.stopAnimation();
-		}
-		
 	}
 	render(){
 		let installationInfo = <p>
@@ -162,26 +136,13 @@ class SlideShow extends Component{
 							<br/><br/>
 							Of course, this code is free of any license. You are free to modify this code and use it in your projects/homepages!
 					  	</p>;
-
+					  	
 		return (
 			<div id="SlideShow">
 				<div className="Heading">
 					SlideShow
 				</div>
 				
-					<div className="AnimationKeyHeading">
-						Select an animation style:
-						<div className="AnimationKeyButtons">
-							{this.animationIDs.sort().map(animID=>{
-								let clsNme = "AnimKeyBtn" + (animID === this.state.selctdAnimID ? " AnimKeyBtnSelected" : "");
-								return <div className={clsNme}
-												key={animID}
-												onClick={()=>{this.setAnimationID(animID);}}>
-											{animID}
-										 </div>
-							})}
-						</div>
-					</div>
 				
 				<div id="canvasDiv">
 					<div id="loadingDiv" ref={this.loadingDiv}>
@@ -189,7 +150,16 @@ class SlideShow extends Component{
 							{this.loadingMsg}
 						</div>
 					</div>
-					<canvas id="slideShowCanvas"/>
+					<canvas id="slideShowCanvas0"/>
+				</div>
+				
+				<div id="canvasDiv">
+					<div id="loadingDiv" ref={this.loadingDiv}>
+						<div id="loadingDivMsg">
+							{this.loadingMsg}
+						</div>
+					</div>
+					<canvas id="slideShowCanvas1"/>
 				</div>
 				
 				<div id="CredentialsDiv">
@@ -248,6 +218,49 @@ class SlideShow extends Component{
 				<div className="invisibleVertSep"/>
 			</div>
 		);
+	}
+}
+
+class CanvasDiv extends Component{
+	constructor(args){
+		super(args);
+		
+		
+	}
+	startAnim(){
+		let imgPaths = this.imgPaths;
+		let animationDuration = 3*1000;
+		let delayDuration = 2000;
+		let slMeta = {
+			// mandatory:
+			imgPaths: imgPaths,
+			// optional:
+			animationDuration: animationDuration,
+			delayDuration: delayDuration,
+			backgroundColor: [0,0,0, 0.0],
+			animationType: 'Gravity'
+		};
+		let startedSuccessfully = this.sldShw.startAnimation(slMeta);
+		if( !startedSuccessfully ){
+			this.onErrorOccured();
+		}
+	}
+	stopAnim(){
+		this.sldShw.stopAnimation();
+	}
+	
+	onErrorOccured(){
+		const warningNode = document.querySelectorAll('#loadingDivMsg')[0];
+		warningNode.innerHTML = 'Sorry, your browser <br/> doesn't seem to like <br/> WebGL 2.0...';
+	}
+	onWebGL_InitError(){
+		const warningNode = document.querySelectorAll('#loadingDivMsg')[0];
+		warningNode.innerHTML = 'Sorry, your browser <br/> doesn't support <br/> WebGL 2.0!';
+	}
+	onImagesLoaded(){
+		const loadingDiv = this.loadingDiv.current;
+		loadingDiv.style.display = 'none';
+		loadingDiv.style.animationPlayState = 'paused';
 	}
 }
 

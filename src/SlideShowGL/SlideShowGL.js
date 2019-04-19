@@ -24,14 +24,14 @@ import TriangleSplitter from './TriangleSplitter.js';
 
 var ANIMATIONS = new Map();
 function _fillAnims(){
-	ANIMATIONS['Wave'] 	 = WaveAnimation;
-	ANIMATIONS['Flip'] 	 = FlipAnimation;
-	ANIMATIONS['Shift'] 	 = ShiftAnimation;
-	ANIMATIONS['Scale'] 	 = ScaleAnimation;
-	ANIMATIONS['Freak'] 	 = FreakAnimation;
-	ANIMATIONS['Cyclone'] = CycloneAnimation;
-	ANIMATIONS['Random']  = RandomAnimation;
-	ANIMATIONS['Gravity'] = GravityAnimation;
+	ANIMATIONS.set('Wave',  WaveAnimation);
+	ANIMATIONS.set('Flip',  FlipAnimation);
+//	ANIMATIONS.set('Shift',  ShiftAnimation);
+	ANIMATIONS.set('Scale',  ScaleAnimation);
+	ANIMATIONS.set('Wave2',  FreakAnimation);
+	ANIMATIONS.set('Cyclone',  CycloneAnimation);
+//	ANIMATIONS.set('Random',  RandomAnimation);
+	ANIMATIONS.set('Gravity',  GravityAnimation);
 }
 _fillAnims();
 
@@ -182,39 +182,27 @@ var fragmentShaderSource = `#version 300 es
 
 class SlideShowGL{
 
-	constructor(canvasID, splitDepth=15){
-		let interpolF = v =>{
-			return [(v[0] + 1.0) * 0.5, 1.0 -(v[1] + 1.0) * 0.5];
-		};
-		
-		let vertices2D = TriangleSplitter.splitRect([-1,-1], [1,1], splitDepth);
-
-		console.log('vertices: ', vertices2D.length);
-		
-		let verticesVec3 = vertices2D.map(v => [[...v[0], 0], [...v[1], 0], [...v[2], 0]]);
-		let vertices = verticesVec3.flat().flat();
-		let textureCoords = [];
-		for(let v of verticesVec3.flat()){
-			textureCoords.push( ...interpolF(v) );
-		}
-		let normals = vertices.map((v,i) => ((i-2) % 3) === 0 ? -1 : 0);
-		
+	constructor(canvasID, splitDepth=15){		
 		this.pictureData = {
 			progress: 0.0,
-			vertices:      vertices,//planeOBJ.vertices,
-			normals:       normals,//planeOBJ.normals,
-			textureCoords: textureCoords,//planeOBJ.textureCoords,
+			vertices:      [],//planeOBJ.vertices,
+			normals:       [],//planeOBJ.normals,
+			textureCoords: [],//planeOBJ.textureCoords,
+			splitDepth: splitDepth,
 			imgPaths: [],
 			curImgID0: 0,
 			curImgID1: 0,
 			images: new Map(),
 			imgsLoading: 0
 		};
+		this.splitImageIntoPolygons();
+		
 		this.animationMeta = {
 			animationDuration: 4000,
 			delayDuration:     2000,
 			inAnimationDelay:  false,
-			stopAnimation: false
+			stopAnimation: false,
+			animationIsRunning: false
 		};
 		this.glMeta = {
 			backgroundColor: [1.0,1.0,1.0, 1.0],
@@ -241,6 +229,33 @@ class SlideShowGL{
 		this.glFunctions = new GlFunctionsInstantiator(this.gl);
 	}
 	
+	splitImageIntoPolygons(){
+		let interpolF = v =>{
+			return [(v[0] + 1.0) * 0.5, 1.0 -(v[1] + 1.0) * 0.5];
+		};
+		
+		let vertices2D = TriangleSplitter.splitRect([-1,-1], [1,1], this.pictureData.splitDepth);
+
+		console.log('vertices: ', vertices2D.length);
+		
+		let verticesVec3 = vertices2D.map(v => [[...v[0], 0], [...v[1], 0], [...v[2], 0]]);
+		let vertices = verticesVec3.flat().flat();
+		let textureCoords = [];
+		for(let v of verticesVec3.flat()){
+			textureCoords.push( ...interpolF(v) );
+		}
+		let normals = vertices.map((v,i) => ((i-2) % 3) === 0 ? -1 : 0);
+		
+		this.pictureData.vertices      = vertices;
+		this.pictureData.normals       = normals;
+		this.pictureData.textureCoords = textureCoords;
+	}
+	
+	static getAnimationIdentifiers(){
+		console.log('ANIMATIONS: ', ANIMATIONS.keys());
+		return Array.from(ANIMATIONS.keys());
+	}
+	
 	supportsWebGL2(){
 		return !!this.gl;
 	}
@@ -248,7 +263,7 @@ class SlideShowGL{
 	//-----------------------------------------------------------------
 	
 	createPane(){	
-//		this.glFunctions.useProgram('picture');
+		this.glFunctions.useProgram('picture');
 		
 		this.glFunctions.createVAO('picture');
 		
@@ -299,7 +314,7 @@ class SlideShowGL{
 		this.glFunctions.genAndBindVectorVBO(polygonAverages, 3, 'polygonXYZAverage');
 		this.glFunctions.genAndBindVectorVBO(randoms, 3, 'randoms');
 		
-//		this.glFunctions.useProgram('picture');
+		this.glFunctions.useProgram('picture');
 		
 		this.glFunctions.setUniform1f('progress', this.pictureData.progress);
 		this.glFunctions.setUniformVector2fv('imgRatio', this.glMeta.imgRatio);
@@ -407,12 +422,12 @@ class SlideShowGL{
 	}
 	
 	setAnimationType(animTypeStr){
-		let AnimConstr = ANIMATIONS[animTypeStr];
+		let AnimConstr = ANIMATIONS.get(animTypeStr);
 		if(!AnimConstr){
 			console.log(`animation ${animTypeStr} unknown!!! you can choose between the following animations:`);
-			for(let anim of ANIMATIONS){
-				console.log(anim);
-			}
+			ANIMATIONS.forEach((anim, animID)=>{
+				console.log(animID);
+			});
 			return false;
 		}
 		this.animationType = new AnimConstr(this.glFunctions);
@@ -458,6 +473,11 @@ class SlideShowGL{
 		}
 		if(!!animMeta.delayDuration){
 			this.animationMeta.delayDuration = animMeta.delayDuration;
+		}
+		
+		if(animMeta.splitDepth && animMeta.splitDepth != this.pictureData.splitDepth){
+			this.pictureData.splitDepth = animMeta.splitDepth;
+			this.splitImageIntoPolygons();
 		}
 		
 		this.setImagePaths(animMeta.imgPaths);
@@ -514,7 +534,13 @@ class SlideShowGL{
 	}
 	
 	stopAnimation(){
-		this.animationMeta.stopAnimation = true;
+		if(this.animationMeta.animationIsRunning){
+			this.animationMeta.stopAnimation = true;
+		}else{
+			if(this.onStoppingAnimation){
+				this.onStoppingAnimation();
+			}
+		}
 	}
 	
 	//-----------------------------------------------------------------
@@ -553,12 +579,17 @@ class SlideShowGL{
 		let duration = this.animationMeta.animationDuration;
 		let lastTime = null;
 		this.animationMeta.stopAnimation = false;
+		this.animationMeta.animationIsRunning = true;
 		
 		let cntr = 0; // used to calc fps
 		
 		let innerGameLoop = (curTime)=>{
 			if(this.animationMeta.stopAnimation){
 				this.animationMeta.stopAnimation = false;
+				this.animationMeta.animationIsRunning = false;
+				if(this.onStoppingAnimation){
+					this.onStoppingAnimation();
+				}
 				return;
 			}
 			
@@ -575,6 +606,8 @@ class SlideShowGL{
 				window.requestAnimationFrame( innerGameLoop );
 			}else{
 				console.log('fps: ', cntr / (duration/1000));
+				
+				this.animationMeta.animationIsRunning = false;
 				
 				this.animationMeta.inAnimationDelay = true;
 				

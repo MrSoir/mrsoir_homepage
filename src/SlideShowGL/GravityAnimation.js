@@ -15,6 +15,7 @@ function replaceString(s, args){
 
 var vertexShaderSource = `		
 	const float EXP_SCL_FCTR = 6.0;
+	const float LOGR_SCL_FCTR = 3.0;
 	
 	uniform vec3 gravityCenters[$!{0}!$];
 	uniform int gravityCenterCount;
@@ -52,6 +53,14 @@ var vertexShaderSource = `
 		return translMat * vec4(startPos, 1.0);
 	}
 	
+	float getExponentilaProgress(float prgrs){
+		return exp(prgrs * EXP_SCL_FCTR) / exp(EXP_SCL_FCTR);
+	}
+	float getLogarithmicProgress(float prgrs){
+		float logMin = 0.1; // log(0) == - infinity!
+		return (log(prgrs * LOGR_SCL_FCTR  + logMin) + abs(log(logMin))) / (log(LOGR_SCL_FCTR + logMin) + abs(log(logMin)));
+	}
+	
 	vec4 genGravityTransform(int gravID){
 		
 		float minOrbitPerc = 0.2;
@@ -72,6 +81,7 @@ var vertexShaderSource = `
 		
 		if(progress <= nonOrbitPerc){
 			float relProg = progress / nonOrbitPerc;
+			relProg = getExponentilaProgress(relProg);
 			vec3 orbitStart = gravCent + orbitRandomStart;
 			vec3 travelDist = orbitStart - polygonXYZAverage;
 			return translateFromTo(pos, orbitStart + polyOffs, relProg);
@@ -87,7 +97,7 @@ var vertexShaderSource = `
 			}
 			vec3 orthoVecUni = orthoVec / length(orthoVec);
 			
-			float rotations = 0.1 + randoms.z * 0.5;
+			float rotations = 0.1 + randoms.z * 2.5;
 			float relProg = (progress - nonOrbitPerc) / orbitPerc;
 			float rad = min(relProg, 1.0) * rotations * PI * 2.0;
 			
@@ -98,6 +108,7 @@ var vertexShaderSource = `
 			
 			if(progress >= 1.0 - nonOrbitPerc){
 				float relProg = (progress - (orbitPerc + nonOrbitPerc)) / nonOrbitPerc;
+				relProg = getLogarithmicProgress(relProg);
 				vec3 orbitEndPosVec3 = vec3(orbitEndPos);
 				return translateFromTo(orbitEndPosVec3 + polyOffs, pos, relProg);
 			}else{
@@ -115,11 +126,11 @@ var vertexShaderSource = `
 		vec2 scaleRatio = imgRatio * sclFctr;
 		mat4 scaleImage = scaleMat4(vec3(scaleRatio.x, scaleRatio.y, sclFctr));
 		
-		float maxYRotCirclFrct = 0.2;
+		float maxYRotCirclFrct = 0.1;
 		float rotYprog = progress;//sin(progress * TAU) * maxYRotCirclFrct;
 		mat4 modlViewRotY = rotateY(rotYprog * PI * 2.0);
 		
-		float maxXRotCirclFrct = 0.07;
+		float maxXRotCirclFrct = 0.12;
 		float rotXprog = sin(progress * PI) * maxXRotCirclFrct;
 		mat4 modlViewRotX = rotateX(rotXprog * PI * 2.0);
 		

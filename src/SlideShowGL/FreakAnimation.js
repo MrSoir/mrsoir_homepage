@@ -120,7 +120,7 @@ var vertexShaderSource = `
 		
 		float xScaleFctr = 0.3;
 		float yScaleFctr = 0.3;
-		float zScaleFctr = 0.0;
+		float zScaleFctr = 0.5;
 		
 		float trnslX = xScaleFctr * sin(trnsfrmPrgrs * PI) * yOffs * rndx;// * (1.0 + xScaleFctr * sin(progress * PI));
 		float trnslY = yScaleFctr * sin(trnsfrmPrgrs * PI) * yOffs * rndy;// yScaleFctr * sin(trnsfrmPrgrs * PI);// * (1.0 + yScaleFctr * sin(progress * PI));

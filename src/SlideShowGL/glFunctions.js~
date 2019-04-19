@@ -24,7 +24,7 @@ class GlFunctionsInstantiator{
 		//		3. the vboName: the name of the buffer/attribute-variable used in the vertex-shader
 		// 	4. stride
 		//		5. offset
-		this.vboMeta = {};
+		this.vboMeta = new Map();
 		// layoutLocations: all layoutLocations of the VBOs/Attributes in the vertex-shader mapped against ther vboNames
 		this.layoutLocations = new Map();
 		this.VAOs = new Map();
@@ -61,11 +61,11 @@ class GlFunctionsInstantiator{
 		if (success) {
 			this.gl.useProgram(program);
 			
-			this.programs[name] = {
+			this.programs.set(name, {
 				program: program, 
 				vertexShader: vertexShader,
 				fragmentShader: fragmentShader
-			};
+			});
 			return program;
 		}
 	
@@ -75,7 +75,7 @@ class GlFunctionsInstantiator{
 	}
 	
 	useProgram(name){
-		let program = this.programs[name];
+		let program = this.programs.get(name);
 		if(program){
 			this.gl.useProgram(program.program);
 			this.shaderMeta.curShaderProgram = program;
@@ -97,18 +97,18 @@ class GlFunctionsInstantiator{
 	evalUniformLayoutLocation(name, data){
 		let shaderLoc = this.gl.getUniformLocation(this.shaderMeta.curShaderProgram.program, name);
 		
-		if(!data && this.uniforms[name]){
-			this.uniforms[name].shaderLoc = shaderLoc;
+		if(!data && this.uniforms.get(name)){
+			this.uniforms.get(name).shaderLoc = shaderLoc;
 		}else{
-			this.uniforms[name] = {shaderLoc: shaderLoc, data: data};
+			this.uniforms.set(name, {shaderLoc: shaderLoc, data: data});
 		}
-		return this.uniforms[name];
+		return this.uniforms.get(name);
 	}
 	
 	//---------------
 	
 	_setUniform(name, data, glFunc){
-		let uniform = this.uniforms[name];
+		let uniform = this.uniforms.get(name);
 		
 		if(!uniform){
 			uniform = this.evalUniformLayoutLocation(name, data);
@@ -148,7 +148,7 @@ class GlFunctionsInstantiator{
 		this._setUniform(name, data, (args)=>{this.gl.uniform1f(...args)});
 	}
 	setUniform1fv(name, data){
-		this._setUniform(name, data, (args)=>{this.gl.uniform1f(...args)});
+		this._setUniform(name, data, (args)=>{this.gl.uniform1fv(...args)});
 	}
 	setUniformVector2fv(name, data){
 		this._setUniform(name, data, (args)=>{this.gl.uniform2fv(...args)});
@@ -196,7 +196,7 @@ class GlFunctionsInstantiator{
 		return projectionMatrix;
 	}
 	setPerspective(){
-		if (!this.uniforms['perspective']){
+		if (!this.uniforms.get('perspective')){
 			let perspMatrix = this.genPerspective();
 			this.evalUniformLayoutLocation('perspective', perspMatrix);
 		}else{
@@ -220,7 +220,7 @@ class GlFunctionsInstantiator{
 		return modelViewMatrix;
 	}
 	setModelView(){
-		if (!this.uniforms['modelView']){
+		if (!this.uniforms.get('modelView')){
 			let modelViewMatrix = this.genModelView();
 			this.evalUniformLayoutLocation('modelView', modelViewMatrix);
 		}else{
@@ -244,7 +244,7 @@ class GlFunctionsInstantiator{
 		let vbo = this.createVBO(data);
 		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, vbo); // wird bereits in createVBO beim erzeugen gebunden
 		
-		let layoutLoc = this.layoutLocations[vboName];
+		let layoutLoc = this.layoutLocations.get(vboName);
 		if(layoutLoc < 0){
 			console.log(`\nlayoutLoc < 0!!! -> layoutLoc: ${layoutLoc}!!! - getAttribLocation did not find vboName: ${vboName}`);
 		}
@@ -261,7 +261,7 @@ class GlFunctionsInstantiator{
 		   stride: stride,
 		   offset: offset
 		};
-		this.vboMeta[vboName] = shaderData;
+		this.vboMeta.set(vboName, shaderData);
 		return shaderData;
 	}
 	genAndBindMatrixVBO(data, size, vboName){
@@ -285,7 +285,7 @@ class GlFunctionsInstantiator{
 		
 		let offset = 0;
 		
-		let layoutLoc = this.layoutLocations[vboName];
+		let layoutLoc = this.layoutLocations.get(vboName);
 		if(layoutLoc < 0){
 			console.log(`\nlayoutLoc < 0!!! -> layoutLoc: ${layoutLoc}!!! - getAttribLocation did not find vboName: ${vboName}`);
 		}
@@ -306,7 +306,7 @@ class GlFunctionsInstantiator{
 		   dataSizes: dataSizes,
 		   stride: stride
 		};
-		this.vboMeta[vboName] = shaderData;
+		this.vboMeta.set(vboName, shaderData);
 		return shaderData;
 	}
 	
@@ -314,7 +314,7 @@ class GlFunctionsInstantiator{
 		let shaderProgram = this.shaderMeta.curShaderProgram.program;
 		
 		for(let vboName of vboNames){
-			this.layoutLocations[vboName] = this.gl.getAttribLocation(shaderProgram, vboName);
+			this.layoutLocations.set(vboName, this.gl.getAttribLocation(shaderProgram, vboName));
 		}
 	}
 	
@@ -335,11 +335,11 @@ class GlFunctionsInstantiator{
 		let textLoc = this.gl.getUniformLocation(shaderProgram, glslName);
 		this.gl.uniform1i(textLoc, textureID);
 		
-		this.textures[name] = {
+		this.textures.set(name, {
 			texture,
 			imgFilePath,
 			textLoc
-		};
+		});
 		 
 		// Asynchronously load an image
 		var image = new Image();
@@ -380,10 +380,10 @@ class GlFunctionsInstantiator{
 	  	var texture = this.gl.createTexture();
 	  	this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
 	  	
-	  	this.textures[name] = {
+	  	this.textures.set(name, {
 			texture,
 			textLoc
-		};
+		});
 	  	
 	  	// Set the parameters so we can render any size image.
 		this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.CLAMP_TO_EDGE);
@@ -398,10 +398,10 @@ class GlFunctionsInstantiator{
 	createVAO(name){
 		let vao = this.gl.createVertexArray();
 		this.gl.bindVertexArray(vao);
-		this.VAOs['name'] = vao;
+		this.VAOs.set('name', vao);
 	}
 	bindVAO(name){
-		let vao = this.VAOs['name'];
+		let vao = this.VAOs.get('name');
 		if(!vao){
 			console.log(`VAO ${name} does not exist - creating it!`);
 			this.createVAO(name); // at creation, it will also bind the VAO

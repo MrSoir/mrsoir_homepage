@@ -28,7 +28,7 @@ var vertexShaderSource = `
 	}
 	
 	mat4 genScaleMat(){		
-		float sclFctr =  1.0 - sin(progress * PI) * 0.8;
+		float sclFctr =  1.0 - sin(progress * PI) * 0.5;
 
 		mat4 sclM = scaleMat4( vec3(sclFctr, sclFctr, 1.0) );
 		return sclM;

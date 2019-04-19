@@ -17,6 +17,7 @@ class SlideShow extends Component{
 		
 		this.startAnim = this.startAnim.bind(this);
 		this.stopAnim = this.stopAnim.bind(this);
+		this.setAnimationID = this.setAnimationID.bind(this);
 		
 		this.onImagesLoaded = this.onImagesLoaded.bind(this);
 		this.onErrorOccured = this.onErrorOccured.bind(this);
@@ -28,8 +29,14 @@ class SlideShow extends Component{
 
 		this.loadingDiv = React.createRef();
 		this.loadingMsg = 'loading...';
+		
+		this.state = {
+			selctdAnimID: 'Flip'//'Gravity'
+		};
 	}
-	componentWillMount(){		
+	componentWillMount(){
+		this.animationIDs = SlideShowGL.getAnimationIdentifiers();
+   		
 		let txt = readTextFile(meta_info);
 		
 		let info_lines = txt.split('\n').filter((tn)=>!!tn);
@@ -64,9 +71,12 @@ class SlideShow extends Component{
 		window.open('https://github.com/MrSoir/SlideShowGL/archive/master.zip', '_blank');
 	}
 	startAnim(){
+		let fastAnimation = this.state.selctdAnimID === 'Scale' || 
+								  this.state.selctdAnimID === 'Cyclone' ||
+								  this.state.selctdAnimID === 'Flip';
 		let imgPaths = this.imgPaths;
-		let animationDuration = 10*1000;
-		let delayDuration = 2000;
+		let animationDuration = 1000 * (fastAnimation ? 3 : 10);
+		let delayDuration = 5000;
 		let slMeta = {
 			// mandatory:
 			imgPaths: imgPaths,
@@ -74,7 +84,8 @@ class SlideShow extends Component{
 			animationDuration: animationDuration,
 			delayDuration: delayDuration,
 			backgroundColor: [0,0,0, 0.0],
-			animationType: 'Gravity'
+			animationType: this.state.selctdAnimID,
+			splitDepth: this.state.selctdAnimID === 'Scale' ? 9 : 15
 		};
 		let startedSuccessfully = this.sldShw.startAnimation(slMeta);
 		if( !startedSuccessfully ){
@@ -101,6 +112,19 @@ class SlideShow extends Component{
 		const loadingDiv = this.loadingDiv.current;
 		loadingDiv.style.display = 'none';
 		loadingDiv.style.animationPlayState = 'paused';
+	}
+	setAnimationID(animID){
+		let state = this.state;
+		if(state.selctdAnimID != animID){
+			state.selctdAnimID = animID;
+			this.setState(state);
+			this.sldShw.onStoppingAnimation = (()=>{
+				this.sldShw.onStoppingAnimation = undefined;
+				this.startAnim();
+			}).bind(this);
+			this.sldShw.stopAnimation();
+		}
+		
 	}
 	render(){
 		let installationInfo = <p>
@@ -138,13 +162,26 @@ class SlideShow extends Component{
 							<br/><br/>
 							Of course, this code is free of any license. You are free to modify this code and use it in your projects/homepages!
 					  	</p>;
-					  	
+
 		return (
 			<div id="SlideShow">
 				<div className="Heading">
 					SlideShow
 				</div>
 				
+					<div className="AnimationKeyHeading">
+						Select an animation style:
+						<div className="AnimationKeyButtons">
+							{this.animationIDs.sort().map(animID=>{
+								let clsNme = "AnimKeyBtn" + (animID === this.state.selctdAnimID ? " AnimKeyBtnSelected" : "");
+								return <div className={clsNme}
+												key={animID}
+												onClick={()=>{this.setAnimationID(animID);}}>
+											{animID}
+										 </div>
+							})}
+						</div>
+					</div>
 				
 				<div id="canvasDiv">
 					<div id="loadingDiv" ref={this.loadingDiv}>

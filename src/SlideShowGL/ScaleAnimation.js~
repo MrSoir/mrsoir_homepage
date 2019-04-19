@@ -42,7 +42,7 @@ var vertexShaderSource = `
 		
 		vec4 cntrdPos = vec4(pos - polygonXYZAverage, 1.0);
 		vec4 cntrdPosScld = scaleMat * cntrdPos;
-//		vec4 cntrdPosScld = rotZ * cntrdPosScld;
+		cntrdPosScld = rotZ * cntrdPosScld;
 		vec4 posScld = vec4(cntrdPosScld.xyz + polygonXYZAverage, 1.0);
 		
 		vec4 pos4 = posScld;
