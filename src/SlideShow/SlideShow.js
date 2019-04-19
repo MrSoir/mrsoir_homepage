@@ -65,7 +65,7 @@ class SlideShow extends Component{
 	}
 	startAnim(){
 		let imgPaths = this.imgPaths;
-		let animationDuration = 3000;
+		let animationDuration = 3*1000;
 		let delayDuration = 2000;
 		let slMeta = {
 			// mandatory:
@@ -74,7 +74,7 @@ class SlideShow extends Component{
 			animationDuration: animationDuration,
 			delayDuration: delayDuration,
 			backgroundColor: [0,0,0, 0.0],
-			animationType: 'Gravity',
+			animationType: 'Gravity'
 		};
 		let startedSuccessfully = this.sldShw.startAnimation(slMeta);
 		if( !startedSuccessfully ){

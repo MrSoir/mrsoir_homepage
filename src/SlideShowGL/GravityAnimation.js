@@ -18,6 +18,8 @@ var vertexShaderSource = `
 	
 	uniform vec3 gravityCenters[$!{0}!$];
 	uniform int gravityCenterCount;
+	uniform mat4 rotMatHippo;
+	uniform vec3 ax;
 	
 	int getClosestGravityCenterID(){
 		vec3 gv = gravityCenters[0] - polygonXYZAverage;
@@ -34,70 +36,94 @@ var vertexShaderSource = `
 		return id;
 	}
 	
-	mat4 genGravityTranslation(int gravID){
-		float progOffs = 0.01;
-		if(progress < progOffs || 1.0 - progress < progOffs){
-			return mat4(1.0);
+	mat4 genFake(){
+		float rad = progress * PI * 2.0 * 20.0;
+		mat4 rotM = rotationAroundAxis(ax/length(ax), rad);
+		
+		return rotM;
+	}
+	
+	// translate from startPos to endPos in respect to prgrs in perctage (0 -> 1)
+	vec4 translateFromTo(vec3 startPos, 
+								vec3 endPos,
+								float prgrs){
+		vec3 travelDist = endPos - startPos;
+		mat4 translMat = translateMat4(travelDist * prgrs);
+		return translMat * vec4(startPos, 1.0);
+	}
+	
+	vec4 genGravityTransform(int gravID){
+		
+		float minOrbitPerc = 0.2;
+		float maxOrbitPerc = 0.6;
+		float orbitPerc = minOrbitPerc + randoms.z * (maxOrbitPerc - minOrbitPerc);
+		float nonOrbitPerc = (1.0 - orbitPerc) * 0.5;
+		
+		vec3 gravCent = gravityCenters[gravID];
+		float gravityRad = (0.7 + randoms.y * 0.4) / (float(gravityCenterCount));
+		
+		vec3 polyOffs = pos - polygonXYZAverage;
+		
+		vec3 rndmOrbitVec0 = randoms * 2.0 - 1.0;
+		vec3 rndmOrbitVecUni0 = rndmOrbitVec0 / length(rndmOrbitVec0);
+		
+		vec3 orbitRandomStart = rndmOrbitVecUni0 * gravityRad;
+		vec3 orbitRandomStartUni = orbitRandomStart / length(orbitRandomStart);
+		
+		if(progress <= nonOrbitPerc){
+			float relProg = progress / nonOrbitPerc;
+			vec3 orbitStart = gravCent + orbitRandomStart;
+			vec3 travelDist = orbitStart - polygonXYZAverage;
+			return translateFromTo(pos, orbitStart + polyOffs, relProg);
+		}else{			
+			vec3 rndmOrbitVec1 = (vec3(randoms.z, randoms.x, randoms.y) * 2.0 - 1.0) * gravityRad;
+			vec3 rndmOrbitVecUni1 = rndmOrbitVec1 / length(rndmOrbitVec1);
+			
+			vec3 orthoVec;
+			if(polygonXYZAverage.x < 0.0){
+				orthoVec = cross(rndmOrbitVecUni0, rndmOrbitVecUni1);
+			}else{
+				orthoVec = cross(rndmOrbitVecUni1, rndmOrbitVecUni0);
+			}
+			vec3 orthoVecUni = orthoVec / length(orthoVec);
+			
+			float rotations = 0.1 + randoms.z * 0.5;
+			float relProg = (progress - nonOrbitPerc) / orbitPerc;
+			float rad = min(relProg, 1.0) * rotations * PI * 2.0;
+			
+			mat4 GRM = rotationAroundAxis(rndmOrbitVecUni1, rad);
+			
+			mat4 translToCenter = translateMat4(gravCent);
+			vec4 orbitEndPos = translToCenter * GRM * vec4(orbitRandomStart + polyOffs, 1.0);
+			
+			if(progress >= 1.0 - nonOrbitPerc){
+				float relProg = (progress - (orbitPerc + nonOrbitPerc)) / nonOrbitPerc;
+				vec3 orbitEndPosVec3 = vec3(orbitEndPos);
+				return translateFromTo(orbitEndPosVec3 + polyOffs, pos, relProg);
+			}else{
+				return orbitEndPos;
+			}
 		}
-		
-		vec3 gravCentr = gravityCenters[gravID];
-		
-		float ellipseProg = 1.0 - abs(progress * 2.0 - 1.0);
-		
-		// direct translation (to gravity center):
-		
-		float extOffs = 0.1;
-		vec3 DV = gravCentr - polygonXYZAverage;
-		vec3 DVunit = DV / length(DV);
-		vec3 DVext = DV + DVunit * extOffs;
-		float fctrToGravCenter = length(DV) / length(DVext);
-		
-		float accelFctr = 1.0 + randoms.x * EXP_SCL_FCTR; 
-		float prog = exp(ellipseProg * accelFctr) / exp(accelFctr);
-		
-		float vorz = progress >= 0.5 ? -1.0 : 1.0;
-		
-		mat4 DM = translateMat4(DVext * prog);
-		
-		
-		// offset translation:
-		
-		vec3 refVec = vec3(0.0, 0.0, 1.0);
-		vec3 orthoVec = cross(DV, refVec);
-		vec3 orthoVecUni = orthoVec / length(orthoVec);
-		vec3 orthoUniTarVec;
-		
-		float offsProgr = mod(progress * 2.0, 1.0);
-		
-		if(ellipseProg < fctrToGravCenter){
-			float relProgrs = ellipseProg / fctrToGravCenter;
-			orthoUniTarVec = orthoVecUni * relProgrs;
-		}else{
-			float relProgrs = (ellipseProg - fctrToGravCenter) / (1.0 - fctrToGravCenter);
-			orthoUniTarVec = orthoVecUni * (1.0 - relProgrs);
-		}
-		
-		float offsSclFctr = 0.5;
-		mat4 OM = translateMat4(orthoUniTarVec * offsSclFctr * vorz);
-		
-		return OM * DM;
 	}
 	
 	void main() {
 		int centID = getClosestGravityCenterID();
-		mat4 GM = genGravityTranslation(centID);
 		
-		vec4 pos4 = vec4(pos, 1.0);
+		vec4 pos4 = genGravityTransform(centID);
 		
 		float sclFctr = 10.0;
 		vec2 scaleRatio = imgRatio * sclFctr;
 		mat4 scaleImage = scaleMat4(vec3(scaleRatio.x, scaleRatio.y, sclFctr));
 		
-//		if(polygonXYZAverage.x > 0.95 && polygonXYZAverage.y > 0.95){
-			gl_Position = perspective * modelView * scaleImage * GM * pos4;
-/*		}else{
-			gl_Position = vec4(vec3(1000.0), 0.0);
-		}*/
+		float maxYRotCirclFrct = 0.2;
+		float rotYprog = progress;//sin(progress * TAU) * maxYRotCirclFrct;
+		mat4 modlViewRotY = rotateY(rotYprog * PI * 2.0);
+		
+		float maxXRotCirclFrct = 0.07;
+		float rotXprog = sin(progress * PI) * maxXRotCirclFrct;
+		mat4 modlViewRotX = rotateX(rotXprog * PI * 2.0);
+		
+		gl_Position = perspective * modelView * modlViewRotX * modlViewRotY * scaleImage * pos4;
 
 		f_texcoord = texcoord;
 		f_trnsfrmPrgrs = progress;
@@ -108,20 +134,43 @@ var vertexShaderSource = `
 
 var fragmentShaderSource = ``;
 
+function getQuaternion(ax, rad){
+	let radHalf = rad * 0.5;
+	let rhs = Math.sin(radHalf);
+	let rhc = Math.cos(radHalf);
+	let q = [rhc, ax[0] * rhs, ax[1] * rhs, ax[2] * rhs];
+	return q;
+}
+function rotationAroundAxis(ax, rad){
+	let q = getQuaternion(ax, rad);
+	let m = glMatrix.mat4.create();
+	let qw = q[0];
+	let qx = q[1];
+	let qy = q[2];
+	let qz = q[3];
+	let qxx = qx*qx;
+	let qyy = qy*qy;
+	let qzz = qz*qz;
+	m[0 * 4 + 0] = 1.0 - 2.0 * qyy - 2.0 * qzz;
+	m[1 * 4 + 0] = 2.0 * qx * qy - 2.0 * qz * qw;
+	m[2 * 4 + 0] = 2.0 * qx * qz + 2.0 * qy * qw;
+	m[0 * 4 + 1] = 2.0 * qx * qy + 2.0 * qz * qw;
+	m[1 * 4 + 1] = 1.0 - 2.0 * qxx - 2.0 * qzz;
+	m[2 * 4 + 1] = 2.0 * qy * qz - 2.0 * qx * qw;
+	m[0 * 4 + 2] = 2.0 * qx * qz - 2.0 * qy * qw;
+	m[1 * 4 + 2] = 2.0 * qy * qz + 2.0 * qx * qw;
+	m[2 * 4 + 2] = 1.0 - 2.0 * qxx - 2.0 * qyy;
+	return m;
+}
+
 class GravityAnimation{
 	constructor(glFunctions){		
 		this._waveMeta = {
-			gravityCentersCount: 20,
+			gravityCentersCount: 3,
 		};
-		
-		console.log('vertexShaderSource:');
-		console.log(vertexShaderSource);
 		
 		this.vertexShaderSource = replaceString(vertexShaderSource, [this._waveMeta.gravityCentersCount,]);
 		this.fragmentShaderSource = fragmentShaderSource;
-		
-		console.log('vertexShaderSource:');
-		console.log(this.vertexShaderSource);
 		
 		this.glFunctions = glFunctions;
 	}
@@ -148,8 +197,24 @@ class GravityAnimation{
 //		console.log('gravCenters: ', gravCenters);
 		this.glFunctions.setUniformVector3fv('gravityCenters', gravCenters);
 		this.glFunctions.setUniform1i('gravityCenterCount', this._waveMeta.gravityCentersCount);
+		
+		this.prog = 0;
+		
+		this.ax = [0,20,0];
+//		glMatrix.vec3.normalize(this.ax, this.ax);
+		console.log('ax: ', this.ax);
+		let rad = 0.0;
+		
+		let rotm0 = rotationAroundAxis(this.ax, rad);
+		this.glFunctions.setUniformMatrix4fv('rotMatHippo', rotm0);
+		this.glFunctions.setUniformVector3fv('ax', this.ax);
 	}
 	updateBufferData(){
+		let rad = this.prog;
+		this.prog += 0.05;
+		
+		let rotm0 = rotationAroundAxis(this.ax, rad);
+		this.glFunctions.setUniformMatrix4fv('rotMatHippo', rotm0);
 	}
 	
 	nextAnimation(){

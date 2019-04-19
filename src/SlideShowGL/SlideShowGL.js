@@ -69,6 +69,9 @@ var vertexShaderSource = `#version 300 es
 	
 	//-------some useful functions-------
 	
+	// rotateX, rotateY, rotateZ: OpenGL/WebGL uses columns-first vectors
+	// -> results in transposed matrices in contrast to the usual row-first notation:
+	
 	mat4 scaleMat4(vec3 scaleVec){
 		mat4 m = mat4(1.0);
 		m[0][0] = scaleVec.x;
@@ -89,18 +92,18 @@ var vertexShaderSource = `#version 300 es
 		float c = cos(rad);
 		float s = sin(rad);
 		m[1][1] =  c;
-		m[1][2] = -s;
-		m[2][1] =  s;
+		m[2][1] = -s;
+		m[1][2] =  s;
 		m[2][2] =  c;
 		return m;
 	}
 	mat4 rotateY(float rad){
 		mat4 m = mat4(1.0);
 		float c = cos(rad);
-		float s = sin(rad);
+		float s = sin(rad);		
 		m[0][0] =  c;
-		m[0][2] =  s;
-		m[2][0] = -s;
+		m[2][0] =  s;
+		m[0][2] = -s;
 		m[2][2] =  c;
 		return m;
 	}
@@ -109,9 +112,40 @@ var vertexShaderSource = `#version 300 es
 		float c = cos(rad);
 		float s = sin(rad);
 		m[0][0] =  c;
-		m[0][1] = -s;
-		m[1][0] =  s;
+		m[1][0] = -s;
+		m[0][1] =  s;
 		m[1][1] =  c;
+		return m;
+	}
+	
+	vec4 getQuaternion(vec3 ax, float rad){
+		float radHalf = rad * 0.5;
+		float rhs = sin(radHalf);
+		float rhc = cos(radHalf);
+		vec4 q = vec4(rhc, ax.x * rhs, ax.y * rhs, ax.z * rhs);
+		return q;
+	}
+	mat4 rotationAroundAxis(vec3 ax, float rad){
+		// rotationAroundAxis using qaternions: http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToMatrix/index.htm (great website!!!)
+		// m[i][j] is already transposed (OpenGL/WebGL: column-first notation!)
+		vec4 q = getQuaternion(ax, rad);
+		mat4 m = mat4(1.0);
+		float qw = q[0];
+		float qx = q[1];
+		float qy = q[2];
+		float qz = q[3];
+		float qxx = qx*qx;
+		float qyy = qy*qy;
+		float qzz = qz*qz;
+		m[0][0] = 1.0 - 2.0 * qyy - 2.0 * qzz;
+		m[1][0] = 2.0 * qx * qy - 2.0 * qz * qw;
+		m[2][0] = 2.0 * qx * qz + 2.0 * qy * qw;
+		m[0][1] = 2.0 * qx * qy + 2.0 * qz * qw;
+		m[1][1] = 1.0 - 2.0 * qxx - 2.0 * qzz;
+		m[2][1] = 2.0 * qy * qz - 2.0 * qx * qw;
+		m[0][2] = 2.0 * qx * qz - 2.0 * qy * qw;
+		m[1][2] = 2.0 * qy * qz + 2.0 * qx * qw;
+		m[2][2] = 1.0 - 2.0 * qxx - 2.0 * qyy;
 		return m;
 	}
 `;
@@ -239,9 +273,18 @@ class SlideShowGL{
 			polygonAverages.push( avgx, avgy, avgz );
 			polygonAverages.push( avgx, avgy, avgz );
 			
+			let genRandom = ()=>{
+				let rndms = 3;
+				let rs = 0;
+				for(let rc=0; rc < rndms; ++rc){
+					rs += Math.random();
+				}
+				return rs / rndms;
+			};
+			
 			// randoms:
 			let r0, r1, r2;
-			[r0, r1, r2] = [Math.random(), Math.random(), Math.random()];
+			[r0, r1, r2] = [genRandom(), genRandom(), genRandom()];
 			randoms.push( r0, r1, r2,
 							  r0, r1, r2,
 							  r0, r1, r2 );
