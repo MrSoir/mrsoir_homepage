@@ -14,10 +14,17 @@ class SlideShow extends Component{
 		super(args);
 					 		  
 		this.imgPaths = [];
+		this.images = [];
+		this.imgsLoading = 0;
 		
 		this.startAnim = this.startAnim.bind(this);
 		this.stopAnim = this.stopAnim.bind(this);
 		this.setAnimationID = this.setAnimationID.bind(this);
+		this.compDidMnt = false;
+		
+		this.loadImages = this.loadImages.bind(this);
+		this.loadImage = this.loadImage.bind(this);
+		this.imagesLoaded = this.imagesLoaded.bind(this);
 		
 		this.onImagesLoaded = this.onImagesLoaded.bind(this);
 		this.onErrorOccured = this.onErrorOccured.bind(this);
@@ -33,6 +40,35 @@ class SlideShow extends Component{
 		this.state = {
 			selctdAnimID: 'Gravity'
 		};
+	}
+	loadImages(){
+		this.imgsLoading = this.imgPaths.length;
+		console.log('loadImages -> imgsLoading: ', this.imgsLoading.length);
+		
+		this.imgPaths.map((pth, id)=>{
+			this.loadImage(id);
+		});
+	}
+	loadImage(id){
+		let image = new Image();
+		
+		let onImgLded = (evnt=>{
+			this.images[id] = image;
+			this.imgsLoading -= 1;
+			console.log('image loaded -> imgsLoading: ', this.imgsLoading);
+			if(this.imgsLoading === 0){
+				this.onImagesLoaded();
+				if(this.compDidMnt){
+					this.startAnim();
+				}
+			}
+		}).bind(this);
+		image.addEventListener('load', onImgLded);
+		
+		image.src = this.imgPaths[id];
+	}
+	imagesLoaded(){
+		return this.imgsLoading === 0;
 	}
 	componentWillMount(){
 		this.animationIDs = SlideShowGL.getAnimationIdentifiers();
@@ -51,15 +87,23 @@ class SlideShow extends Component{
    		f(i);
    	}
    	
+   	console.log('componentWillMount -> loading images...');
+   	this.loadImages();
+   	
 //   	window.addEventListener("resize", this.onCanvasResize);
    }
-   componentDidMount(){   	
+   componentDidMount(){ 
    	this.sldShw  = new SlideShowGL('slideShowCanvas');
-   	this.sldShw.onImagesLoaded = this.onImagesLoaded;
+//   	this.sldShw.onImagesLoaded = this.onImagesLoaded;
    	this.sldShw.onWebGL_InitError = this.onImagesLoaded;
+   	
+   	this.compDidMnt = true;
+   	console.log('component did mount');
 		
 		if(this.sldShw.supportsWebGL2()){
-	   	this.startAnim();
+			if(this.imagesLoaded()){
+				this.startAnim();
+			}
 	   }else{
 	   	this.onWebGL_InitError();
 	   }
@@ -75,11 +119,13 @@ class SlideShow extends Component{
 								  this.state.selctdAnimID === 'Cyclone' ||
 								  this.state.selctdAnimID === 'Flip';
 		let imgPaths = this.imgPaths;
+		let imgs = this.images;
 		let animationDuration = 1000 * (fastAnimation ? 3 : 10);
 		let delayDuration = 2000;
 		let slMeta = {
 			// mandatory:
-			imgPaths: imgPaths,
+//			imgPaths: imgPaths,
+			images: imgs,
 			// optional:
 			animationDuration: animationDuration,
 			delayDuration: delayDuration,

@@ -193,6 +193,7 @@ class SlideShowGL{
 			curImgID0: 0,
 			curImgID1: 0,
 			images: new Map(),
+			imgCount: 0,
 			imgsLoading: 0
 		};
 		this.splitImageIntoPolygons();
@@ -333,7 +334,7 @@ class SlideShowGL{
 		return this.pictureData.curImgID1;
 	}
 	incrementImageIDs(){
-		let incrmtId = (id) => (id + 1) % this.pictureData.imgPaths.length;
+		let incrmtId = (id) => (id + 1) % this.pictureData.imgCount;
 		this.pictureData.curImgID0 = this.pictureData.curImgID1;
 		this.pictureData.curImgID1 = incrmtId(this.pictureData.curImgID1);
 		
@@ -348,10 +349,10 @@ class SlideShowGL{
 		let scndID = this.getSecondImageID();
 		
 		let imgIDsToLoad = [];
-		if(!this.pictureData.images[frstID]){
+		if(!this.pictureData.images.get(frstID)){
 			imgIDsToLoad.push( frstID );
 		}
-		if(scndID != frstID && !this.pictureData.images[scndID]){
+		if(scndID != frstID && !this.pictureData.images.get(scndID)){
 			imgIDsToLoad.push( scndID );
 		}
 		
@@ -372,7 +373,7 @@ class SlideShowGL{
 		
 		image.addEventListener('load', evnt=>{
 	
-			this.pictureData.images[id] = image;
+			this.pictureData.images.set(id, image);
 			this.pictureData.imgsLoading -= 1;
 			if(this.pictureData.imgsLoading === 0){
 				this.setTextureImages();
@@ -386,13 +387,23 @@ class SlideShowGL{
 	setTextureImages(){
 		this.glFunctions.bindVAO('picture');
 	
-		let img0 = this.pictureData.images[this.getFirstImageID() ];
-		let img1 = this.pictureData.images[this.getSecondImageID()];
+		let img0 = this.pictureData.images.get( this.getFirstImageID() );
+		let img1 = this.pictureData.images.get( this.getSecondImageID() );
 	
 		this.glFunctions.setTextureImage('img0', img0, 'u_texture0', 0);
 		this.glFunctions.setTextureImage('img1', img1, 'u_texture1', 1);
 		
 		this.glFunctions.unbindVAO(null);
+	}
+	
+	setImages(imgs){
+		this.pictureData.images = imgs;
+		this.pictureData.imgCount = imgs.length;
+		
+		this.pictureData.curImgID0 = 0;
+		this.pictureData.curImgID1 = imgs.length > 1 ? 1 : 0;
+		
+		this.pictureData.imgsToLoad = 0;
 	}
 	
 	setImagePaths(imgPaths){
@@ -401,6 +412,7 @@ class SlideShowGL{
 		
 		this.pictureData.imgPaths = imgPaths;
 		this.pictureData.imgsToLoad = imgPaths.length;
+		this.pictureData.imgCount = imgPaths.length;
 		
 		this.loadAllImages( this.startAnimationLoop );
 		
@@ -461,7 +473,9 @@ class SlideShowGL{
 			return false;
 		}
 		
-		if(animMeta.imgPaths.length === 0){
+		console.log('animMeta.images: ', animMeta.images);
+		
+		if( !animMeta.images && animMeta.imgPaths.length === 0 ){
 			console.log('no image paths to load!!!');
 		}
 		
@@ -481,7 +495,11 @@ class SlideShowGL{
 			this.splitImageIntoPolygons();
 		}
 		
-		this.setImagePaths(animMeta.imgPaths);
+		if(animMeta.images){
+			this.setImages(animMeta.images);
+		}else if (animMeta.imgPaths){
+			this.setImagePaths(animMeta.imgPaths);
+		}
 	
 		this.resizeCanvasToDisplaySize();
 		
@@ -500,6 +518,10 @@ class SlideShowGL{
 		
 		this.createPane();
 		
+		if(animMeta.images){
+			this.startAnimationLoop();
+		}
+		
 		return true;
 	}
 	
@@ -514,9 +536,9 @@ class SlideShowGL{
 		let imgLoadingFinished = ()=>{
 			if(--mgsToLoad === 0){
 				for(let i=0; i < imgs.length; ++i){
-					this.pictureData.images[i] = imgs[i];
+					this.pictureData.images.set(i,  imgs[i]);
 				}
-				this.setTextureImages();
+//				this.setTextureImages();
 				
 				if(this.onImagesLoaded){
 					this.onImagesLoaded();
@@ -577,12 +599,16 @@ class SlideShowGL{
 	}
 	
 	startAnimationLoop(){
+		console.log('startAnimationLoop');
+		
 		this.pictureData.progress = 0.0;
 		let duration = this.animationMeta.animationDuration;
 		let lastTime = null;
 		this.animationMeta.stopAnimation = false;
 		this.animationMeta.animationIsRunning = true;
 		const curAnimID = this.animationMeta.animationID;
+		
+		this.setTextureImages();
 		
 		let cntr = 0; // used to calc fps
 		
@@ -604,6 +630,10 @@ class SlideShowGL{
 			++cntr;
 			
 			lastTime = curTime;
+			
+			if(curAnimID != this.animationMeta.animationID){
+				return;
+			}
 			
 			if(this.pictureData.progress < 1.0){
 				window.requestAnimationFrame( innerGameLoop );

@@ -192,7 +192,8 @@ class SlideShowGL{
 			imgPaths: [],
 			curImgID0: 0,
 			curImgID1: 0,
-			images: new Map(),
+			images: [],
+			imgCount: 0,
 			imgsLoading: 0
 		};
 		this.splitImageIntoPolygons();
@@ -333,7 +334,7 @@ class SlideShowGL{
 		return this.pictureData.curImgID1;
 	}
 	incrementImageIDs(){
-		let incrmtId = (id) => (id + 1) % this.pictureData.imgPaths.length;
+		let incrmtId = (id) => (id + 1) % this.pictureData.imgCount;
 		this.pictureData.curImgID0 = this.pictureData.curImgID1;
 		this.pictureData.curImgID1 = incrmtId(this.pictureData.curImgID1);
 		
@@ -395,12 +396,23 @@ class SlideShowGL{
 		this.glFunctions.unbindVAO(null);
 	}
 	
+	setImages(imgs){
+		this.pictureData.images = Array.from(imgs);
+		this.pictureData.imgCount = this.pictureData.images.length;
+		
+		this.pictureData.curImgID0 = 0;
+		this.pictureData.curImgID1 = this.pictureData.images.length > 1 ? 1 : 0;
+		
+		this.pictureData.imgsToLoad = 0;
+	}
+	
 	setImagePaths(imgPaths){
 		this.pictureData.curImgID0 = 0;
 		this.pictureData.curImgID1 = imgPaths.length > 1 ? 1 : 0;
 		
 		this.pictureData.imgPaths = imgPaths;
 		this.pictureData.imgsToLoad = imgPaths.length;
+		this.pictureData.imgCount = imgPaths.length;
 		
 		this.loadAllImages( this.startAnimationLoop );
 		
@@ -461,7 +473,9 @@ class SlideShowGL{
 			return false;
 		}
 		
-		if(animMeta.imgPaths.length === 0){
+		console.log('animMeta.images: ', animMeta.images);
+		
+		if( !animMeta.images && animMeta.imgPaths.length === 0 ){
 			console.log('no image paths to load!!!');
 		}
 		
@@ -481,7 +495,11 @@ class SlideShowGL{
 			this.splitImageIntoPolygons();
 		}
 		
-		this.setImagePaths(animMeta.imgPaths);
+		if(animMeta.images){
+			this.setImages(animMeta.images);
+		}else if (animMeta.imgPaths){
+			this.setImagePaths(animMeta.imgPaths);
+		}
 	
 		this.resizeCanvasToDisplaySize();
 		
@@ -500,6 +518,10 @@ class SlideShowGL{
 		
 		this.createPane();
 		
+		if(animMeta.images){
+			this.startAnimationLoop();
+		}
+		
 		return true;
 	}
 	
@@ -516,7 +538,7 @@ class SlideShowGL{
 				for(let i=0; i < imgs.length; ++i){
 					this.pictureData.images[i] = imgs[i];
 				}
-				this.setTextureImages();
+//				this.setTextureImages();
 				
 				if(this.onImagesLoaded){
 					this.onImagesLoaded();
@@ -577,12 +599,16 @@ class SlideShowGL{
 	}
 	
 	startAnimationLoop(){
+		console.log('startAnimationLoop');
+		
 		this.pictureData.progress = 0.0;
 		let duration = this.animationMeta.animationDuration;
 		let lastTime = null;
 		this.animationMeta.stopAnimation = false;
 		this.animationMeta.animationIsRunning = true;
 		const curAnimID = this.animationMeta.animationID;
+		
+		this.setTextureImages();
 		
 		let cntr = 0; // used to calc fps
 		
