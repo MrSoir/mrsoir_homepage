@@ -118,7 +118,7 @@ var vertexShaderSource = `
 		float rndy = randoms.y - 0.5;
 		float rndz = randoms.z - 0.5;
 		
-		float xScaleFctr = 0.8;
+		float xScaleFctr = 0.3;
 		float yScaleFctr = 0.3;
 		float zScaleFctr = 0.5;
 		

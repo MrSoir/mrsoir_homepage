@@ -36,8 +36,8 @@ function _fillAnims(){
 }
 _fillAnims();
 
-var FAKE_RANDOMS_CNT = 100;
-var VERTEX_COUNT_PER_AXIS = 1000;//223;
+var FAKE_RANDOMS_CNT = 20;
+var VERTEX_COUNT_PER_AXIS = 223;
 
 //-----------------------------------------------------------------
 
@@ -86,9 +86,34 @@ var vertexShaderSource = `#version 300 es
 	
 	//-------some useful functions-------
 	
+	float genRandom(vec2 co){
+	    return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+	}
+	
 	void genRandoms(){
-		int tarID = int(mod(float(gl_InstanceID), $!{FAKE_RANDOMS_CNT}!$.0 - 3.0));
-		randoms = vec3(fakeRandoms[0+tarID], fakeRandoms[1+tarID], fakeRandoms[2+tarID]);
+		float polyIDf = float(gl_InstanceID);
+		vec2 v0 = polygonXYZAverage.xy * polygonXYZAverage.zy;
+		vec2 v1 = polygonXYZAverage.xz * polygonXYZAverage.yz;
+		vec2 v2 = polygonXYZAverage.xx * polygonXYZAverage.zz;
+
+		float r0 = 0.2;//genRandom(polygonXYZAverage.xy / vec2(float(gl_InstanceID), vertexIDf));
+		float r1 = 0.5;//genRandom(polygonXYZAverage.xz / vec2(float(gl_InstanceID+1), vertexIDf+1.0));
+		float r2 = 0.8;//genRandom(polygonXYZAverage.yz / vec2(float(gl_InstanceID+2), vertexIDf+2.0));
+		r0 = genRandom(texcoord);
+		r1 = genRandom(texcoord+1.0);
+		r2 = genRandom(texcoord+2.0);
+		r0 = (polygonXYZAverage.xy / length(polygonXYZAverage.xy)).x;
+		r1 = (polygonXYZAverage.xy / length(polygonXYZAverage.xy)).y;
+		r2 = (texcoord.xy / length(texcoord.xy)).x;
+		randoms = vec3(r0, r1, r2);
+/*		float id0 = float(gl_InstanceID);
+		float id1 = float(gl_InstanceID) * 0.5;
+		float id2 = float(gl_InstanceID) * 0.3;
+		float idSum = id0 + id1 + id2;
+		
+		int tarID = int(mod(idSum, $!{FAKE_RANDOMS_CNT}!$.0 - 3.0));
+		
+		randoms = vec3(fakeRandoms[0+tarID], fakeRandoms[1+tarID], fakeRandoms[2+tarID]);*/
 	}
 	
 	// calcVertPos: 	splittet das bild (x: -1 -> 1 | y: -1 -> 1) in vertexCountPerAxis * vertexCountPerAxis rechtecke,
@@ -233,8 +258,8 @@ var vertexShaderSource = `#version 300 es
 	$!{derivedVertexCode}!$
 	
 	void main(){
-		genRandoms();
 		calcVertPos();
+		genRandoms();
 		
 		f_texcoord = texcoord;
 		f_trnsfrmPrgrs = progress;
@@ -300,7 +325,6 @@ class SlideShowGL{
 			images: new Map(),
 			imgsLoading: 0
 		};
-		this.splitImageIntoPolygons();
 		
 		this.animationMeta = {
 			animationDuration: 4000,
@@ -314,8 +338,11 @@ class SlideShowGL{
 			backgroundColor: [1.0,1.0,1.0, 1.0],
 			imgRatio: [1,1],
 			instancing: true,
-			instanceCount: VERTEX_COUNT_PER_AXIS*VERTEX_COUNT_PER_AXIS*2
+			instanceVertexCountPerAxis: 1, // will be set in setSplitDepth()
+			instanceCount: 1 //VERTEX_COUNT_PER_AXIS*VERTEX_COUNT_PER_AXIS*2
 		};
+		
+		this.setSplitDepth(splitDepth);
 		
 		if(!canvasID){
 			canvasID = 'canvas';
@@ -333,6 +360,30 @@ class SlideShowGL{
 		this.fragmentShaderSource = fragmentShaderSource;
 		
 		this.glFunctions = new GlFunctionsInstantiator(this.gl);
+	}
+	
+	setSplitDepth(splitDepth){
+		this.pictureData.splitDepth = splitDepth;
+		
+		// non-instancing:
+//		this.splitImageIntoPolygons();
+
+		// instancing:
+		this.setInstanceVertexCount();
+	}
+	setInstanceVertexCount(){
+		let splitDepth = this.pictureData.splitDepth;
+		
+		let polygons = (2 ** splitDepth) * 2;
+		let rectanglesPerAxis = Math.floor((polygons * 0.5) ** 0.5);
+		
+		this.glMeta.instancingRectanglesPerAxis = rectanglesPerAxis;
+		this.glMeta.instancingPolygonsPerInstance = rectanglesPerAxis * rectanglesPerAxis * 2;
+		
+		this.glMeta.instancingRectanglesPerAxis = 10;
+		this.glMeta.instancingPolygonsPerInstance = 10 * 10 * 2 -40; 
+		
+		console.log('instancingPolygonsPerInstance: ', this.glMeta.instancingPolygonsPerInstance);
 	}
 	
 	splitImageIntoPolygons(){
@@ -388,14 +439,14 @@ class SlideShowGL{
 			};
 			randoms.push(genRandom());
 		}
+		console.log('randoms: ', randoms);
 		
 		this.glFunctions.evalLayoutLocations( ['randoms'] );
 		console.log('layoutLocations: ', this.glFunctions.layoutLocations);
 		
 		this.glFunctions.genAndBindVectorVBO([0,1,2], 1, 'vertexIDf');
 		this.glFunctions.setUniform1fv('fakeRandoms', randoms.slice(0, 100));
-		console.log('VERTEX_COUNT_PER_AXIS: ', VERTEX_COUNT_PER_AXIS);
-		this.glFunctions.setUniform1i('vertexCountPerAxis', VERTEX_COUNT_PER_AXIS);
+		this.glFunctions.setUniform1i('vertexCountPerAxis', this.glMeta.instancingRectanglesPerAxis);
 		
 //		this.glFunctions.genAndBindVectorVBO(vertices,  3, 'pos');
 //		this.glFunctions.genAndBindVectorVBO(textureCoords, 2, 'texcoord');
@@ -504,7 +555,7 @@ class SlideShowGL{
 		let offset = 0;
 		let count = 3;//Math.floor(vertices.length / 3);
 		if(this.glMeta.instancing){
-			this.gl.drawArraysInstanced(primitiveType, offset, count, this.glMeta.instanceCount);
+			this.gl.drawArraysInstanced(primitiveType, offset, count, this.glMeta.instanceCount * this.glMeta.instancingPolygonsPerInstance);
 		}else{
 			this.gl.drawArrays(primitiveType, offset, count);
 		}
@@ -565,8 +616,7 @@ class SlideShowGL{
 		}
 		
 		if(animMeta.splitDepth && animMeta.splitDepth != this.pictureData.splitDepth){
-			this.pictureData.splitDepth = animMeta.splitDepth;
-			this.splitImageIntoPolygons();
+			this.setSplitDepth(animMeta.splitDepth);
 		}
 		
 		this.setImagePaths(animMeta.imgPaths);
@@ -575,8 +625,6 @@ class SlideShowGL{
 		
 		let vertxShdrSrc = StaticFunctions.replaceString(this.vertexShaderBaseSource, [FAKE_RANDOMS_CNT, this.animationType.vertexShaderSource], ['FAKE_RANDOMS_CNT', 'derivedVertexCode']);
 		let frgmntShrdSrc = !!this.animationType.fragmentShaderSource ? this.animationType.fragmentShaderSource : this.fragmentShaderSource;
-		
-		console.log(vertxShdrSrc);
 	
 		var vertexShader   = this.glFunctions.createShader(this.gl.VERTEX_SHADER, vertxShdrSrc);
 		var fragmentShader = this.glFunctions.createShader(this.gl.FRAGMENT_SHADER, frgmntShrdSrc);

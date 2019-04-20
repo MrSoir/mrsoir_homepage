@@ -51,7 +51,7 @@ var vertexShaderSource = `
 		return p;
 	}
 	
-	void main() {		
+	void main_derived() {		
 		vec3 cycloneCenter = vec3(0.0, 0.0, 0.0);
 		float cycloneRad = sqrt(2.0);
 		vec4 cyclPos = getCycRoration(cycloneCenter, cycloneRad);

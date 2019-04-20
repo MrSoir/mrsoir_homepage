@@ -27,12 +27,12 @@ var vertexShaderSource = `
 		float radAngle = progress * PI * 2.0 * cycles;
 		mat4 rotMat = rotateZ(radAngle);
 		
-		float sclFctr = 2.0;
+/*		float sclFctr = 2.0;
 		float sclVal = 1.0 + sinProg * sclFctr;
-		mat4 sclMat = scaleMat4( vec3(sclVal,sclVal,sclVal) );
+		mat4 sclMat = scaleMat4( vec3(sclVal,sclVal,sclVal) );*/
 		
 		vec4 p = vec4(ceneredPos, 1.0);
-		p = sclMat * p;
+//		p = sclMat * p;
 		p = rotMat * p;
 		
 		

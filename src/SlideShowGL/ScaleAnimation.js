@@ -34,7 +34,7 @@ var vertexShaderSource = `
 		return sclM;
 	}
 	
-	void main() {		
+	void main_derived() {		
 		mat4 scaleMat = genScaleMat();
 		mat4 rotZ = rotateZ( progress * PI * 2.0 );
 		

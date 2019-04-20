@@ -149,7 +149,7 @@ var vertexShaderSource = `
 		return scaleMat;
 	}
 	
-	void main_derived() {
+	void main() {
 		float trnsfrmPrgrs = evalTransformationProgress();
 		
 		mat4 pictureTransl = genPictureTranslate(trnsfrmPrgrs);

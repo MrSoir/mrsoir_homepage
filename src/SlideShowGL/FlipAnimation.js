@@ -40,7 +40,7 @@ var vertexShaderSource = `
 		}
 	}
 	
-	void main() {
+	void main_derived() {
 		int rotID = transformID;
 		
 		mat4 pictureRotation = genPictureRotate(rotID);

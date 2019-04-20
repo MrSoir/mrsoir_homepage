@@ -139,7 +139,7 @@ var vertexShaderSource = `
 		return scaleMat;
 	}
 	
-	void main() {
+	void main_derived() {
 		float trnsfrmPrgrs = evalTransformationProgress();
 		
 		vec4 pos4;

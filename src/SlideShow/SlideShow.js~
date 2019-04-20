@@ -31,7 +31,7 @@ class SlideShow extends Component{
 		this.loadingMsg = 'loading...';
 		
 		this.state = {
-			selctdAnimID: 'Flip'//'Gravity'
+			selctdAnimID: 'Gravity'
 		};
 	}
 	componentWillMount(){
@@ -85,7 +85,7 @@ class SlideShow extends Component{
 			delayDuration: delayDuration,
 			backgroundColor: [0,0,0, 0.0],
 			animationType: this.state.selctdAnimID,
-			splitDepth: this.state.selctdAnimID === 'Scale' ? 9 : 15
+			splitDepth: this.state.selctdAnimID === 'Scale' ? 9 : 19
 		};
 		let startedSuccessfully = this.sldShw.startAnimation(slMeta);
 		if( !startedSuccessfully ){

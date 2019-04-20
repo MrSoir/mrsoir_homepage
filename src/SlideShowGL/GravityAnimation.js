@@ -15,20 +15,6 @@ var vertexShaderSource = `
 	uniform mat4 rotMatHippo;
 	uniform vec3 ax;
 	
-	void main_derived() {		
-		gl_Position = vec4(pos, 1.0);
-	}
-`;
-
-/*var vertexShaderSource = `		
-	const float EXP_SCL_FCTR = 6.0;
-	const float LOGR_SCL_FCTR = 3.0;
-	
-	uniform vec3 gravityCenters[$!{0}!$];
-	uniform int gravityCenterCount;
-	uniform mat4 rotMatHippo;
-	uniform vec3 ax;
-	
 	int getClosestGravityCenterID(){
 		vec3 gv = gravityCenters[0] - polygonXYZAverage;
 		float gd = gv.x*gv.x + gv.y*gv.y + gv.z*gv.z;
@@ -124,9 +110,7 @@ var vertexShaderSource = `
 		}
 	}
 	
-	void main() {
-		calcVertPos();
-		
+	void main_derived() {		
 		int centID = getClosestGravityCenterID();
 		
 		vec4 pos4 = genGravityTransform(centID);
@@ -148,7 +132,7 @@ var vertexShaderSource = `
 		f_texcoord = texcoord;
 		f_trnsfrmPrgrs = progress;
 	}
-`;*/
+`;
 
 //-----------------------------------------------------------------
 
