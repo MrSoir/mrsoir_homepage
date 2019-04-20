@@ -5,6 +5,7 @@
 // react:
 import * as glMatrix from 'gl-matrix';
 import {GlFunctionsInstantiator} from './glFunctions.js';
+import StaticFunctions from './StaticFunctions.js';
 /*import {parseOBJ} 		from './obj_parser.js';
 import {planeOBJstr} 	from './meshes/plane.js';*/
 import WaveAnimation 	from './WaveAnimation.js';
@@ -35,6 +36,9 @@ function _fillAnims(){
 }
 _fillAnims();
 
+var FAKE_RANDOMS_CNT = 100;
+var VERTEX_COUNT_PER_AXIS = 1000;//223;
+
 //-----------------------------------------------------------------
 
 var vertexShaderSource = `#version 300 es
@@ -45,13 +49,22 @@ var vertexShaderSource = `#version 300 es
 	const float PI  = 3.1415926535897932384626433832795;
 	const float TAU = 6.2831853071795864769252867665590;
 	
+	//-------global variables-----------
+		// have to be calcluated dynamically in the vertex shader - instancing!!!
+		
+	vec3 pos;
+	vec2 texcoord;
+	vec3 polygonXYZAverage;
+	vec3 randoms;
+	
 	//-------attributes-----------
 	
-	layout (location = 0) in vec3 pos;
+	layout (location = 0) in float vertexIDf;
+/*	layout (location = 0) in vec3 pos;
 	layout (location = 1) in vec2 texcoord;
 	
-	layout (location = 5) in vec3 polygonXYZAverage;
-	layout (location = 6) in vec3 randoms;
+	layout (location = 5) in vec3 polygonXYZAverage;*/
+//	layout (location = 6) in vec3 randoms;
 	
 	//-------uniforms-----------
 	
@@ -62,12 +75,79 @@ var vertexShaderSource = `#version 300 es
 	
 	uniform vec2 imgRatio;
 	
+	uniform int vertexCountPerAxis;
+	
+	uniform float fakeRandoms[$!{FAKE_RANDOMS_CNT}!$]; // will be replaced by: FAKE_RANDOMS_CNT 
+	
 	//-------out-variables-------
 	
 	out vec2 f_texcoord;
 	out float f_trnsfrmPrgrs;
 	
 	//-------some useful functions-------
+	
+	void genRandoms(){
+		int tarID = int(mod(float(gl_InstanceID), $!{FAKE_RANDOMS_CNT}!$.0 - 3.0));
+		randoms = vec3(fakeRandoms[0+tarID], fakeRandoms[1+tarID], fakeRandoms[2+tarID]);
+	}
+	
+	// calcVertPos: 	splittet das bild (x: -1 -> 1 | y: -1 -> 1) in vertexCountPerAxis * vertexCountPerAxis rechtecke,
+	//			die jeweils wiederum in 2 dreiecke geteilt sind. damit ergeben sich vertexCountPerAxis * vertexCountPerAxis * 2
+	//			rechtecke!
+	//			logik: 
+	//				polygonID: 0 -> vertexCountPerAxis * vertexCountPerAxis * 2
+	//				vertexID: 0 -> 2 (eines der 3 vertexes eines polygons)
+	//				colID: inkrementiert jedes zweite polygonID um eins nach oben (2 dreiecke pro rechteck), bis das max bei (vertexCountPerAxis * 2 - 1) erreich ist
+	//				rowID: inkrementiert jedes vertexCountPerAxis * 2 polygonID um eins nach oben, bis das max bei vertexCountPerAxis - 1 erreicht ist
+	//				offs: da das bild in vertexCountPerAxis * vertexCountPerAxis rechtecke geteilt wird, springt der index sowohl in vertikaler als auch horizontaler richtung um jeweils 2.0 / vertexCountPerAxis
+	//					  (2.0 == bild-range der x- und y-achse von jeweils -1 bis 1)
+	void calcVertPos(){
+		int vertexID = int(vertexIDf);
+		int polygonID = gl_InstanceID;
+		
+		float polygonIDf = float(polygonID);
+		
+		int n = vertexCountPerAxis;
+		float nf = float(n);
+		int rowID = int( floor(polygonIDf / (nf*2.0)) );
+		int colID = int( floor(floor(mod(polygonIDf - floor(mod(polygonIDf, 2.0)), nf*2.0))) / 2.0 );
+	
+		float nh = nf / 2.0;
+		float rowIDf = float(rowID);
+		float colIDf = float(colID);
+		float offs = 2.0 / nf;
+	
+		float modPolyID2f = floor(mod(polygonIDf, 2.0));
+		int modPolyID2i = int(modPolyID2f);
+	
+		vec3 v0 = vec3(0.0);
+		v0[0] = -1.0 + colIDf * offs;
+		v0[1] = -1.0 + rowIDf * offs;
+		v0[2] = 0.0;
+	
+		vec3 v1 = vec3(0.0);
+		v1[0] = v0[0] + (modPolyID2i == 0 ? 0.0 : offs);
+		v1[1] = v0[1] + offs;
+		v1[2] = 0.0;
+	
+		vec3 v2 = vec3(0.0);
+		v2[0] = v0[0] + offs;
+		v2[1] = v0[1] + (modPolyID2i == 0 ? offs : 0.0);
+		v2[2] = 0.0;
+	
+		if(vertexID == 0){
+			pos = v0;
+		}else if (vertexID == 1){
+			pos = v1;
+		}else{ // vertexID == 2
+			pos = v2;
+		}
+		
+		polygonXYZAverage = (v0 + v1 + v2) / 3.0;
+	
+		texcoord = (vec2(pos) + 1.0) * 0.5;
+		texcoord.y = 1.0 - texcoord.y;
+	}
 	
 	// rotateX, rotateY, rotateZ: OpenGL/WebGL uses columns-first vectors
 	// -> results in transposed matrices in contrast to the usual row-first notation:
@@ -148,7 +228,32 @@ var vertexShaderSource = `#version 300 es
 		m[2][2] = 1.0 - 2.0 * qxx - 2.0 * qyy;
 		return m;
 	}
+	
+	// here will stand the vertex-shader-source-code of the derived animation-class:
+	$!{derivedVertexCode}!$
+	
+	void main(){
+		genRandoms();
+		calcVertPos();
+		
+		f_texcoord = texcoord;
+		f_trnsfrmPrgrs = progress;
+		
+		main_derived();
+	}
 `;
+
+/*var fragmentShaderSource = `#version 300 es
+	precision mediump float;
+	
+	out vec4 outColor;
+	
+	void main() {
+		
+		outColor = vec4(0.0, 1.0, 0.0, 1.0);
+	}
+`;*/
+
 
 var fragmentShaderSource = `#version 300 es
 	precision mediump float;
@@ -208,8 +313,8 @@ class SlideShowGL{
 		this.glMeta = {
 			backgroundColor: [1.0,1.0,1.0, 1.0],
 			imgRatio: [1,1],
-			instancing: false,
-			instanceCount: 2
+			instancing: true,
+			instanceCount: VERTEX_COUNT_PER_AXIS*VERTEX_COUNT_PER_AXIS*2
 		};
 		
 		if(!canvasID){
@@ -224,7 +329,7 @@ class SlideShowGL{
 			return;
 		}
 		
-		this.vertexShaderSource = vertexShaderSource;
+		this.vertexShaderBaseSource = vertexShaderSource;
 		this.fragmentShaderSource = fragmentShaderSource;
 		
 		this.glFunctions = new GlFunctionsInstantiator(this.gl);
@@ -268,52 +373,35 @@ class SlideShowGL{
 		
 		this.glFunctions.createVAO('picture');
 		
-		let vertices      = this.pictureData.vertices;
-		let textureCoords = this.pictureData.textureCoords;
-		
 		this.pictureData.progress = 1.0;
 		
 		let polygonAverages = [];
-		let randoms = [];	
-		
-		for(let i=0; i < Math.floor(vertices.length / 9.0); ++i){
-			// polygonAverages:
-			let v0 = vertices.slice(i*9 + 0, i*9 + 0 + 0 + 3);
-			let v1 = vertices.slice(i*9 + 3, i*9 + 3 + 3);
-			let v2 = vertices.slice(i*9 + 6, i*9 + 6 + 3);
-			
-			let avgx = (v0[0] + v1[0] + v2[0]) / 3.0;
-			let avgy = (v0[1] + v1[1] + v2[1]) / 3.0;
-			let avgz = (v0[2] + v1[2] + v2[2]) / 3.0;
-			polygonAverages.push( avgx, avgy, avgz );
-			polygonAverages.push( avgx, avgy, avgz );
-			polygonAverages.push( avgx, avgy, avgz );
-			
+		let randoms = [];
+		for(let i=0; i < FAKE_RANDOMS_CNT; ++i){
 			let genRandom = ()=>{
-				let rndms = 3;
+				let rndms = 1;
 				let rs = 0;
 				for(let rc=0; rc < rndms; ++rc){
 					rs += Math.random();
 				}
 				return rs / rndms;
 			};
-			
-			// randoms:
-			let r0, r1, r2;
-			[r0, r1, r2] = [genRandom(), genRandom(), genRandom()];
-			randoms.push( r0, r1, r2,
-							  r0, r1, r2,
-							  r0, r1, r2 );
+			randoms.push(genRandom());
 		}
 		
-		this.glFunctions.evalLayoutLocations( ['pos', 'texcoord', 'polygonXYZAverage', 'randoms'] );
+		this.glFunctions.evalLayoutLocations( ['randoms'] );
 		console.log('layoutLocations: ', this.glFunctions.layoutLocations);
 		
-		this.glFunctions.genAndBindVectorVBO(vertices,  3, 'pos');
-		this.glFunctions.genAndBindVectorVBO(textureCoords, 2, 'texcoord');
+		this.glFunctions.genAndBindVectorVBO([0,1,2], 1, 'vertexIDf');
+		this.glFunctions.setUniform1fv('fakeRandoms', randoms.slice(0, 100));
+		console.log('VERTEX_COUNT_PER_AXIS: ', VERTEX_COUNT_PER_AXIS);
+		this.glFunctions.setUniform1i('vertexCountPerAxis', VERTEX_COUNT_PER_AXIS);
 		
-		this.glFunctions.genAndBindVectorVBO(polygonAverages, 3, 'polygonXYZAverage');
-		this.glFunctions.genAndBindVectorVBO(randoms, 3, 'randoms');
+//		this.glFunctions.genAndBindVectorVBO(vertices,  3, 'pos');
+//		this.glFunctions.genAndBindVectorVBO(textureCoords, 2, 'texcoord');
+		
+//		this.glFunctions.genAndBindVectorVBO(polygonAverages, 3, 'polygonXYZAverage');
+//		this.glFunctions.genAndBindVectorVBO(randoms, 3, 'randoms');
 		
 		this.glFunctions.useProgram('picture');
 		
@@ -414,7 +502,7 @@ class SlideShowGL{
 		
 		let primitiveType = this.gl.TRIANGLES;
 		let offset = 0;
-		let count = Math.floor(vertices.length / 3);
+		let count = 3;//Math.floor(vertices.length / 3);
 		if(this.glMeta.instancing){
 			this.gl.drawArraysInstanced(primitiveType, offset, count, this.glMeta.instanceCount);
 		}else{
@@ -485,9 +573,12 @@ class SlideShowGL{
 	
 		this.resizeCanvasToDisplaySize();
 		
+		let vertxShdrSrc = StaticFunctions.replaceString(this.vertexShaderBaseSource, [FAKE_RANDOMS_CNT, this.animationType.vertexShaderSource], ['FAKE_RANDOMS_CNT', 'derivedVertexCode']);
 		let frgmntShrdSrc = !!this.animationType.fragmentShaderSource ? this.animationType.fragmentShaderSource : this.fragmentShaderSource;
+		
+		console.log(vertxShdrSrc);
 	
-		var vertexShader   = this.glFunctions.createShader(this.gl.VERTEX_SHADER,   vertexShaderSource + this.animationType.vertexShaderSource);
+		var vertexShader   = this.glFunctions.createShader(this.gl.VERTEX_SHADER, vertxShdrSrc);
 		var fragmentShader = this.glFunctions.createShader(this.gl.FRAGMENT_SHADER, frgmntShrdSrc);
 	
 		var program = this.glFunctions.createProgram('picture', vertexShader, fragmentShader);
@@ -605,6 +696,10 @@ class SlideShowGL{
 			
 			lastTime = curTime;
 			
+			if(curAnimID != this.animationMeta.animationID){
+				return;
+			}
+			
 			if(this.pictureData.progress < 1.0){
 				window.requestAnimationFrame( innerGameLoop );
 			}else{
@@ -672,4 +767,3 @@ class SlideShowGL{
 					 '../images/HippoWolfGangFasnet.png']);*/
 
 export {SlideShowGL, ANIMATIONS};
-
