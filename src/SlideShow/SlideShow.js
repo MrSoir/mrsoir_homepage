@@ -215,19 +215,20 @@ class SlideShow extends Component{
 					SlideShow
 				</div>
 				
-					<div className="AnimationKeyHeading">
-						Select an animation style:
-						<div className="AnimationKeyButtons">
-							{this.animationIDs.sort().map(animID=>{
-								let clsNme = "AnimKeyBtn" + (animID === this.state.selctdAnimID ? " AnimKeyBtnSelected" : "");
-								return <div className={clsNme}
-												key={animID}
-												onClick={()=>{this.setAnimationID(animID);}}>
-											{animID}
-										 </div>
-							})}
-						</div>
+				<div className="AnimationKeyHeading">
+					Select an animation style:
+					<div className="AnimationKeyButtons">
+						{this.animationIDs.sort().map(animID=>{
+							let clsNme = "AnimKeyBtn" + (animID === this.state.selctdAnimID ? " AnimKeyBtnSelected" : "");
+							return <div className={clsNme}
+											key={animID}
+											onClick={()=>{this.setAnimationID(animID);}}>
+										{animID}
+									 </div>
+						})}
 					</div>
+				</div>
+				<br/>
 				
 				<div id="canvasDiv">
 					<div id="loadingDiv" ref={this.loadingDiv}>

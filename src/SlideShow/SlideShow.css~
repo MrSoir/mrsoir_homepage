@@ -103,7 +103,7 @@
 }
 
 .AnimationKeyHeading{
-	display: inline-block;
+/*	display: inline-block;*/
 	font-family: Times;
 	font-weight: bold;
 	font-size: 20px;
@@ -111,9 +111,11 @@
 /*	background-color: #00ff0011;*/
 	margin-bottom: 5px;
 	margin-top: 10px;
+
+	margin-right: 0;
 	padding: 10px;
 	border: 1px solid #008800;
-	border-radius: 0px;
+	border-radius: 5px;
 }
 .AnimationKeyButtons{
 	padding-top: 10px;

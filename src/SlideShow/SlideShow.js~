@@ -57,6 +57,7 @@ class SlideShow extends Component{
 			this.imgsLoading -= 1;
 			console.log('image loaded -> imgsLoading: ', this.imgsLoading);
 			if(this.imgsLoading === 0){
+				this.onImagesLoaded();
 				if(this.compDidMnt){
 					this.startAnim();
 				}
@@ -93,7 +94,7 @@ class SlideShow extends Component{
    }
    componentDidMount(){ 
    	this.sldShw  = new SlideShowGL('slideShowCanvas');
-   	this.sldShw.onImagesLoaded = this.onImagesLoaded;
+//   	this.sldShw.onImagesLoaded = this.onImagesLoaded;
    	this.sldShw.onWebGL_InitError = this.onImagesLoaded;
    	
    	this.compDidMnt = true;
@@ -214,19 +215,20 @@ class SlideShow extends Component{
 					SlideShow
 				</div>
 				
-					<div className="AnimationKeyHeading">
-						Select an animation style:
-						<div className="AnimationKeyButtons">
-							{this.animationIDs.sort().map(animID=>{
-								let clsNme = "AnimKeyBtn" + (animID === this.state.selctdAnimID ? " AnimKeyBtnSelected" : "");
-								return <div className={clsNme}
-												key={animID}
-												onClick={()=>{this.setAnimationID(animID);}}>
-											{animID}
-										 </div>
-							})}
-						</div>
+				<div className="AnimationKeyHeading">
+					Select an animation style:
+					<div className="AnimationKeyButtons">
+						{this.animationIDs.sort().map(animID=>{
+							let clsNme = "AnimKeyBtn" + (animID === this.state.selctdAnimID ? " AnimKeyBtnSelected" : "");
+							return <div className={clsNme}
+											key={animID}
+											onClick={()=>{this.setAnimationID(animID);}}>
+										{animID}
+									 </div>
+						})}
 					</div>
+				</div>
+				<br></br>
 				
 				<div id="canvasDiv">
 					<div id="loadingDiv" ref={this.loadingDiv}>
