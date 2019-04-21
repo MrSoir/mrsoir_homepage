@@ -26,40 +26,59 @@
 	margin-right: auto;
 	margin-left: auto;
 }
-.MainImage{
-	
+#MainImageDivRM{
+	position: relative;
+	display: inline-block;
+	width: 80vw;
+	height: 50vh;
+	max-height: 50vw;
+	max-width: 800px;
+}
+#MainImageRM{
+	position: relative;
+	width: 100%;
+	height: 100%;	
 }
 
-.SecondImageBlock{
-	display: flex;
+#SecondImageBlockRM{
+	position: relative;
+	display: inline-block;
 	margin: 0 auto;
-	width: 1045px;
-	justify-self: center;
-	justify-items: center;
+	width: 80vw;
+	height: 40vh;
+	max-height: 40vw;
+	
+	overflow-y: scroll;
 }
 
-.SecondImage{
-	background-color: blue;
+#SecondImageRM{
+	position: absolute;
+	display: inline-block;
+	left: 0;
+	top: 0;
+	width: 30%;
+	height: 100%;
 }
 
-.SecondImageHeading{
+#SecondImageInfoRM{
+	position: absolute;
+	display: inline-block;
+	right: 0;
+	top: 0;
+	width: 65%;
+	height: 100%;
+}
+
+
+#SecondImageHeadingRM{
 	display: inline-block;
 }
 
-.SecondImageInfo{
-	font-family: hand_written_font;
-	font-size: 18px;
-	color: var(--fontColor);
-	margin-left: 20px;
-}
-
-.SecondImageListInfo{
+.SecondImageListInfoRM{
 	text-align: left;
 }
 
-.SecondImageList{
-	max-width: 500px;
-}
+
 
 .RefManSeparator{
 	width: 60vw;

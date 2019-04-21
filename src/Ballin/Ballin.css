@@ -11,6 +11,10 @@
 
 	font-size:70px;
 }
+.BallinInfoMargins{
+	margin-top: 20px;
+	margin-bottom: 30px;
+}
 
 .Button{
 	display: inline-block;

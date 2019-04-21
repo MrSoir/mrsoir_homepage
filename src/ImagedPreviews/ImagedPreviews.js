@@ -99,7 +99,7 @@ class Preview extends Component{
 						<u className="PreviewTextHeading">
 							{this.props.heading}
 						</u>
-						: {this.props.text}
+						: <p className="PreviewTextHeadingSpace"/>{this.props.text}
 					</div>
 				</div>
 				{sep}

@@ -22,9 +22,7 @@
 	z-index: 10;
 }
 #ImageCredentialsHeading{
-	font-size: 15px;
-	font-weight: lighter;
-	color: #f4b342;
+	color: var(--main-bg-color);
 }
 #ImageCredentials{
 	display: inline-block;
@@ -39,21 +37,12 @@
 	padding-bottom: 5px;
 	border-radius: 5px;
 	font-weight: bold;
-	font-size: 15px;
 	cursor: pointer;
 }
 .ImageCredentialInset{
 	display: inline-block;
 	width: 10px;
 	height: 100%;
-}
-
-.Heading{
-	color: var(--fontColor);
-	font-family: Times;
-	margin-bottom: 30px;
-
-	font-size: 80px;
 }
 
 #canvasDiv{
@@ -103,19 +92,15 @@
 }
 
 .AnimationKeyHeading{
-/*	display: inline-block;*/
-	font-family: Times;
+	display: inline-block;
 	font-weight: bold;
-	font-size: 20px;
 	color: #008800;
 /*	background-color: #00ff0011;*/
 	margin-bottom: 5px;
 	margin-top: 10px;
-
-	margin-right: 0;
 	padding: 10px;
 	border: 1px solid #008800;
-	border-radius: 5px;
+/*	border-radius: 5px;*/
 }
 .AnimationKeyButtons{
 	padding-top: 10px;
@@ -127,7 +112,7 @@
 	color: #004400;
 	padding: 5px;
 	margin: 0 2px;
-	border-radius: 4px;
+/*	border-radius: 5px;*/
 	border: 1px solid #008800;
 	
 	width: 100px;
@@ -138,6 +123,6 @@
 	cursor: pointer;
 }
 .AnimKeyBtn.AnimKeyBtnSelected{
-	background: #00ee00ff;
-	color: red;
+	background: #000088ff;
+	color: #00ff00;
 }

@@ -187,7 +187,7 @@ class SlideShow extends Component{
 							render some advanced image transformations. The above demo shows it in action.
 							<br/><br/>
 							The library ist highly optimized. The demo renders 2^16 = 65,536 polygons every single frame and still achieves the maximum of 60 fps
-							that modern browsers support (on mobile devices only 2^13 = 8,192 are rendered, some old smartphones seem to struggle with higher js-arrays).
+							that modern browsers support (on mobile devices only 2^13 = 8,192 are rendered, some old smartphones seem to struggle with larger js-arrays).
 							On a standard latop, the library performs 60 fps up to 2^19 = 524,288 polygons.
 							On my 5-year-old laptop the performance started to drop to still reasonable 55 fps rendering 2^20 = 1,048,576 polygons.
 							But because you don't gain any benefits by dividing the image into more than 500.000 equally sized polygons (the eyes won't recognize any difference
@@ -212,13 +212,13 @@ class SlideShow extends Component{
 
 		return (
 			<div id="SlideShow">
-				<div className="Heading">
+				<div className="ProgramHeading">
 					SlideShow
 				</div>
 				
-				<div className="AnimationKeyHeading">
+				<div className="AnimationKeyHeading PlainTextSize">
 					Select an animation style:
-					<div className="AnimationKeyButtons">
+					<div className="AnimationKeyButtons PlainTextSize">
 						{this.animationIDs.sort().map(animID=>{
 							let clsNme = "AnimKeyBtn" + (animID === this.state.selctdAnimID ? " AnimKeyBtnSelected" : "");
 							return <div className={clsNme}
@@ -240,8 +240,10 @@ class SlideShow extends Component{
 					<canvas id="slideShowCanvas"/>
 				</div>
 				
-				<div id="CredentialsDiv">
-					<div id="ImageCredentialsHeading">
+				<div id="CredentialsDiv"
+					  className="PlainTextSize">
+					<div id="ImageCredentialsHeading"
+							className="PlainTextSize">
 						Images from
 					</div>
 					<div id="ImageCredentials">

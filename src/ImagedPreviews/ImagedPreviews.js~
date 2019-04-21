@@ -96,10 +96,10 @@ class Preview extends Component{
 							className="PreviewImage"
 							onClick={this.onClick} />
 					<div className="PreviewText">
-						<u className="PreviewTextHeading>
+						<u className="PreviewTextHeading">
 							{this.props.heading}
 						</u>
-						: {this.props.text}
+						: <s className="PreviewTextHeadingSpace"/>{this.props.text}
 					</div>
 				</div>
 				{sep}

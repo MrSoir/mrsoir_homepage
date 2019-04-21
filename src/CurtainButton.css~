@@ -23,7 +23,7 @@
 	left: 0;
 	top: 0;
 	height: 100%;
-	width: 50%;
+	width: 51%;
 	transition-duration: var(--curtain-duration);
 }
 #RightRect{
@@ -32,7 +32,7 @@
 	right: 0;
 	top: 0;
 	height: 100%;
-	width: 50%;
+	width: 51%;
 	transition-duration: var(--curtain-duration);
 }
 #ButtonText{

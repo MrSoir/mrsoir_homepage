@@ -34,7 +34,7 @@ class DownloadButton extends Component{
 		let buttonText = this.props.text ? this.props.text : "Download";
 		return (
 			<div id="CurtainButton"
-				  className="CurtainButton"
+				  className="CurtainButton HeadingTextSize"
 				  onClick={this.onClick}
 				  onMouseOver={this.onMouseOver}
 				  onMouseLeave={this.onMouseLeave}>				

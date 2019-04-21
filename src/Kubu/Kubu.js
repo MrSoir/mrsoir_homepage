@@ -10,9 +10,10 @@ class Kubu extends Component{
 		super(props);
 	}*/
 	render(){
-		let programDescription = <div id="KubuProgramDescription">
+		let programDescription = <div id="KubuProgramDescriptionDiv"
+												className="ProgramDescription">
 											<div className="Separator"/>
-											<p className="ProgramDescription">
+											<p>
 											Kubu is a lightweight file system viewer. Its' special features 
 											make working with files easier and much more efficient. You don't 
 											have to look up dozens of different folders to find a file - simply
@@ -22,6 +23,7 @@ class Kubu extends Component{
 										</div>
 		return (
 			<div className="Kubu">
+			
 				<div id="KubuIconContainer">
 					<img id="KubuIcon"
 						  src={KubuIcon} 

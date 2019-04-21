@@ -136,7 +136,7 @@ class App extends Component {
 						<img id="LogoHeaderImage" src={logo} alt="logo" />
 					</div>
 						
-					<div className="Separator"></div>
+					<div className="TabBarSeparator"></div>
 						
 				</div>
 				

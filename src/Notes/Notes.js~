@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
-import {readTextFile} from '../StaticFunctions';
 import meta_info from './info.txt';
 import ImagedPreviews from '../ImagedPreviews/ImagedPreviews';
 import './Notes.css';
@@ -35,7 +34,7 @@ class Notes extends Component{
 				<CurtainButton text="Download"
 									onClick={this.downloadNotes}/>
 				
-				<div className="InstallationInfo">
+				<div className="FootNote">
 					{installationInfo}
 				</div>
 			</div>

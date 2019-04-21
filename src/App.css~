@@ -14,25 +14,146 @@
   	pointer-events: none;
 }
 
-/*.DownloadButton{
-	display: inline-block;
+/*-----------------------------------------*/
 
-	padding: 10px 20px;
-	font-size: 30px;
-	font-family: Arial;
-	color: white;
-	background-color: #c9915a;
-	cursor: pointer;
-	transition-duration: 2s;
+.ProgramHeading{
+	color: var(--fontColor);
+	font-family: Times;
+	margin-bottom: 30px;
 }
-.DownloadButton:hover{
-	color: #00ff00;
-	background: linear-gradient(#e66465, #9198e5);
-}*/
+
+@media (max-width:600px) {
+  .ProgramHeading {
+    font-size: 30px;
+  }
+  .ProgramDescription {
+    font-size: 10px;
+  }
+  .ProgramDescriptionSmall {
+    font-size: 8px;
+  }
+  .HeadingTextSize{
+  	font-size: 12px;
+  }
+  .PlainTextSize{
+  	font-size: 8px;
+  }
+}
+@media (min-width:600px) {
+  .ProgramHeading {
+    font-size: 40px;
+  }
+  .ProgramDescription {
+    font-size: 14px;
+  }
+  .ProgramDescriptionSmall {
+    font-size: 12px;
+  }
+  .HeadingTextSize{
+  	font-size: 16px;
+  }
+  .PlainTextSize{
+  	font-size: 10px;
+  }
+}
+@media (min-width:800px) {
+  .ProgramHeading {
+    font-size: 60px;
+  }
+  .ProgramDescription {
+    font-size: 16px;
+  }
+  .ProgramDescriptionSmall {
+    font-size: 14px;
+  }
+  .HeadingTextSize{
+  	font-size: 20px;
+  }
+  .PlainTextSize{
+  	font-size: 12px;
+  }
+}
+@media (min-width:1000px) {
+  .ProgramHeading {
+    font-size: 70px;
+  }
+  .ProgramDescription {
+    font-size: 22px;
+  }
+  .ProgramDescriptionSmall {
+    font-size: 18px;
+  }
+  .HeadingTextSize{
+  	font-size: 26px;
+  }
+  .PlainTextSize{
+  	font-size: 16px;
+  }
+}
+
+/*-----------------------------------------*/
+
+.ProgramDescription{
+	position: inline-block;
+	margin: auto;
+	width: 80vw;
+	max-width: 1500px;
+	text-align: justify;
+	
+	color: var(--fontColor);
+	font-family: hand_written_font;
+}
+
+/*-----------------------------------------*/
+
+
+.ProgramDescriptionSmall{
+	position: inline-block;
+	margin: auto;
+	width: 80vw;
+	max-width: 1500px;
+	text-align: justify;
+	
+	color: var(--fontColor);
+	font-family: hand_written_font;
+}
+
+/*-----------------------------------------*/
+
+.FootNote{
+	
+	margin: auto;
+	width: 80vw;
+
+	
+	color: var(--fontColor);
+	font-family: hand_written_font;
+}
+
+@media (max-width:600px) {
+  .FootNote {
+    font-size: 6px;
+  }
+}
+@media (min-width:600px) {
+  .FootNote {
+    font-size: 8px;
+  }
+}
+@media (min-width:800px) {
+  .FootNote {
+    font-size: 10px;
+  }
+}
+@media (min-width:1000px) {
+  .FootNote {
+    font-size: 12px;
+  }
+}
+/*-----------------------------------------*/
 
 .App-header {
 	background-color: #FFFFFF;
-	min-height: 40px;
 	width: 100vw;
 	display: flex;
 	flex-direction: column;
@@ -43,8 +164,10 @@
   
   	position: fixed;
   	top: 0;
-  	padding: 10px;
+  	padding-top: 10px;
 	z-index: 999;
+	
+	background-color: red;
 }
 
 .LogoHeader{
@@ -53,14 +176,14 @@
 	
 	overflow: hidden;
 	width: 80vw;
-	max-width: 800px;
+	max-width: 40vh;
 	height: 15vh;
-	max-height: 400px;
+	max-height: 40vw;
 }
 #LogoHeaderText{
 	position: absolute;
 	width: 100%;
-	height: 15%;
+	height: 20%;
 	top: 0;
 }
 #LogoHeaderImage{
@@ -91,8 +214,15 @@
 	width: 80vw;
 	height: 2px;
 	background-color: var(--separatorColor);
-	margin-top: 20px;
-	margin-bottom: 20px;
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+.TabBarSeparator{
+	display: inline-block;
+	width: 80vw;
+	height: 2px;
+	background-color: var(--separatorColor);
+	margin-top: 5px;
 }
 .SmallSeparator{
 	width: 60vw;

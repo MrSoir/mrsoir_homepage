@@ -11,7 +11,7 @@ class TabBar extends Component{
 	}
 	render(){
     return (
-      <div className="TabBar">
+      <div className="TabBar HeadingTextSize">
    		{this.props.tabs.map((tab, i) =>
 				<TabElement key={i}
 								tab={tab} 
@@ -57,13 +57,13 @@ class TabElement extends Component{
 	}
 	render(){
 		return(
-		   <div className="TabElement">
-      		<button className="TabLink" key={this.props.tabid}
+		   <div className="TabElement HeadingTextSize">
+      		<div className="TabLink" key={this.props.tabid}
       			onClick={()=>this.props.tabClicked(this.props.tabid)}
       			onMouseEnter={()=>this.tabMouseEnter()}
       			onMouseOut={()=>this.tabMouseOut()}>
       			{this.props.tab.name}
-      		</button>
+      		</div>
       		<div className={"TabIndicator" + (this.props.tab.selected ? " Selected" : "")}
       			  ref={this.indicator}></div>
    		</div>

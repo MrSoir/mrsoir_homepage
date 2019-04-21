@@ -13,8 +13,8 @@
 	
 	width: 80vw;
 	height: 30vw;
-	max-width: 1500px;
-	max-height: 600px;
+	max-width: 1000px;
+	max-height: 400px;
 	
 	margin: auto;
 	margin-top: 20px;
@@ -42,6 +42,9 @@
 	color: var(--fontColor);
 	font-family: hand_written_font;
 	font-size: 20px;
+	
+	overflow-y: auto;
+	overflow-x: show;
 }
 .MainPreviewTextHeading{
 	font-size: 25px;

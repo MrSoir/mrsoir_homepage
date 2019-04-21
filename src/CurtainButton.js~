@@ -27,8 +27,8 @@ class DownloadButton extends Component{
 	onMouseLeave(){
 		let lr = this.leftRect.current;
 		let rr = this.rightRect.current;
-		lr.style.width = '50%';
-		rr.style.width = '50%';
+		lr.style.width = '51%';
+		rr.style.width = '51%';
 	}
 	render(){
 		let buttonText = this.props.text ? this.props.text : "Download";

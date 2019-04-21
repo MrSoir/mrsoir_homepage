@@ -11,6 +11,10 @@
 
 	font-size:70px;
 }
+.BallinInfoMargins{
+	margin-top: 10px;
+	margin-bottom: 30px;
+}
 
 .Button{
 	display: inline-block;
@@ -43,7 +47,7 @@
 
 .BallinSeparator{
 	width: 60vw;
-	height: 1px;
+	height: 2px;
 	
 	background-color: var(--separatorColor);
 	

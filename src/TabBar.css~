@@ -6,7 +6,7 @@
 	display: inline;
 	overflow: hidden;
 /*	display: inline-block;*/
-	border: 1px solid #00000022;
+	border: 1px solid #00000011;
 }
 .TabElement{
 	display: inline-block;

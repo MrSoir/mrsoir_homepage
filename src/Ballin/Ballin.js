@@ -56,7 +56,7 @@ class Ballin extends Component{
 		this.launchBallinGL();
 	}
 	render(){
-		let infoText_GL = <div className="Info">Ballin' GL is a browser game written in 
+		let infoText_GL = <div className="ProgramDescription BallinInfoMargins">Ballin' GL is a browser game written in 
 		JavaScript. Although the gameplay is in 2D, the game is rendered in 3D using the 
 		WebGL 2.0 technology. The game is totally free, there are no in-app-purchases or 
 		advertisements. The only reason I wrote the game was to teach myself how to program
@@ -71,7 +71,7 @@ class Ballin extends Component{
 		Go get the most fun out of Ballin' GL I recommend playing it on your smartphone. 
 		On smartphones you can control the game with the smartphone's motion sensors &#x2192; the device itself becomes the controller.</div>;
 		
-		let infoText_Orig = <div className="Info">I wrote the first version 
+		let infoText_Orig = <div className="ProgramDescription BallinInfoMargins">I wrote the first version 
 		of Ballin' in Java (Swing) in the course of a college assignment. 
 		Compared to the original Ballin', Ballin'GL is much more advanced. 
 		Ballin'GL is running a 3D-engine with lightning effects and other 
@@ -81,7 +81,7 @@ class Ballin extends Component{
 
 		return (
 			<div className="Ballin">
-				<div className="BallinInfo">Ballin' GL</div>
+				<div className="ProgramHeading">Ballin' GL</div>
 
 				<SlideShow img_paths={this.state.ballin_gl_pics}/>
 				
@@ -93,11 +93,9 @@ class Ballin extends Component{
 				
 				{/*--------------------*/}
 				
-				<div className="BallinInfo">Ballin' Original</div>
+				<div className="ProgramHeading">Ballin' Original</div>
 
-				<SlideShow img_paths={this.state.ballin_orig_pics}
-							  width={700}
-							  height={600} />
+				<SlideShow img_paths={this.state.ballin_orig_pics} />
 				
 				{infoText_Orig}
 				

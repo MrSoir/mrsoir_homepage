@@ -212,13 +212,13 @@ class SlideShow extends Component{
 
 		return (
 			<div id="SlideShow">
-				<div className="Heading">
+				<div className="ProgramHeading">
 					SlideShow
 				</div>
 				
-				<div className="AnimationKeyHeading">
+				<div className="AnimationKeyHeading PlainTextSize">
 					Select an animation style:
-					<div className="AnimationKeyButtons">
+					<div className="AnimationKeyButtons PlainTextSize">
 						{this.animationIDs.sort().map(animID=>{
 							let clsNme = "AnimKeyBtn" + (animID === this.state.selctdAnimID ? " AnimKeyBtnSelected" : "");
 							return <div className={clsNme}
@@ -240,8 +240,10 @@ class SlideShow extends Component{
 					<canvas id="slideShowCanvas"/>
 				</div>
 				
-				<div id="CredentialsDiv">
-					<div id="ImageCredentialsHeading">
+				<div id="CredentialsDiv"
+					  className="PlainTextSize">
+					<div id="ImageCredentialsHeading"
+							className="PlainTextSize">
 						Images from
 					</div>
 					<div id="ImageCredentials">

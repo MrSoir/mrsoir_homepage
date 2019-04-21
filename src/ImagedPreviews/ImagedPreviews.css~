@@ -25,38 +25,45 @@
 	cursor: pointer;
 }
 
+.PreviewTextHeadingSpace{
+	margin-bottom: -0.3em;
+	
+	background-color: black;
+}
 .PreviewText{
 	position: absolute;
 	right: 0;
 	height: 100%;
 	width: 27%;
 	
-	text-align: justify;
+	text-align: left;
 	color: var(--fontColor);
 	font-family: hand_written_font;
 	font-size: var(--fontSize);
-/*	padding: 10px;
-	padding-left: 20px;*/
+	
+	overflow-y: auto;
+	overflow-x: visible;
 }
 .PreviewTextHeading{
 	font-size: calc(var(--fontSize) + 2px);
 }
 
-@media (min-width:300px) {
+
+
+@media (max-width:600px) {
   .PreviewContainer {
-    --fontSize: 6px;
+    --fontSize: 10px;
   }
 }
-
-@media (min-width:400px) {
-  .PreviewContainer {
-    --fontSize: 8px;
-  }
-}
-
 @media (min-width:600px) {
   .PreviewContainer {
-    --fontSize: 13px;
+    --fontSize: 10px;
+  }
+}
+
+@media (min-width:800px) {
+  .PreviewContainer {
+    --fontSize: 14px;
   }
 }
 

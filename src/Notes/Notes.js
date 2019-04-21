@@ -21,7 +21,7 @@ class Notes extends Component{
 									  </p>;
 		return (
 			<div className="Notes">
-				<div className="Heading">
+				<div className="ProgramHeading">
 					Notes
 				</div>
 				
@@ -34,7 +34,7 @@ class Notes extends Component{
 				<CurtainButton text="Download"
 									onClick={this.downloadNotes}/>
 				
-				<div className="InstallationInfo">
+				<div className="FootNote">
 					{installationInfo}
 				</div>
 			</div>

@@ -3,15 +3,15 @@ import { withRouter } from "react-router-dom";
 import './TabBar.css';
 
 class TabBar extends Component{
-	constructor(props){
+/*	constructor(props){
 		super(props);
-	}
+	}*/
 	tabClicked(tabid, tabCallback){
 		tabCallback(tabid);
 	}
 	render(){
     return (
-      <div className="TabBar">
+      <div className="TabBar HeadingTextSize">
    		{this.props.tabs.map((tab, i) =>
 				<TabElement key={i}
 								tab={tab} 
@@ -57,7 +57,7 @@ class TabElement extends Component{
 	}
 	render(){
 		return(
-		   <div className="TabElement">
+		   <div className="TabElement HeadingTextSize">
       		<button className="TabLink" key={this.props.tabid}
       			onClick={()=>this.props.tabClicked(this.props.tabid)}
       			onMouseEnter={()=>this.tabMouseEnter()}
