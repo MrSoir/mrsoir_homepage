@@ -107,10 +107,11 @@ var TriangleSplitter = {
 		// upperTrngls.push( ...lowerTrngls ) raises a RangeError: Maximum call stack size
 		// if lowerTrngls is too big
 		// => with splitDepth > 17 the lowerTrngls-array becomes too big for browsers to handle:
-		let rng = 1000;
+/*		let rng = 1000;
 		for(let i=0; i < (lowerTrngls.length / rng); ++i){// let t of lowerTrngls){
 			upperTrngls.push( ...(lowerTrngls.slice(i * rng, i * rng + rng)) );
-		}
+		}*/
+		upperTrngls = upperTrngls.concat( lowerTrngls );
 		// upperTrngls.push( ...lowerTrngls );
 		return upperTrngls;
 	},

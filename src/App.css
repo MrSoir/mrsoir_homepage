@@ -11,7 +11,7 @@
 
 .App-logo {
 	height: fit-content(300px);
-  pointer-events: none;
+  	pointer-events: none;
 }
 
 /*.DownloadButton{
@@ -48,26 +48,27 @@
 }
 
 .LogoHeader{
-	width: 100vw;
-	display: grid;
-	grid-template-rows:  fit-content(100px)  fit-content(100px);/*1fr 2fr;*/
-	grid-gap: 10px;
-	align-items: center;
-	justivy-items: center;
+	position: relative;
 	transition: 1s;
 	
 	overflow: hidden;
+	width: 80vw;
+	max-width: 600px;
+	height: 15vh;
+	max-height: 400px;
 }
-.LogoHeader_content{
-	align-self: center; /*align - alignes y-axis*/
-   justify-self: center; /*justify - alignes x-axis*/
+#LogoHeaderText{
+	position: absolute;
+	width: 100%;
+	height: 15%;
+	top: 0;
 }
-.LogoHeader > img{
-  	height: 120px;
-
-}
-.LogoHeader > div{
-
+#LogoHeaderImage{
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 70%;
 }
 .LogoHeader.Hide{
 	animation-name: logoHeader_fadeOut;

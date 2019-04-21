@@ -43,7 +43,7 @@ class SlideShow extends Component{
 	}
 	loadImages(){
 		this.imgsLoading = this.imgPaths.length;
-		console.log('loadImages -> imgsLoading: ', this.imgsLoading.length);
+		console.log('loadImages -> imgsLoading: ', this.imgsLoading);
 		
 		this.imgPaths.map((pth, id)=>{
 			this.loadImage(id);
@@ -186,9 +186,10 @@ class SlideShow extends Component{
 							Because I became bored by the standard CSS-animations, I wrote a little library to calculate and
 							render some advanced image transformations. The above demo shows it in action.
 							<br/><br/>
-							The library ist highly optimized. The demo renders 2^16 = 65.536 polygons every single frame and still achieves the maximum of 60 fps
-							that modern browsers support. On a standard latop, the library performs 60 fps up to 2^19 = 524.288 polygons.
-							On my 5-year-old laptop the performance started to drop to still reasonable 55 fps rendering 2^20 = 1.048.576 polygons.
+							The library ist highly optimized. The demo renders 2^16 = 65,536 polygons every single frame and still achieves the maximum of 60 fps
+							that modern browsers support (on mobile devices only 2^13 = 8,192 are rendered, some old smartphones seem to struggle with larger js-arrays).
+							On a standard latop, the library performs 60 fps up to 2^19 = 524,288 polygons.
+							On my 5-year-old laptop the performance started to drop to still reasonable 55 fps rendering 2^20 = 1,048,576 polygons.
 							But because you don't gain any benefits by dividing the image into more than 500.000 equally sized polygons (the eyes won't recognize any difference
 							at this high level of detail), the library is sufficiently fast even for computationally expensive transformation algorithms.
 							<br/><br/>

@@ -132,8 +132,8 @@ class App extends Component {
 					<TabBar tabs={this.state.tabs} tabCallback={this.tabClicked}/>
 					
 					<div className="LogoHeader" ref={this.logoHeader}>
-						<div className="MrSoirHeading LogoHeader_content">Welcome to the World of</div>
-						<img src={logo} className="App-logo LogoHeader_content" alt="logo" />
+						<div id="LogoHeaderText" className="MrSoirHeading">Welcome to the World of</div>
+						<img id="LogoHeaderImage" src={logo} alt="logo" />
 					</div>
 						
 					<div className="Separator"></div>

@@ -61,14 +61,7 @@ var TriangleSplitter = {
 	    }
 	    
 	    if(curSplitDepth === 0){
-
-			let testArr = this.splitTirangle2(vs, splitDepth);
-
-			let xs0 = testArr.flat().flat();
-			let xs1 = retArr.flat().flat();
-			console.log('testArr.slice: ', xs0.slice(10));
-			console.log('retArr : ', xs1.slice(10));
-	    	return testArr;
+	    	return retArr;
 	    }
 	},
 	splitTriangle: function(vs, splitDepth=14){
@@ -114,11 +107,12 @@ var TriangleSplitter = {
 		// upperTrngls.push( ...lowerTrngls ) raises a RangeError: Maximum call stack size
 		// if lowerTrngls is too big
 		// => with splitDepth > 17 the lowerTrngls-array becomes too big for browsers to handle:
-		let rng = 1000;
+/*		let rng = 1000;
 		for(let i=0; i < (lowerTrngls.length / rng); ++i){// let t of lowerTrngls){
 			upperTrngls.push( ...(lowerTrngls.slice(i * rng, i * rng + rng)) );
-		}
-		// upperTrngls.push( ...lowerTrngls );
+		}*/
+//		upperTrngls = upperTrngls.concat( lowerTrngls );
+		 upperTrngls.push( ...lowerTrngls );
 		return upperTrngls;
 	},
 };
