@@ -7,8 +7,6 @@
 .PreviewContainer {
 	position: relative;
 	
-	--fontSize: 50px;
-	
 	width: 80vw;
 	height: 30vw;
 	max-width: 1000px;
@@ -25,56 +23,4 @@
 	cursor: pointer;
 }
 
-.PreviewTextHeadingSpace{
-	margin-bottom: -0.3em;
-	
-	background-color: black;
-}
-.PreviewText{
-	position: absolute;
-	right: 0;
-	height: 100%;
-	width: 27%;
-	
-	text-align: left;
-	color: var(--fontColor);
-	font-family: hand_written_font;
-	font-size: var(--fontSize);
-	
-	overflow-y: auto;
-	overflow-x: visible;
-}
-.PreviewTextHeading{
-	font-size: calc(var(--fontSize) + 2px);
-}
 
-
-
-@media (max-width:600px) {
-  .PreviewContainer {
-    --fontSize: 8px;
-  }
-}
-@media (min-width:600px) {
-  .PreviewContainer {
-    --fontSize: 10px;
-  }
-}
-
-@media (min-width:800px) {
-  .PreviewContainer {
-    --fontSize: 14px;
-  }
-}
-
-@media (min-width:1000px) {
-  .PreviewContainer {
-    --fontSize: 16px;
-  }
-}
-
-@media (min-width:1500px) {
-  .PreviewContainer {
-    --fontSize: 20px;
-  }
-}

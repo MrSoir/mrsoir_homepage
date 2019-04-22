@@ -95,8 +95,8 @@ class Preview extends Component{
 							alt="logo"
 							className="PreviewImage"
 							onClick={this.onClick} />
-					<div className="PreviewText">
-						<u className="PreviewTextHeading">
+					<div className="PreviewText PreviewTextSizing">
+						<u className="PreviewTextHeading PreviewHeadingSizing">
 							{this.props.heading}
 						</u>
 						: <p className="PreviewTextHeadingSpace"/>{this.props.text}

@@ -22,6 +22,29 @@
 	margin-bottom: 30px;
 }
 
+/*-----------------------------------------*/
+
+.PreviewTextHeadingSpace{
+	margin-bottom: -0.3em;
+	
+	background-color: black;
+}
+.PreviewText{
+	position: absolute;
+	right: 0;
+	height: 100%;
+	width: 27%;
+	
+	text-align: left;
+	color: var(--fontColor);
+	font-family: hand_written_font;
+	
+	overflow-y: auto;
+	overflow-x: visible;
+}
+
+/*-----------------------------------------*/
+
 @media (max-width:600px) {
   .ProgramHeading {
     font-size: 30px;
@@ -37,6 +60,12 @@
   }
   .PlainTextSize{
   	font-size: 8px;
+  }
+  .PreviewTextSizing {
+    font-size: 8px;
+  }
+  .PreviewHeadingSizing {
+    font-size: 12px;
   }
 }
 @media (min-width:600px) {
@@ -55,6 +84,12 @@
   .PlainTextSize{
   	font-size: 10px;
   }
+  .PreviewTextSizing {
+    font-size: 10px;
+  }
+  .PreviewHeadingSizing {
+    font-size: 14px;
+  }
 }
 @media (min-width:800px) {
   .ProgramHeading {
@@ -72,6 +107,12 @@
   .PlainTextSize{
   	font-size: 12px;
   }
+  .PreviewTextSizing {
+    font-size: 14px;
+  }
+  .PreviewHeadingSizing {
+    font-size: 18px;
+  }
 }
 @media (min-width:1000px) {
   .ProgramHeading {
@@ -88,6 +129,20 @@
   }
   .PlainTextSize{
   	font-size: 16px;
+  }
+  .PreviewTextSizing {
+    font-size: 16px;
+  }
+  .PreviewHeadingSizing {
+    font-size: 20px;
+  }
+}
+@media (min-width:1500px){
+  .PreviewTextSizing {
+    font-size: 20px;
+  }
+  .PreviewHeadingSizing {
+    font-size: 24px;
   }
 }
 

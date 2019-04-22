@@ -56,7 +56,9 @@ class SlideShow extends Component{
 			this.images[id] = image;
 			this.imgsLoading -= 1;
 			console.log('image loaded -> imgsLoading: ', this.imgsLoading);
-			if(this.imgsLoading === 0){
+			if(this.imgsLoading === 0 && 
+				this.sldShw && this.sldShw.supportsWebGL2()){
+
 				this.onImagesLoaded();
 				if(this.compDidMnt){
 					this.startAnim();
@@ -115,6 +117,11 @@ class SlideShow extends Component{
 		window.open('https://github.com/MrSoir/SlideShowGL/archive/master.zip', '_blank');
 	}
 	startAnim(){
+		if( !(this.sldShw && this.sldShw.supportsWebGL2()) ){
+			console.log('SlideShow::startAnim -> sldShw not valid or does not support WebGL2 => exiting startAnim!!!');
+			return
+		}
+
 		let fastAnimation = this.state.selctdAnimID === 'Scale' || 
 								  this.state.selctdAnimID === 'Cyclone' ||
 								  this.state.selctdAnimID === 'Flip';

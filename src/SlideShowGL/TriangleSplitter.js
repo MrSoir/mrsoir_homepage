@@ -1,3 +1,4 @@
+let INIT_SPLIT_DEPTH = 13;
 
 var TriangleSplitter = {
 	squareDist: function(v0, v1){
@@ -32,7 +33,7 @@ var TriangleSplitter = {
 	},
 	
 	// splitTriangleRec: recursive split -> problem: with splitDepth, it creates 2**14 triangles -> and reaches memory leak / stack overflow
-	splitTriangleRec: function(vs, splitDepth = 14, curSplitDepth=0, retArr = undefined){
+	splitTriangleRec: function(vs, splitDepth = INIT_SPLIT_DEPTH, curSplitDepth=0, retArr = undefined){
 	    if(curSplitDepth > splitDepth){
 	        return vs;
 	    }
@@ -64,7 +65,7 @@ var TriangleSplitter = {
 	    	return retArr;
 	    }
 	},
-	splitTriangle: function(vs, splitDepth=14){
+	splitTriangleIter: function(vs, splitDepth=INIT_SPLIT_DEPTH){
 	   let v0, v1, v2;
 	   [v0, v1, v2] = vs;
 
@@ -95,6 +96,10 @@ var TriangleSplitter = {
 		}		 
 		return curArr;
 	},
+	splitTriangle: function(vs, splitDepth=13){
+		return this.splitTriangleRec(vs, splitDepth);
+//		return this.splitTriangleIter(vs, splitDepth);
+	},
 	
 	splitRect: function(v0, v1, splitDepth = 13){
 		const upperTringl = [v0, [v0[0], v1[1]], v1];
@@ -103,16 +108,8 @@ var TriangleSplitter = {
 		let upperTrngls = this.splitTriangle(upperTringl, splitDepth-1);
 		let lowerTrngls = this.splitTriangle(lowerTringl, splitDepth-1);
 		
-		// for-loop not as beautiful, BUT:
-		// upperTrngls.push( ...lowerTrngls ) raises a RangeError: Maximum call stack size
-		// if lowerTrngls is too big
-		// => with splitDepth > 17 the lowerTrngls-array becomes too big for browsers to handle:
-/*		let rng = 1000;
-		for(let i=0; i < (lowerTrngls.length / rng); ++i){// let t of lowerTrngls){
-			upperTrngls.push( ...(lowerTrngls.slice(i * rng, i * rng + rng)) );
-		}*/
 		upperTrngls = upperTrngls.concat( lowerTrngls );
-		// upperTrngls.push( ...lowerTrngls );
+
 		return upperTrngls;
 	},
 };

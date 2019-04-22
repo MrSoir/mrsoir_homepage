@@ -4,6 +4,7 @@
 //import './gl-matrix-min.js';
 // react:
 import * as glMatrix from 'gl-matrix';
+import { saveAs } from 'file-saver';
 import {GlFunctionsInstantiator} from './glFunctions.js';
 /*import {parseOBJ} 		from './obj_parser.js';
 import {planeOBJstr} 	from './meshes/plane.js';*/
@@ -211,6 +212,9 @@ var fragmentShaderSource = `#version 300 es
 class SlideShowGL{
 
 	constructor(canvasID, splitDepth=INIT_SPLIT_DEPTH){
+		
+		this.saveToImage = false;
+		this.saveToImageID = 0;
 		
 		this.pictureData = {
 			progress: 0.0,
@@ -674,7 +678,12 @@ class SlideShowGL{
 			}
 			
 			let dt = (lastTime !== null) ? curTime - lastTime : 0;
-			this.pictureData.progress = Math.min( this.pictureData.progress + dt / duration, 1.0);
+			
+			if(this.saveToImage){
+				this.pictureData.progress += 1 / (duration/1000 * 30);
+			}else{
+				this.pictureData.progress = Math.min( this.pictureData.progress + dt / duration, 1.0);
+			}
 			
 			this.paintPicture();
 			
@@ -686,10 +695,27 @@ class SlideShowGL{
 				return;
 			}
 			
+			if(this.saveToImage){
+				let idStr = ('' + this.saveToImageID++).padStart(4, '0');
+				let saveImgName = `SlideShowGL/pretty_image + ${idStr}.png`;
+				console.log(saveImgName);
+				let canvas = this.gl.canvas;
+				// draw to canvas...
+				canvas.toBlob(function(blob) {
+				    saveAs(blob, saveImgName);
+				    setTimeout(innerGameLoop, 100);
+//				    innerGameLoop();
+				});
+			}
+			
 			if(this.pictureData.progress < 1.0){
-				window.requestAnimationFrame( innerGameLoop );
+				if( !this.saveToImage ){
+					window.requestAnimationFrame( innerGameLoop );
+				}
 			}else{
 				console.log('fps: ', cntr / (duration/1000));
+				
+				this.saveToImage = false;
 				
 				this.animationMeta.animationIsRunning = false;
 				
