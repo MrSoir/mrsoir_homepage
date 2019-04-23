@@ -14,7 +14,7 @@ function replaceString(s, args){
 }
 
 var vertexShaderSource = `		
-	const float EXP_SCL_FCTR = 6.0;
+	const float EXP_SCL_FCTR = 4.0;
 	const float LOGR_SCL_FCTR = 3.0;
 	
 	uniform vec3 gravityCenters[$!{0}!$];

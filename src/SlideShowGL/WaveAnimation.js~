@@ -80,10 +80,8 @@ var vertexShaderSource = `
 		}else if(transformID == 6){
 			return translateFromBottomLeftToTopRight(polygonXYZAverage);
 		}else if(transformID == 7){
-			return translateFromTopRightToBottomLeft(polygonXYZAverage);
-		}else if(transformID == 8){
 			return translateFromTopLeftToBottomRight(polygonXYZAverage);
-		}else if(transformID == 9){
+		}else if(transformID == 8){
 			return translateFromBottomRightToTopLeft(polygonXYZAverage);
 		}
 	}
@@ -111,31 +109,41 @@ var vertexShaderSource = `
 		}
 	}
 	
-	vec3 genPictureTranslate(float trnsfrmPrgrs){
+	mat4 genPictureTranslate(float trnsfrmPrgrs){		
 		float y = polygonXYZAverage.y;
 		float yOffs = (y + 1.0) * 0.5;
-		yOffs = 1.0;
 		
-		float rndx = randoms.x - 0.5;
-		float rndy = randoms.y - 0.5;
-		float rndz = randoms.z - 0.5;
+		float xScaleFctr = 1.0;
+		float yScaleFctr = 2.0;
+		float zScaleFctr = 10.0;
 		
-		float xScaleFctr = 0.3;
-		float yScaleFctr = 0.3;
-		float zScaleFctr = 0.5;
+		bool inRange = trnsfrmPrgrs > 0.0;
+		float randX = inRange ? (randoms[0] - 0.5) : 0.0;
+		float randY = inRange ? (randoms[1] - 0.5) : 0.0;
 		
-		float trnslX = xScaleFctr * sin(trnsfrmPrgrs * PI) * yOffs * rndx;// * (1.0 + xScaleFctr * sin(progress * PI));
-		float trnslY = yScaleFctr * sin(trnsfrmPrgrs * PI) * yOffs * rndy;// yScaleFctr * sin(trnsfrmPrgrs * PI);// * (1.0 + yScaleFctr * sin(progress * PI));
-		float trnslZ = zScaleFctr * sin(trnsfrmPrgrs * PI) * yOffs * rndz;// * (1.0 + zScaleFctr * sin(progress * PI) * yOffs);
+		float sinProgr = sin(trnsfrmPrgrs * PI);
+		randX *= sinProgr;
+		randY *= sinProgr;
 		
-		return vec3(trnslX, trnslY, trnslZ);
+		float yTranslScale = (yOffs - 0.5) * 2.0;
+		
+		float trnslX =  randX * xScaleFctr;
+		float trnslY =  (sinProgr * yTranslScale) * yScaleFctr;// * randY;
+		float trnslZ =  0.0;//sinProgr * zScaleFctr;
+		
+		mat4 translateMat = translateMat4( vec3(trnslX, trnslY, trnslZ) );
+		
+		return translateMat;
 	}
 	
-	mat4 genPictureScale(float trnsfrmPrgrs){		
-		float sclFctr = 1.0 + sin(trnsfrmPrgrs * PI) * 3.0;
+	mat4 genPictureScale(float trnsfrmPrgrs){
+		float y = polygonXYZAverage.y;
+		float yOffs = (y + 1.0) * 0.5;
+		
+		float sclFctr = 1.0 - sin(trnsfrmPrgrs * PI) * 0.1;//abs((trnsfrmPrgrs - 0.5) * 2.0);
 		float sclX = sclFctr;
 		float sclY = sclFctr;
-		float sclZ = 1.0;
+		float sclZ = sclFctr;
 		
 		mat4 scaleMat = scaleMat4( vec3(sclX, sclY, sclZ) );
 		return scaleMat;
@@ -144,36 +152,14 @@ var vertexShaderSource = `
 	void main() {
 		float trnsfrmPrgrs = evalTransformationProgress();
 		
-		vec4 pos4;
-		if(trnsfrmPrgrs == 0.0){
-			pos4 = vec4(pos, 1.0);
-		}	else if(trnsfrmPrgrs == 1.0){
-			pos4 = vec4(pos, 1.0);
-		}else{
-			vec3 cntrdPos = pos - polygonXYZAverage;
-			
-			vec4 cntrdPos4 = vec4(cntrdPos, 1.0);
-			
-			mat4 rotMatX = rotateX(trnsfrmPrgrs * PI * 2.0);
-			mat4 rotMatY = rotateY(trnsfrmPrgrs * PI * 2.0);
-			mat4 rotMatZ = rotateZ(trnsfrmPrgrs * PI * 2.0);
-			vec4 cntrdPosRot = rotMatY * rotMatZ * cntrdPos4;
-			
-			mat4 sclMat = genPictureScale(trnsfrmPrgrs);
-			vec4 cntrdPosScld = sclMat * cntrdPosRot;
-			
-			vec3 cntrdPosTrnsl = genPictureTranslate(trnsfrmPrgrs);
-
-			pos4 = vec4(cntrdPosScld.xyz + cntrdPosTrnsl + polygonXYZAverage, 1.0);
-		}
+		mat4 pictureTransl = genPictureTranslate(trnsfrmPrgrs);
+		mat4 picturesScale = genPictureScale(trnsfrmPrgrs);
 		
 		float sclFctr = 10.0;
 		vec2 scaleRatio = imgRatio * sclFctr;
 		
-		mat4 imgScl = scaleMat4(vec3(scaleRatio.x, scaleRatio.y, sclFctr));
-		
-		gl_Position = perspective * modelView * imgScl * pos4;
-		
+		gl_Position = perspective * modelView * pictureTransl * scaleMat4(vec3(scaleRatio.x, scaleRatio.y, sclFctr)) * vec4(pos.x, pos.y, pos.z, 1.0);
+
 		f_texcoord = texcoord;
 		f_trnsfrmPrgrs = trnsfrmPrgrs;
 	}
@@ -190,8 +176,8 @@ class WaveAnimation{
 		this.fragmentShaderSource = fragmentShaderSource;
 		
 		this._waveMeta = {
-			transformID: 2,
-			animationCount: 10,
+			transformID: 7,
+			animationCount: 9,
 		};
 		
 		this.glFunctions = glFunctions;
@@ -208,6 +194,7 @@ class WaveAnimation{
 	}
 	nextAnimation(){
 		this._waveMeta.transformID = Math.floor( (this._waveMeta.transformID + 1) % this._waveMeta.animationCount );
+		console.log('waveID: ', this._waveMeta.transformID);
 		this.glFunctions.setUniform1i('transformID', this._waveMeta.transformID);
 	}
 };

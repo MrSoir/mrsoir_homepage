@@ -52,6 +52,9 @@ class Ballin extends Component{
    	newstate.ballin_orig_pics = ballin_orig_pics;
    	this.setState(newstate);
    }
+   componentDidMount(){
+		window.scrollTo(0, 0);
+	}
 	onImageClick(id){
 		this.launchBallinGL();
 	}

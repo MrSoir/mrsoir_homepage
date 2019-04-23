@@ -18,6 +18,7 @@ import RandomAnimation  		 from './RandomAnimation.js';
 import GravityAnimation 		 from './GravityAnimation.js';
 import TileAnimation    		 from './TileAnimation.js';
 import DelayedTileAnimation    from './DelayedTileAnimation.js';
+import ZoomTileAnimation       from './ZoomTileAnimation.js';
 import TriangleSplitter from './TriangleSplitter.js';
 
 
@@ -65,6 +66,7 @@ function _fillAnims(){
 	ANIMATIONS.set('Gravity',  		GravityAnimation);
 	ANIMATIONS.set('Tile',  		 	TileAnimation);
 	ANIMATIONS.set('TileDelayed',  	DelayedTileAnimation);
+	ANIMATIONS.set('TileRandom',		ZoomTileAnimation);
 }
 _fillAnims();
 
@@ -532,8 +534,6 @@ class SlideShowGL{
 		if(!animationSuccessfullySet){
 			return false;
 		}
-		
-		console.log('animMeta.images: ', animMeta.images);
 		
 		if( !animMeta.images && animMeta.imgPaths.length === 0 ){
 			console.log('no image paths to load!!!');

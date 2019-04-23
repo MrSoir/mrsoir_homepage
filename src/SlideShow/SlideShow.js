@@ -38,7 +38,7 @@ class SlideShow extends Component{
 		this.loadingMsg = 'loading...';
 		
 		this.state = {
-			selctdAnimID: 'Gravity'
+			selctdAnimID: 'TileRandom'
 		};
 	}
 	loadImages(){
@@ -95,6 +95,8 @@ class SlideShow extends Component{
 //   	window.addEventListener("resize", this.onCanvasResize);
    }
    componentDidMount(){ 
+   	window.scrollTo(0, 0);
+   	
    	this.sldShw  = new SlideShowGL('slideShowCanvas');
 //   	this.sldShw.onImagesLoaded = this.onImagesLoaded;
    	this.sldShw.onWebGL_InitError = this.onImagesLoaded;
@@ -126,12 +128,13 @@ class SlideShow extends Component{
 								  this.state.selctdAnimID === 'Cyclone' ||
 								  this.state.selctdAnimID === 'Flip' ||
 								  this.state.selctdAnimID === 'Tile' ||
-								  this.state.selctdAnimID === 'TileDelayed';
+								  this.state.selctdAnimID === 'TileDelayed' ||
+								  this.state.selctdAnimID === 'TileRandom';
 		let smallPolygonSplit = this.state.selctdAnimID === 'Scale' || 
-								  		this.state.selctdAnimID === 'Cyclone' ||
 								  		this.state.selctdAnimID === 'Flip' ||
 								  		this.state.selctdAnimID === 'Tile' ||
-								  		this.state.selctdAnimID === 'TileDelayed';
+								  		this.state.selctdAnimID === 'TileDelayed' ||
+								  		this.state.selctdAnimID === 'TileRandom';
 								  		
 		let imgPaths = this.imgPaths;
 		let imgs = this.images;

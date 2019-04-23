@@ -122,7 +122,8 @@ class Preview extends Component{
 						<u className="PreviewHeadingSizing Cursor" 
 							onClick={this.loadPath}>
 							{this.props.meta.name}
-						</u> <p className="PreviewTextHeadingSpace"/> {this.props.meta.text}
+						</u>
+						<p className="PreviewTextHeadingSpace"/> {this.props.meta.text}
 					</div>
 				</div>
 				{sep}

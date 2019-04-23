@@ -93,7 +93,10 @@ class App extends Component {
    	return slctn;
    }
 	componentDidMount() {
+		window.scrollTo(0, 0);
 		window.addEventListener('scroll', this.onScroll);
+		this.lastYScroll = 0;
+//		window.scrollY = 0;
 	}
 	
 	componentWillUnmount() {
@@ -114,14 +117,16 @@ class App extends Component {
    onScroll(){
    	let y = window.scrollY;
    	const logohdr = this.logoHeader.current;
-   	if (y > 30){
+   	if (y > 30 && this.lastYScroll <= 30){
    		logohdr.style.opacity = '0';
    		logohdr.classList.add('Hide');
    		logohdr.classList.remove('Show');
-   	}else{
+   		this.lastYScroll = y;
+   	}else if (y <= 30 && this.lastYScroll > 30){
    		logohdr.style.opacity = '100';
    		logohdr.classList.add('Show');
    		logohdr.classList.remove('Hide');
+   		this.lastYScroll = y;
    	}
    }
 	render() {

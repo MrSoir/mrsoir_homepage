@@ -12,6 +12,9 @@ class ReferenceManager extends Component{
 		
 		this.downloadReferendeManager = this.downloadReferendeManager.bind(this);
 	}
+	componentDidMount(){
+		window.scrollTo(0, 0);
+	}
 	downloadReferendeManager(){
 		window.open('https://github.com/MrSoir/ReferenceManager/archive/master.zip', '_blank');
 	}

@@ -8,6 +8,8 @@ import StaticFunctions from './StaticFunctions.js';
 
 var vertexShaderSource = `		
 	uniform vec3 tileCenters[$!{TileCentersCount}!$];
+	uniform float doRotation;
+	uniform int rotationCount;
 	
 	float interpolX(float x){
 		return (x + 1.0) * 0.5;
@@ -34,8 +36,9 @@ var vertexShaderSource = `
 		return vec2(closestTileID, tileDist);
 	}
 	
-	mat4 genScaleMat(){		
-		float sclFctr =  1.0 - sin(progress * PI) * 1.0;
+	mat4 genScaleMat(){
+		float adjProg = progress > 0.99 ? 1.0 : progress;
+		float sclFctr =  1.0 - sin(adjProg * PI) * 1.0;
 
 		mat4 sclM = scaleMat4( vec3(sclFctr, sclFctr, 1.0) );
 		return sclM;
@@ -51,7 +54,12 @@ var vertexShaderSource = `
 		mat4 trnslToTileCent   = translateMat4(  tileCent );
 		vec4 pos4 = vec4(pos, 1.0);
 		
-		return trnslToTileCent * sclM * trnslFromTileCent * pos4;
+		mat4 rotMat = mat4(1.0);
+		if(doRotation > 0.5){
+			rotMat = rotateZ( progress * TAU * float(rotationCount) );
+		}
+		
+		return trnslToTileCent * sclM * rotMat * trnslFromTileCent * pos4;
 	}
 	
 	void main() {		
@@ -61,7 +69,7 @@ var vertexShaderSource = `
 		vec2 scaleRatio = imgRatio * sclFctr;
 		mat4 scaleImage = scaleMat4(vec3(scaleRatio.x, scaleRatio.y, sclFctr));
 		
-		gl_Position = perspective * modelView * scaleImage * pos4;//vec4(pos, 1.0);
+		gl_Position = perspective * modelView * scaleImage * pos4;
 
 		f_texcoord = texcoord;
 		f_trnsfrmPrgrs = progress;
@@ -100,7 +108,7 @@ class TileAnimation{
 	
 	constructor(glFunctions){
 		this._animMeta = {
-			tileCentersPerRow: 8,
+			tileCentersPerRow: 8
 		};
 		this.genTileCenters();
 		
@@ -127,12 +135,22 @@ class TileAnimation{
 								 		);
 			}
 		}
-		console.log('tileCenters: ');
-		console.log(this.tileCenters);
 	}
 	
 	setGL(_gl){
 		this.gl = _gl;
+	}
+	
+	setRotationUniforms(){
+		let doRotation = Math.random();
+		this.glFunctions.setUniform1f('doRotation', Math.random());
+		
+		let maxRotations = 3;
+		let rotationCount = Math.floor(-maxRotations + Math.random() * maxRotations * 2);
+		if(rotationCount === 0){
+			rotationCount = -1;
+		}
+		this.glFunctions.setUniform1i('rotationCount', rotationCount);
 	}
 	
 	initBufferData(){
@@ -140,10 +158,12 @@ class TileAnimation{
 		for(let i=0; i < tileCentersPerRow * tileCentersPerRow; ++i){
 			this.glFunctions.setUniformVector3fv('tileCenters[' + i + ']', this.tileCenters[i]);
 		}
+		this.setRotationUniforms();
 	}
 	updateBufferData(){
 	}
 	nextAnimation(){
+		this.setRotationUniforms();
 //		this._animMeta.transformID = (this._animMeta.transformID + 1) % this._animMeta.animationCount;
 	}
 };

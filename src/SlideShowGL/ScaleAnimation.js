@@ -84,10 +84,10 @@ class ScaleAnimation{
 		this.glFunctions.setUniform1i('transformID', this._animMeta.transformID);
 	}
 	updateBufferData(){
-		this.glFunctions.setUniform1i('transformID', this._animMeta.transformID);
 	}
 	nextAnimation(){
 		this._animMeta.transformID = (this._animMeta.transformID + 1) % this._animMeta.animationCount;
+		this.glFunctions.setUniform1i('transformID', this._animMeta.transformID);
 	}
 };
 

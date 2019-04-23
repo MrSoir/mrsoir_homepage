@@ -8,6 +8,10 @@ import * as glMatrix from 'gl-matrix';
 var vertexShaderSource = `		
 	uniform int transformID;
 	
+	float getAdjustedProgress(){
+		return progress > 0.99 ? 1.0 : progress;
+	}
+	
 	vec4 getCycRoration(vec3 cycloneCenter, float cycloneRad){	
 		vec3 centPos = polygonXYZAverage - cycloneCenter;
 		vec3 ceneredPos = pos - cycloneCenter;
@@ -20,11 +24,12 @@ var vertexShaderSource = `
 									+ centPos.y * centPos.y
 									+ centPos.z * centPos.z;
 		
+		float adjProg = getAdjustedProgress();
 		
-		float sinProg = sin(progress * PI);
+		float sinProg = sin(adjProg * PI);
 			
 		float cycles = 1.0;
-		float radAngle = progress * PI * 2.0 * cycles;
+		float radAngle = adjProg * PI * 2.0 * cycles;
 		mat4 rotMat = rotateZ(radAngle);
 		
 /*		float sclFctr = 2.0;
@@ -65,7 +70,7 @@ var vertexShaderSource = `
 		gl_Position = perspective * modelView * scaleImage * pos4;//vec4(pos, 1.0);
 
 		f_texcoord = texcoord;
-		f_trnsfrmPrgrs = progress;
+		f_trnsfrmPrgrs = getAdjustedProgress();
 	}
 `;
 
@@ -95,14 +100,10 @@ class CycloneAnimation{
 		this.glFunctions.setUniform1i('transformID', this._waveMeta.transformID);
 	}
 	updateBufferData(){
-		this.glFunctions.setUniform1i('transformID', this._waveMeta.transformID);
 	}
-	
-/*	setTransformID(id){
-		this._waveMeta.transformID = id;
-	}*/
 	nextAnimation(){
 		this._waveMeta.transformID = (this._waveMeta.transformID + 1) % this._waveMeta.animationCount;
+		this.glFunctions.setUniform1i('transformID', this._waveMeta.transformID);
 	}
 };
 

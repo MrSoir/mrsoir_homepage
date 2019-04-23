@@ -60,7 +60,7 @@ class ReferenceManager extends Component{
 									  </p>;
 		return (
 			<div>
-				<div className="Heading">
+				<div className="ProgramHeading">
 					Reference Manager
 				</div>
 				

@@ -8,6 +8,10 @@ import * as glMatrix from 'gl-matrix';
 var vertexShaderSource = `		
 	uniform int transformID;
 	
+	float getAdjustedProgress(){
+		return progress > 0.99 ? 1.0 : progress;
+	}
+	
 	vec4 getCycRoration(vec3 cycloneCenter, float cycloneRad){	
 		vec3 centPos = polygonXYZAverage - cycloneCenter;
 		vec3 ceneredPos = pos - cycloneCenter;
@@ -20,19 +24,20 @@ var vertexShaderSource = `
 									+ centPos.y * centPos.y
 									+ centPos.z * centPos.z;
 		
+		float adjProg = getAdjustedProgress();
 		
-		float sinProg = sin(progress * PI);
+		float sinProg = sin(adjProg * PI);
 			
 		float cycles = 1.0;
-		float radAngle = progress * PI * 2.0 * cycles;
+		float radAngle = adjProg * PI * 2.0 * cycles;
 		mat4 rotMat = rotateZ(radAngle);
 		
-		float sclFctr = 2.0;
+/*		float sclFctr = 2.0;
 		float sclVal = 1.0 + sinProg * sclFctr;
-		mat4 sclMat = scaleMat4( vec3(sclVal,sclVal,sclVal) );
+		mat4 sclMat = scaleMat4( vec3(sclVal,sclVal,sclVal) );*/
 		
 		vec4 p = vec4(ceneredPos, 1.0);
-		p = sclMat * p;
+//		p = sclMat * p;
 		p = rotMat * p;
 		
 		
@@ -65,7 +70,7 @@ var vertexShaderSource = `
 		gl_Position = perspective * modelView * scaleImage * pos4;//vec4(pos, 1.0);
 
 		f_texcoord = texcoord;
-		f_trnsfrmPrgrs = progress;
+		f_trnsfrmPrgrs = getAdjustedProgress();
 	}
 `;
 

@@ -10,6 +10,9 @@ class Notes extends Component{
 		super(args);
 		this.downloadNotes = this.downloadNotes.bind(this);
 	}
+	componentDidMount(){
+		window.scrollTo(0, 0);
+	}
 	downloadNotes(){
 		window.open('https://github.com/MrSoir/HandWriting/archive/master.zip', '_blank');
 	}

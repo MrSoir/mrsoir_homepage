@@ -19,6 +19,9 @@ class Ballin extends Component{
 			ballin_orig_pics: []
 		}
 	}
+	componentDidMount(){
+		window.scrollTo(0, 0);
+	}
 	launchBallinGL(){
 		window.location.href = 'https://ballingl.firebaseapp.com/';
 	}
@@ -95,9 +98,7 @@ class Ballin extends Component{
 				
 				<div className="ProgramHeading">Ballin' Original</div>
 
-				<SlideShow img_paths={this.state.ballin_orig_pics}
-							  width={700}
-							  height={600} />
+				<SlideShow img_paths={this.state.ballin_orig_pics} />
 				
 				{infoText_Orig}
 				

@@ -39,6 +39,9 @@ class MainPage extends Component{
    	
    	this.loadGIFs();
    }
+   componentDidMount(){
+   	window.scrollTo(0, 0);
+   }
    updatePreviewsToState(previews){
   		let newstate = this.state;
    	newstate.previews = previews;

@@ -80,8 +80,10 @@ var vertexShaderSource = `
 		}else if(transformID == 6){
 			return translateFromBottomLeftToTopRight(polygonXYZAverage);
 		}else if(transformID == 7){
-			return translateFromTopLeftToBottomRight(polygonXYZAverage);
+			return translateFromTopRightToBottomLeft(polygonXYZAverage);
 		}else if(transformID == 8){
+			return translateFromTopLeftToBottomRight(polygonXYZAverage);
+		}else if(transformID == 9){
 			return translateFromBottomRightToTopLeft(polygonXYZAverage);
 		}
 	}
@@ -177,7 +179,7 @@ class WaveAnimation{
 		
 		this._waveMeta = {
 			transformID: 2,
-			animationCount: 9,
+			animationCount: 10,
 		};
 		
 		this.glFunctions = glFunctions;
@@ -191,14 +193,11 @@ class WaveAnimation{
 		this.glFunctions.setUniform1i('transformID', this._waveMeta.transformID);
 	}
 	updateBufferData(){
-		this.glFunctions.setUniform1i('transformID', this._waveMeta.transformID);
 	}
-	
-/*	setTransformID(id){
-		this._waveMeta.transformID = id;
-	}*/
 	nextAnimation(){
-		this._waveMeta.transformID = (this._waveMeta.transformID + 1) % this._waveMeta.animationCount;
+		this._waveMeta.transformID = Math.floor( (this._waveMeta.transformID + 1) % this._waveMeta.animationCount );
+		console.log('waveID: ', this._waveMeta.transformID);
+		this.glFunctions.setUniform1i('transformID', this._waveMeta.transformID);
 	}
 };
 

@@ -9,6 +9,9 @@ class Kubu extends Component{
 /*	constructor(props){
 		super(props);
 	}*/
+	componentDidMount(){
+		window.scrollTo(0, 0);
+	}
 	render(){
 		let programDescription = <div id="KubuProgramDescriptionDiv"
 												className="ProgramDescription">

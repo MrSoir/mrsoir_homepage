@@ -110,9 +110,9 @@ class GlFunctionsInstantiator{
 	_setUniform(name, data, glFunc){
 		let uniform = this.uniforms.get(name);
 		
-		if(!uniform){
+//		if(!uniform){
 			uniform = this.evalUniformLayoutLocation(name, data);
-		}
+//		}
 		
 		// check, if data is provided. if so, update. if no data is provided, then use the data that was bound to the uniform the last time:
 		if(!!data){
@@ -164,7 +164,11 @@ class GlFunctionsInstantiator{
 		this._setUniform(name, data, (args)=>{this.gl.uniform1i(...args)});
 	}
 	setUniform1iv(name, data){
-		this._setUniform(name, data, (args)=>{this.gl.uniform1iv(...args)});
+		this._setUniform(name, data, (args)=>{
+			console.log('args-data: ', data);
+			console.log('args: ', ...args);
+			this.gl.uniform1iv(...args)
+		});
 	}
 	setUniformVector2iv(name, data){
 		this._setUniform(name, data, (args)=>{this.gl.uniform2iv(...args)});
