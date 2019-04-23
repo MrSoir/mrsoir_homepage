@@ -38,7 +38,7 @@ class SlideShow extends Component{
 		this.loadingMsg = 'loading...';
 		
 		this.state = {
-			selctdAnimID: 'TileDelayed'
+			selctdAnimID: 'Gravity'
 		};
 	}
 	loadImages(){
