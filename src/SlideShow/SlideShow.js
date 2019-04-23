@@ -38,7 +38,7 @@ class SlideShow extends Component{
 		this.loadingMsg = 'loading...';
 		
 		this.state = {
-			selctdAnimID: 'Gravity'
+			selctdAnimID: 'TileDelayed'
 		};
 	}
 	loadImages(){
@@ -124,7 +124,15 @@ class SlideShow extends Component{
 
 		let fastAnimation = this.state.selctdAnimID === 'Scale' || 
 								  this.state.selctdAnimID === 'Cyclone' ||
-								  this.state.selctdAnimID === 'Flip';
+								  this.state.selctdAnimID === 'Flip' ||
+								  this.state.selctdAnimID === 'Tile' ||
+								  this.state.selctdAnimID === 'TileDelayed';
+		let smallPolygonSplit = this.state.selctdAnimID === 'Scale' || 
+								  		this.state.selctdAnimID === 'Cyclone' ||
+								  		this.state.selctdAnimID === 'Flip' ||
+								  		this.state.selctdAnimID === 'Tile' ||
+								  		this.state.selctdAnimID === 'TileDelayed';
+								  		
 		let imgPaths = this.imgPaths;
 		let imgs = this.images;
 		let animationDuration = 1000 * (fastAnimation ? 3 : 10);
@@ -138,7 +146,7 @@ class SlideShow extends Component{
 			delayDuration: delayDuration,
 			backgroundColor: [0,0,0, 0.0],
 			animationType: this.state.selctdAnimID,
-			splitDepth: this.state.selctdAnimID === 'Scale' ? 9 : 15
+			splitDepth: smallPolygonSplit ? 8 : 15
 		};
 		let startedSuccessfully = this.sldShw.startAnimation(slMeta);
 		if( !startedSuccessfully ){

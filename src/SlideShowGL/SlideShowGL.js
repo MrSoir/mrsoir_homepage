@@ -8,14 +8,16 @@ import { saveAs } from 'file-saver';
 import {GlFunctionsInstantiator} from './glFunctions.js';
 /*import {parseOBJ} 		from './obj_parser.js';
 import {planeOBJstr} 	from './meshes/plane.js';*/
-import WaveAnimation 	from './WaveAnimation.js';
-import FlipAnimation 	from './FlipAnimation.js';
-import ShiftAnimation 	from './ShiftAnimation.js';
-import ScaleAnimation   from './ScaleAnimation.js';
-import FreakAnimation   from './FreakAnimation.js';
-import CycloneAnimation from './CycloneAnimation.js';
-import RandomAnimation  from './RandomAnimation.js';
-import GravityAnimation from './GravityAnimation.js';
+import WaveAnimation 			 from './WaveAnimation.js';
+import FlipAnimation 			 from './FlipAnimation.js';
+import ShiftAnimation 			 from './ShiftAnimation.js';
+import ScaleAnimation   		 from './ScaleAnimation.js';
+import FreakAnimation   		 from './FreakAnimation.js';
+import CycloneAnimation 		 from './CycloneAnimation.js';
+import RandomAnimation  		 from './RandomAnimation.js';
+import GravityAnimation 		 from './GravityAnimation.js';
+import TileAnimation    		 from './TileAnimation.js';
+import DelayedTileAnimation    from './DelayedTileAnimation.js';
 import TriangleSplitter from './TriangleSplitter.js';
 
 
@@ -53,14 +55,16 @@ window.mobilecheck = function() {
 
 var ANIMATIONS = new Map();
 function _fillAnims(){
-	ANIMATIONS.set('Wave',  WaveAnimation);
-	ANIMATIONS.set('Flip',  FlipAnimation);
-//	ANIMATIONS.set('Shift',  ShiftAnimation);
-	ANIMATIONS.set('Scale',  ScaleAnimation);
-	ANIMATIONS.set('Wave2',  FreakAnimation);
-	ANIMATIONS.set('Cyclone',  CycloneAnimation);
-//	ANIMATIONS.set('Random',  RandomAnimation);
-	ANIMATIONS.set('Gravity',  GravityAnimation);
+	ANIMATIONS.set('Wave',  			WaveAnimation);
+	ANIMATIONS.set('Flip',  			FlipAnimation);
+//	ANIMATIONS.set('Shift',  			ShiftAnimation);
+	ANIMATIONS.set('Scale',  			ScaleAnimation);
+	ANIMATIONS.set('Wave2',  			FreakAnimation);
+	ANIMATIONS.set('Cyclone',  		CycloneAnimation);
+//	ANIMATIONS.set('Random', 			RandomAnimation);
+	ANIMATIONS.set('Gravity',  		GravityAnimation);
+	ANIMATIONS.set('Tile',  		 	TileAnimation);
+	ANIMATIONS.set('TileDelayed',  	DelayedTileAnimation);
 }
 _fillAnims();
 
@@ -563,6 +567,9 @@ class SlideShowGL{
 		var vertexShader   = this.glFunctions.createShader(this.gl.VERTEX_SHADER,   vertexShaderSource + this.animationType.vertexShaderSource);
 		var fragmentShader = this.glFunctions.createShader(this.gl.FRAGMENT_SHADER, frgmntShrdSrc);
 	
+/*		console.log('vertexShader:');
+		console.log( vertexShaderSource + this.animationType.vertexShaderSource );*/
+	
 		var program = this.glFunctions.createProgram('picture', vertexShader, fragmentShader);
 		this.glFunctions.useProgram('picture');
 		
@@ -654,7 +661,6 @@ class SlideShowGL{
 	}
 	
 	startAnimationLoop(){
-		console.log('startAnimationLoop');
 		
 		this.pictureData.progress = 0.0;
 		let duration = this.animationMeta.animationDuration;
