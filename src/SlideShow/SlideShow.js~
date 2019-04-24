@@ -6,7 +6,8 @@ import '../SlideShow.css';
 import {readTextFile} from '../StaticFunctions';
 import CurtainButton from '../CurtainButton';
 
-import {SlideShowGL} from '../SlideShowGL/SlideShowGL';
+//import {SlideShowGL} from '../SlideShowGL/SlideShowGL';
+const SlideShowGL = require('slideshowgl');
 
 
 class SlideShow extends Component{
@@ -38,7 +39,7 @@ class SlideShow extends Component{
 		this.loadingMsg = 'loading...';
 		
 		this.state = {
-			selctdAnimID: 'TileRandom'
+			selctdAnimID: 'Gravity'
 		};
 	}
 	loadImages(){
@@ -95,6 +96,8 @@ class SlideShow extends Component{
 //   	window.addEventListener("resize", this.onCanvasResize);
    }
    componentDidMount(){ 
+   	window.scrollTo(0, 0);
+   	
    	this.sldShw  = new SlideShowGL('slideShowCanvas');
 //   	this.sldShw.onImagesLoaded = this.onImagesLoaded;
    	this.sldShw.onWebGL_InitError = this.onImagesLoaded;
@@ -114,7 +117,7 @@ class SlideShow extends Component{
    	this.stopAnim();
    }
 	downloadCode(){
-		window.open('https://github.com/MrSoir/SlideShowGL/archive/master.zip', '_blank');
+		window.open('https://www.npmjs.com/package/slideshowgl');//'https://github.com/MrSoir/SlideShowGL/archive/master.zip', '_blank');
 	}
 	startAnim(){
 		if( !(this.sldShw && this.sldShw.supportsWebGL2()) ){
@@ -224,6 +227,7 @@ class SlideShow extends Component{
 							import it into your projects.
 							<br/><br/>
 							Of course, this code is free of any license. You are free to modify this code and use it in your projects/homepages!
+							I published the library as a npm-package. You can find a detailed instruction of how to install and use SlideShowGL here:
 					  	</p>;
 
 		return (
@@ -308,7 +312,7 @@ class SlideShow extends Component{
 				</div>
 				
 				<CurtainButton id="DownloadCode"
-									text="Download Code"
+									text="go to npm"
 									onClick={this.downloadCode}/>
 									
 				<div className="invisibleVertSep"/>
