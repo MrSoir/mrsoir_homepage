@@ -1,0 +1,10 @@
+um die Aenderungen an der Homepage zu speichern und hochzladen:
+
+$ yarn run build
+$ firebase deploy
+
+----------------------------------------------
+
+um den LOKALEN server zu starten, um die Homepage zu testen:
+
+$ yarn start
