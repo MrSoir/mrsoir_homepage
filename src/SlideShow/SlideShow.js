@@ -7,7 +7,8 @@ import {readTextFile} from '../StaticFunctions';
 import CurtainButton from '../CurtainButton';
 
 //import {SlideShowGL} from '../SlideShowGL/SlideShowGL';
-const SlideShowGL = require('slideshowgl');
+//const SlideShowGL = require('slideshowgl');
+const SlideShowGL = require('../SlideShowGL');
 
 
 class SlideShow extends Component{
@@ -39,7 +40,7 @@ class SlideShow extends Component{
 		this.loadingMsg = 'loading...';
 		
 		this.state = {
-			selctdAnimID: 'Gravity'
+			selctdAnimID: 'Wave2'
 		};
 	}
 	loadImages(){
@@ -83,7 +84,7 @@ class SlideShow extends Component{
 		let imgCount   = parseInt(info_lines[0].split(' ').filter(s=>!!s).slice(-1)[0]);
 		
    	let f = (id)=>{
-   		let imgPath = process.env.PUBLIC_URL + '/SlideShow/pics/HippoPreview'  + id + '.png';
+   		let imgPath = process.env.PUBLIC_URL + '/SlideShow/pics/HippoPreview'  + id + '.jpg';
    		this.imgPaths.push( imgPath );
    	};
    	for(let i=0; i < imgCount; ++i){
@@ -125,17 +126,20 @@ class SlideShow extends Component{
 			return
 		}
 
-		let fastAnimation = this.state.selctdAnimID === 'Scale' || 
-								  this.state.selctdAnimID === 'Cyclone' ||
-								  this.state.selctdAnimID === 'Flip' ||
-								  this.state.selctdAnimID === 'Tile' ||
-								  this.state.selctdAnimID === 'TileDelayed' ||
-								  this.state.selctdAnimID === 'TileRandom';
+		let fastAnimation = this.state.selctdAnimID === 'Scale' 			|| 
+								  this.state.selctdAnimID === 'Cyclone' 		||
+								  this.state.selctdAnimID === 'Flip' 			||
+								  this.state.selctdAnimID === 'Tile' 			||
+								  this.state.selctdAnimID === 'TileDelayed' 	||
+								  this.state.selctdAnimID === 'TileRandom' 	||
+								  this.state.selctdAnimID === 'Mirror' 		||
+								  this.state.selctdAnimID === 'CenterSplit';
 		let smallPolygonSplit = this.state.selctdAnimID === 'Scale' || 
 								  		this.state.selctdAnimID === 'Flip' ||
 								  		this.state.selctdAnimID === 'Tile' ||
 								  		this.state.selctdAnimID === 'TileDelayed' ||
-								  		this.state.selctdAnimID === 'TileRandom';
+								  		this.state.selctdAnimID === 'TileRandom' ||
+								  		this.state.selctdAnimID === 'Mirror';
 								  		
 		let imgPaths = this.imgPaths;
 		let imgs = this.images;
@@ -150,7 +154,7 @@ class SlideShow extends Component{
 			delayDuration: delayDuration,
 			backgroundColor: [0,0,0, 0.0],
 			animationType: this.state.selctdAnimID,
-			splitDepth: smallPolygonSplit ? 8 : 15
+			splitDepth: smallPolygonSplit ? 10 : 16 // 15
 		};
 		let startedSuccessfully = this.sldShw.startAnimation(slMeta);
 		if( !startedSuccessfully ){
