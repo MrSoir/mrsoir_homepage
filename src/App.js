@@ -12,8 +12,7 @@ import Kubu from './Kubu/Kubu';
 import ReferenceManager from './ReferenceManager/ReferenceManager';
 import Notes from './Notes/Notes';
 import SlideShow from './SlideShow/SlideShow';
-
-var hist = null;
+import LineAnimation from './LineAnimation/LineAnimation';
 
 class App extends Component {
 	constructor(){
@@ -35,6 +34,7 @@ class App extends Component {
 	}
 	componentWillMount() {
 		window.hist = this.props.history;
+		console.log('window.hist: ', window.hist);
 		
       let txt = readTextFile(tabs_info);
       let tabnames = txt.split('\n').filter((tn)=>!!tn);
@@ -118,12 +118,12 @@ class App extends Component {
    	let y = window.scrollY;
    	const logohdr = this.logoHeader.current;
    	if (y > 30 && this.lastYScroll <= 30){
-   		logohdr.style.opacity = '0';
+   		//logohdr.style.opacity = '0';
    		logohdr.classList.add('Hide');
    		logohdr.classList.remove('Show');
    		this.lastYScroll = y;
    	}else if (y <= 30 && this.lastYScroll > 30){
-   		logohdr.style.opacity = '100';
+   		//logohdr.style.opacity = '100';
    		logohdr.classList.add('Show');
    		logohdr.classList.remove('Hide');
    		this.lastYScroll = y;
@@ -132,17 +132,19 @@ class App extends Component {
 	render() {
 		return (
 			<div className="App">
+			
+				<LineAnimation />
+			
 				<div className="App-header" ref={this.header}>
-						  
 					<TabBar tabs={this.state.tabs} tabCallback={this.tabClicked}/>
 					
-					<div className="LogoHeader" ref={this.logoHeader}>
+					<div className="LogoHeader Show" ref={this.logoHeader}>
 						<div id="LogoHeaderText" className="MrSoirHeading">Welcome to the World of</div>
-						<img id="LogoHeaderImage" src={logo} alt="logo" />
+						<div id="LogoHeaderImageDiv">
+							<img id="LogoHeaderImage" src={logo} alt="logo" />
+						</div>
 					</div>
-						
-					<div className="TabBarSeparator"></div>
-						
+					<div id="LogoHeaderSep"></div>
 				</div>
 				
 				<div className="TopMargin">

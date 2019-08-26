@@ -12,14 +12,18 @@ class ReferenceManager extends Component{
 		
 		this.downloadReferendeManager = this.downloadReferendeManager.bind(this);
 	}
+	componentDidMount(){
+		window.scrollTo(0, 0);
+	}
 	downloadReferendeManager(){
 		window.open('https://github.com/MrSoir/ReferenceManager/archive/master.zip', '_blank');
 	}
 	render(){
-		let programInfo = <p>My Reference Manager does an entirely different job compared to the other reference 
-									managers out there. Most reference Manger list your literature sources alphabetically 
-									- not really intuitive. This Manager organizes your references like a mind map. Thus, 
-									you can organize your literature sources by topic, content or whatever makes sense to 
+		let programInfo = <p>There are definetely greate reference managers available. But while offering great features
+									for keeping your references managed, they all use the classical approach of presenting your 
+									references in plain lists. My reference Manager is quite the other way around. It puts empahsize
+									on presenting the refences and puts them into relationship while keeping other features basic.
+									My Manager organizes your references like a mind map. So	you can organize your literature sources by topic, content or whatever makes sense to 
 									you. Additionally, you can add plenty of personal notes to each reference and specify 
 									to which page this note refers to. You can even link references with one another: which 
 									literature source references another, on what page does it cite the other source and why 
@@ -41,12 +45,12 @@ class ReferenceManager extends Component{
 								"Year of publication",
 								"Details about the journal/book that published the article: Title, year, page numbers etc.",
 								"Local file path: If you have stored the file on your local drive, e.g. as a PDF, EPUB etc. you can open the file by clicking on the path, so you don't have to lookup the file on your filesystem.",
-								"Personal notes: Each note is made up of the page numbers to which the note refers to and the actual note."];
+								"Personal notes: Each note is composed of the page numbers the note refers to and the actual note."];
 		let installationInfo = <p>
 										The Program is written in Java, so it is cross platform an runs on Windows, Mac and Linux. 
 										Just make sure you have installed Java version 8 or higher on your computer.
 										<br/>
-										Click on the download-button and it will download a zipped file: 
+										Click the download-button and it will download a zipped file: 
 										'ReferenceManager.zip'. Extract the zip-file in a folder of your choice. 
 										The zip contains a file called 'RefManager.jar'. This a runnable jar file. 
 										There are plenty of ways of launching a .jar-file, e.g. have a look at:&nbsp;

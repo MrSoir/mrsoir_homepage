@@ -10,6 +10,7 @@
     "react-router-dom": "^5.0.0",
     "react-scripts": "2.1.8",
     "slideshowgl": "latest",
+    "three": "^0.107.0",
     "webgl-utils": "^1.0.1"
   },
   "scripts": {

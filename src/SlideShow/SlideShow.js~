@@ -40,7 +40,7 @@ class SlideShow extends Component{
 		this.loadingMsg = 'loading...';
 		
 		this.state = {
-			selctdAnimID: 'TileDelayed'//'Wave2'
+			selctdAnimID: 'Wave2'
 		};
 	}
 	loadImages(){
@@ -171,11 +171,11 @@ class SlideShow extends Component{
 	
 	onErrorOccured(){
 		const warningNode = document.querySelectorAll('#loadingDivMsg')[0];
-		warningNode.innerHTML = `Sorry, your browser <br/> doesn't seem to like <br/> WebGL 2.0...`;
+		warningNode.innerHTML = `Sorry, your browser <br/> doesn't seem to like <br/> WebGL2...`;
 	}
 	onWebGL_InitError(){
 		const warningNode = document.querySelectorAll('#loadingDivMsg')[0];
-		warningNode.innerHTML = `Sorry, your browser <br/> doesn't support <br/> WebGL 2.0!`;
+		warningNode.innerHTML = `Sorry, your browser <br/> doesn't support <br/> WebGL2!`;
 	}
 	onImagesLoaded(){
 		const loadingDiv = this.loadingDiv.current;
@@ -204,34 +204,31 @@ class SlideShow extends Component{
 									  
 		let info = 	<p id="SlideShowInfo"
 							className="ProgramDescription">
-							A little while ago I discovered WebGL2.0. It's an amazing framework to render 3D-graphics.
+							A little while ago I discovered WebGL2. It's an amazing framework for rendering 3D-graphics.
 							<br/>
-							Because I became bored by the standard CSS-animations, I wrote a little library to calculate and
-							render some advanced image transformations. The above demo shows it in action.
+							Because the standard CSS-animations are quite limited, I wrote a little library to calculate and
+							render some advanced image transformations. The above demo demonstrates it's capabilities.
 							<br/><br/>
 							The library ist highly optimized. The demo renders 2^16 = 65,536 polygons every single frame and still achieves the maximum of 60 fps
-							that modern browsers support (on mobile devices only 2^13 = 8,192 are rendered, some old smartphones seem to struggle with larger js-arrays).
-							On a standard latop, the library performs 60 fps up to 2^19 = 524,288 polygons.
-							On my 5-year-old laptop the performance started to drop to still reasonable 55 fps rendering 2^20 = 1,048,576 polygons.
-							But because you don't gain any benefits by dividing the image into more than 500.000 equally sized polygons (the eyes won't recognize any difference
-							at this high level of detail), the library is sufficiently fast even for computationally expensive transformation algorithms.
+							that modern browsers support (on mobile devices only 2^13 = 8,192 are rendered, some old smartphones seem to struggle with larger Javascript-arrays).
+							On a standard latop the library performs 60 fps up to 2^19 = 524,288 polygons.
+							On my 5-year-old laptop the performance started to drop to still reasonable 55 fps while rendering 2^20 = 1,048,576 polygons. But this is rather a 
+							theoretcial limit. Splitting the image into more than 1 million polygons is somewhat pointless because the eye won't recognize any difference at that high level of detail.
+							So the library is sufficiently fast even for computationally expensive transformation algorithms.
 							<br/><br/>
 							With this library you can compute almost any image transformation. You only have
 							to write a small part of the GLSL-shader-code that computes the actual transformations.
-							The library takes care of all the rest, i.e. loading WebGL2.0 components, attributes and uniforms, 
-						    images as textures as well as adding several useful variables and functions that 
-							are useful for the caluclations.
+							The library takes care of all the rest, i.e. loading WebGL2 components, attributes and uniforms, 
+						    images as textures. I've also implemented several functions in the GLSL-shader-code that make 3D-calculations easier 
+						   (e.g. computing rotation matrices using quaternions).
 							<br/><br/>
 							The library is also useful for non-programmers. If you are a web-devoloper, you can easily
 							integrate this library into your homepage-project and choose from the already implemented transformation-algorithms.
-							It only requires a few lines of code to get things going. For example, the above demo is integrated into this
-							homepage (created with react) with just 4 lines of code.
+							It only requires a few lines of code to get things going. The above demo is integrated into this
+							homepage (created with the awesome React.js-framework) with just 4 lines of code.
 							<br/><br/>
-							If you donwload the code there are detailed instructions of how to use the library and how to 
-							import it into your projects.
-							<br/><br/>
-							Of course, this code is free of any license. You are free to modify this code and use it in your projects/homepages!
-							I published the library as a npm-package. You can find a detailed instruction of how to install and use SlideShowGL here:
+							Of course this code is free of any license. You are free to modify this code and use it in your projects/homepages!
+							I published the library as a npm-package. You can find detailed instructions on how to install and use SlideShowGL here:
 					  	</p>;
 
 		return (
