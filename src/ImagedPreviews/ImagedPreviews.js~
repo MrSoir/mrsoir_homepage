@@ -55,7 +55,7 @@ class ImagedPreviews extends Component{
 		composedTxt = <span dangerouslySetInnerHTML={{__html: composedTxt}} />
 		return {
 			heading: heading,
-			text: composedTxt
+			text: ''//composedTxt
 		};
    }
 	render(){
@@ -96,7 +96,7 @@ class Preview extends Component{
 							className="PreviewImage"
 							onClick={this.onClick} />
 					<div className="PreviewText PreviewTextSizing">
-						<u className="PreviewTextHeading PreviewTextSizing">
+						<u className="PreviewTextHeading PreviewHeadingSizing">
 							{this.props.heading}
 						</u>
 						: <p className="PreviewTextHeadingSpace"/>{this.props.text}

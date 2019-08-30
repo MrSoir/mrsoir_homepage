@@ -29,6 +29,11 @@
 	height: 100%;
 	
 	cursor: pointer;
+	
+	transition-duration: 1s;
+}
+.ImagePreviewImage:hover{
+	transform: scale(1.1);
 }
 
 .ImagePreviewText{

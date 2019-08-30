@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
 import {readTextFile} from '../StaticFunctions';
-import ImagePreview from '../ImagePreview';
+import MainImagePreview from '../MainImagePreview';
 import meta_info from './info.txt';
 import './Main.css';
 
 class MainPage extends Component{
 	constructor(){
 		super();
-		this.onImageClick = this.onImageClick.bind(this);
+		this.onPreviewClicked = this.onPreviewClicked.bind(this);
 		this.loadGIFs = this.loadGIFs.bind(this);
-//		this.loadImage = this.loadImage.bind(this);
+		this.loadImage = this.loadImage.bind(this);
 		this.updatePreviewsToState = this.updatePreviewsToState.bind(this);
 		
 		this.state = {
@@ -33,19 +33,29 @@ class MainPage extends Component{
 	componentWillMount() {
 		let txt = readTextFile(meta_info);
 		console.log(txt);
-		let programs = txt.split('\n').filter((tn)=>!!tn);
+		let programs = txt.split('\n').filter((tn)=>!!tn).map((tn)=>{
+			let splt = tn.split('_|_').map(v=>v.trim());
+			let name = splt[0];
+			let url = splt.length > 1 ? splt[1] : name.replace(' ', '');
+			return {
+				name,
+				url
+			};
+		});
+		
 		console.log(programs);
    	let f = (pi) => {
-   		let text_path = process.env.PUBLIC_URL + '/MainPage/texts/' + pi + '.txt';
+   		let text_path = process.env.PUBLIC_URL + '/MainPage/texts/' + pi.name + '.txt';
    		let prev_text = readTextFile(text_path);
-   		return {name: pi,
-   				  image_path: process.env.PUBLIC_URL + '/MainPage/pics/' + pi + '.png',
+   		return {name: pi.name,
+   				  url: pi.url,
+   				  image_path: process.env.PUBLIC_URL + '/MainPage/pics/' + pi.name + '.png',
    				  text: prev_text };
    	};
    	let prev_programs = programs.map( p => f(p) );
    	console.log(prev_programs);
    	
-   	let indicators = this.getIndicators(programs);
+   	let indicators = this.getIndicators(programs.map(p=>p.name));
    	prev_programs.forEach((p, id)=>{
    		p['heading'] = indicators[id].heading;
    		p['description'] = indicators[id].description;
@@ -63,7 +73,6 @@ class MainPage extends Component{
    	newstate.previews = previews;
    	
    	this.setState(newstate);
-   	console.log('updated state: ', this.state);
    }
    loadGIFs(){
    	let getBaseFilePath = (filePath)=>{
@@ -95,20 +104,28 @@ class MainPage extends Component{
 		});
 		image.src = imgPath;
    }
-	onImageClick(id){
-		
+	onPreviewClicked(id){
+		console.log('onPreviewClicked: id: ', id, '	previews: ', this.state.previews);
+		let relURL = this.state.previews[id].url;
+		console.log('onPreviewClicked: ', relURL);
+		if (!!window.hist)
+		{
+			console.log('pushing: ', '/' + relURL);
+			window.hist.push('/' + relURL);
+		}
 	}
 	render(){
 		return (
 		<div className="PreviewsDiv">
 			{this.state.previews.map((pi, id)=>
 				<div key={id}>
-					<ImagePreview
+					<MainImagePreview
 								meta={pi}
 								indicator={{
 									heading: pi.heading,
 									description: pi.description
 								}}
+								onPreviewClicked={()=>{this.onPreviewClicked(id);}}
 								separator={id < this.state.previews.length-1}
 					/>
 					{id < this.state.previews.length-1 

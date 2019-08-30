@@ -19,6 +19,7 @@ class ImagedPreviews extends Component{
 		let info_lines = txt.split('\n').filter((tn)=>!!tn);
 		// first line in info_lines gives the number of images to render for Ballin'GL
 		let imgCount   = parseInt(info_lines[0].split(' ').filter(s=>!!s).slice(-1)[0]);
+		console.log('imgCount: ', imgCount);
 		
    	let data   = [];
    	let f = (fileBaseName)=>{
@@ -35,6 +36,7 @@ class ImagedPreviews extends Component{
    	for(let i=0; i < imgCount; ++i){
    		data.push( f(this.props.baseName + i) );
    	}
+   	console.log('ImagedPreview.data: ', data);
    	for (let i=0; i < data.length; ++i){
    		console.log('data ' + i + ': ', data[i]);
    	}
@@ -55,7 +57,7 @@ class ImagedPreviews extends Component{
 		composedTxt = <span dangerouslySetInnerHTML={{__html: composedTxt}} />
 		return {
 			heading: heading,
-			text: composedTxt
+			text: ''//composedTxt
 		};
    }
 	render(){

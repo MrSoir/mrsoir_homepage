@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import './ImagePreview.css';
+import './MainImagePreview.css';
 
 
-class ImagePreview extends Component{
+class MainImagePreview extends Component{
 	constructor(props){
 		super(props);
 		
@@ -64,4 +64,4 @@ class ImagePreview extends Component{
 	}
 }
 
-export default ImagePreview;
+export default MainImagePreview;
