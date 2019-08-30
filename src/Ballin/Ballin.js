@@ -60,19 +60,18 @@ class Ballin extends Component{
 	}
 	render(){
 		let infoText_GL = <div className="ProgramDescription BallinInfoMargins">Ballin' GL is a browser game written in 
-		JavaScript. Although the gameplay is in 2D, the game is rendered in 3D using the 
+		JavaScript. Although the gameplay is in 2D, the game is rendered in 3D powered by the 
 		WebGL2 technology. The game is totally free, there are no in-app-purchases or 
-		advertisements. The only reason I wrote this game was to teach myself how to program
-		 3D-graphics in WebGL and to improve my skills in linear algebra.
+		advertisement. The reason I wrote this game was to learn programming 3D-graphics
+		using WebGL and to improve my skills in linear algebra.
 		<br/><br/>
 		Ballin' GL runs on most common browsers: Chrome, Chromium, Firefox, Opera, Safari. 
-		Just ensure you're running the latest version of your browser.
-		Unfortunately Ballin' GL won't run on Mircosoft's IE and Edge. But if you are 
-		browsing the web with Microsoft browsers you definitely have greater problems 
-		to worry about...
+		Ensure you're running your browsers latest version. Older browser versions most likely
+		won't support WebGL2 (unfortunately Ballin' GL does not run on Mircosoft's IE and Edge -
+		as far as I know these browsers don't support WebGL2 at all).
 		<br/><br/>
 		Go get the most fun out of Ballin' GL I recommend playing it on your smartphone. 
-		On smartphones you can control the game with the smartphone's motion sensors &#x2192; the device becomes the controller!</div>;
+		On smartphones the game is controlled by the smartphone's motion sensors &#x2192; the device as a whole becomes the controller!</div>;
 		
 		let infoText_Orig = <div className="ProgramDescription BallinInfoMargins">I wrote the first version 
 		of Ballin' in Java in the course of a college assignment. 

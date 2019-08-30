@@ -1,0 +1,65 @@
+@import "../App.css";
+
+.ArduinoFullStack{
+	text-align: center;
+	margin-bottom: 50px;
+}
+
+#VideoASF{
+	display: inline-block;
+	margin: auto;
+}
+#VideoDescriptionASF{
+	font-style: italic;
+	font-size: 13px;
+	color: var(--fontColor);
+}
+
+#DocsBtnAFS{
+	margin: auto;
+	margin-top: 50px;
+	margin-bottom: 50px;
+}
+
+.BallinInfo{
+	color: var(--fontColor);
+	font-family: Times;
+	margin-bottom: 30px;
+
+	font-size:70px;
+}
+.ArduinoFullStackInfoMargins{
+	margin-top: 20px;
+	margin-bottom: 30px;
+}
+
+.CornerstonesNameAFS{
+	display: inline;
+	font-weight: bold;
+}
+.CornerstonesDescrAFS{
+	display: inline;
+	margin-left: 1em;
+}
+
+.TextBlockAFS{
+	margin-top: 10px;
+}
+
+.ulAFS {
+  list-style: none; /* Remove list bullets */
+  padding: 0;
+  margin: auto;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.liAFS { 
+  padding-left: 16px; 
+  margin-bottom: 5px;
+}
+
+.liAFS:before {
+  content: "\2192";
+  padding-right: 8px;
+}

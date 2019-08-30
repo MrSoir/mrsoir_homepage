@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
 import {readTextFile} from '../StaticFunctions';
+import ImagePreview from '../ImagePreview';
 import meta_info from './info.txt';
 import './Main.css';
 
@@ -16,6 +17,19 @@ class MainPage extends Component{
 			previews: []
 		}
 	}
+	getIndicators(programs){
+		let f = (progrm)=>{
+			let text_path = process.env.PUBLIC_URL + '/MainPage/indicators/' + progrm + '.txt';
+			let txt = readTextFile(text_path);
+			let lines = txt.split('\n').filter((tn)=>!!tn);
+			return {
+				heading: lines[0],
+				description: lines.slice(1).join('')
+			};
+		};
+		let indicators = programs.map(p=>f(p));
+		return indicators;
+	}
 	componentWillMount() {
 		let txt = readTextFile(meta_info);
 		console.log(txt);
@@ -23,7 +37,6 @@ class MainPage extends Component{
 		console.log(programs);
    	let f = (pi) => {
    		let text_path = process.env.PUBLIC_URL + '/MainPage/texts/' + pi + '.txt';
-   		console.log(text_path);
    		let prev_text = readTextFile(text_path);
    		return {name: pi,
    				  image_path: process.env.PUBLIC_URL + '/MainPage/pics/' + pi + '.png',
@@ -32,19 +45,25 @@ class MainPage extends Component{
    	let prev_programs = programs.map( p => f(p) );
    	console.log(prev_programs);
    	
+   	let indicators = this.getIndicators(programs);
+   	prev_programs.forEach((p, id)=>{
+   		p['heading'] = indicators[id].heading;
+   		p['description'] = indicators[id].description;
+   	});
+   	
    	this.updatePreviewsToState(prev_programs);
-/*   	let newstate = this.state;
-   	newstate.preview = prev_programs;
-   	this.setState(newstate);*/
    	
    	this.loadGIFs();
+   }
+   componentDidMount(){
+   	window.scrollTo(0, 0);
    }
    updatePreviewsToState(previews){
   		let newstate = this.state;
    	newstate.previews = previews;
    	
-   	console.log('updating state: ', newstate);
    	this.setState(newstate);
+   	console.log('updated state: ', this.state);
    }
    loadGIFs(){
    	let getBaseFilePath = (filePath)=>{
@@ -83,51 +102,22 @@ class MainPage extends Component{
 		return (
 		<div className="PreviewsDiv">
 			{this.state.previews.map((pi, id)=>
-				<Preview key={id} 
-							meta={pi}
-							separator={id < this.state.previews.length-1}
-				/>
+				<div>
+					<ImagePreview
+					         key={id} 
+								meta={pi}
+								indicator={{
+									heading: pi.heading,
+									description: pi.description
+								}}
+								separator={id < this.state.previews.length-1}
+					/>
+					{id < this.state.previews.length-1 
+						? <div key={id} className="MainSeparator"></div>
+						: ''}
+				</div>
 			)}
 		</div>
-		);
-	}
-}
-
-class Preview extends Component{
-	constructor(){
-		super();
-		
-		this.loadPath = this.loadPath.bind(this);
-	}
-	loadPath(){
-		let name = this.props.meta.name;
-		console.log(name);
-		if (!!window.hist)
-		{
-			console.log('pushing: ', '/' + name);
-			window.hist.push('/' + name.replace(' ', ''));
-		}
-	}
-	
-	render(){
-		let sep = this.props.separator ? <div className="MainSeparator"></div> : '';
-		return (
-			<div className="">
-				<div className="MainPreviewContainer">
-					<img 	src={this.props.meta.image_path} 
-							alt="logo"
-							className="MainPreviewImage"
-							onClick={this.loadPath} />
-					<div className="PreviewText PreviewTextSizing">
-						<u className="PreviewHeadingSizing Cursor" 
-							onClick={this.loadPath}>
-							{this.props.meta.name}
-						</u>
-						<p className="PreviewTextHeadingSpace"/> {this.props.meta.text}
-					</div>
-				</div>
-				{sep}
-			</div>
 		);
 	}
 }

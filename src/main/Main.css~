@@ -44,7 +44,7 @@
 	font-size: 20px;
 	
 	overflow-y: auto;
-	overflow-x: show;
+	overflow-x: visible;
 }
 .MainPreviewTextHeading{
 	font-size: 25px;

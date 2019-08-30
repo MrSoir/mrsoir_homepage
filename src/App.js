@@ -12,6 +12,7 @@ import Kubu from './Kubu/Kubu';
 import ReferenceManager from './ReferenceManager/ReferenceManager';
 import Notes from './Notes/Notes';
 import SlideShow from './SlideShow/SlideShow';
+import ArduinoFullstack from './ArduinoFullstack/ArduinoFullstack';
 import LineAnimation from './LineAnimation/LineAnimation';
 
 class App extends Component {
@@ -24,7 +25,6 @@ class App extends Component {
 		}
 		
 		this.tabClicked = this.tabClicked.bind(this);
-		this.genTabSelection = this.genTabSelection.bind(this);
 		this.updateTabSelection = this.updateTabSelection.bind(this);
 		this.onScroll = this.onScroll.bind(this);
 		
@@ -37,15 +37,19 @@ class App extends Component {
 		console.log('window.hist: ', window.hist);
 		
       let txt = readTextFile(tabs_info);
-      let tabnames = txt.split('\n').filter((tn)=>!!tn);
+      
+      let tabInfos = txt.split('\n').filter((tn)=>!!tn);
+      let tabs = tabInfos.map(ti=>{
+      	let [name, path] = ti.split(' | ');
+      	return {
+      		name,
+      		path,
+      		selected: false
+      	};
+      });
       let newstate = this.state;
 
-		let slctn = this.genTabSelection(tabnames);
-		this.lastTabSelection = slctn;
-      let f = function(v, i){
-			return {name: v, selected: slctn[i]};
-		};
-      newstate.tabs = tabnames.map(f);
+      newstate.tabs = tabs;
 
       this.setState(newstate);
       
@@ -53,44 +57,22 @@ class App extends Component {
    }
    componentDidUpdate(prevProps) {
 		if (this.props.location !== prevProps.location) {
-			let slctn = this.genTabSelection(null);
-			let updtTab = this.lastTabSelection &&  (!arraysEqual(slctn, this.lastTabSelection));
-			this.lastTabSelection = slctn;
-			if(updtTab){
-				console.log('updating tab!');
-				this.updateTabSelection();
-			}
+			this.updateTabSelection();
 		}
 	}
-	getTabNames(){
-		return this.state.tabs.map(v=>v.name);
-	}
    updateTabSelection(){
-   	let slctn = this.genTabSelection(null);
-   	
    	let newstate = this.state;
-   	for(let i=0; i < this.state.tabs.length; ++i){
-   		newstate.tabs[i].selected = slctn[i];
-   	}
-   	this.lastTabSelection = slctn;
+   	let tabs = this.state.tabs;
+   	let curRelPath = this.getCurrentRelPath();
+   	
+   	tabs.forEach(t=>{
+   		t.selected = curRelPath.startsWith( t.path );
+   	});
+   	
    	this.setState(newstate);
    }
-   genTabSelection(tabnames){
-   	if (tabnames == null){
-   		tabnames = this.getTabNames();
-   	}
-   	let slctn = [];
-   	
-      let curPath = this.props.location.pathname;
-      curPath = curPath.slice(1); // curPath starts with a '/'
-      
-   	for(let i=0; i < tabnames.length; ++i){
-   		slctn.push( curPath.startsWith(tabnames[i].replace(' ', '')) );
-   	}
-   	if ( !slctn.some(t=>t) ){
-   		slctn[0] = true;
-   	}
-   	return slctn;
+   getCurrentRelPath(){
+   	return this.props.location.pathname.slice(1);
    }
 	componentDidMount() {
 		window.scrollTo(0, 0);
@@ -109,7 +91,7 @@ class App extends Component {
    	
    	tabs.forEach((t,i)=>t.selected = (id===i));
    	
-   	let trmdName = this.state.tabs[id].name.replace(' ', '');
+   	let trmdName = this.state.tabs[id].path;
 		this.props.history.push('/' + trmdName);
    	
    	this.setState(newstate);
@@ -154,6 +136,7 @@ class App extends Component {
 					<Switch>
 						<Route exact path='/' component={MainPage}/>
 						<Route exact path='/Main' component={MainPage}/>
+						<Route exact path='/ArduinoFullstack' component={ArduinoFullstack}/>
 						<Route exact path='/Ballin' component={Ballin}/>
 						<Route exact path='/Kubu' component={Kubu}/>
 						<Route exact path='/ReferenceManager' component={ReferenceManager}/>

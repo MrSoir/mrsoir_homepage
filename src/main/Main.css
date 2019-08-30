@@ -8,47 +8,7 @@
 	margin-bottom: 50px;
 }
 
-.MainPreviewContainer{
-	position: relative;
-	
-	width: 80vw;
-	height: 30vw;
-	max-width: 1000px;
-	max-height: 400px;
-	
-	margin: auto;
-	margin-top: 20px;
-}
 
-.MainPreviewImage{
-	position: absolute;
-	left: 0;
-	top: 0;
-	width: 70%;
-	height: 100%;
-	
-	cursor: pointer;
-}
-
-.MainPreviewText{
-	position: absolute;
-	
-	right: 0;
-	top: 0;
-	width: 27%;
-	height: 100%;
-	
-	text-align: justify;
-	color: var(--fontColor);
-	font-family: hand_written_font;
-	font-size: 20px;
-	
-	overflow-y: auto;
-	overflow-x: visible;
-}
-.MainPreviewTextHeading{
-	font-size: 25px;
-}
 
 .MainSeparator{
 /*	background-color: var(--separatorColor);

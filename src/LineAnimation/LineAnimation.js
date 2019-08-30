@@ -191,6 +191,9 @@ class LineAnimation extends Component{
 		this.ZMIN = -this.WEBGL_BOUNDARIES_DEPTH * 0.4;
 		this.ZMAX =  this.WEBGL_BOUNDARIES_DEPTH * 0.4;
 		
+		this.QUADRANT_COUNT = 4;
+		this.QUADRANT_COMPARISON_OFFS = 2;
+		
 		this.LIGHT_VEL = 1;
 		
 		this.MIN_VEL = -0.01;
@@ -241,7 +244,7 @@ class LineAnimation extends Component{
 		
 		this.createPipePoints();
 		
-		console.log('this.points: ', this.points);
+//		console.log('this.points: ', this.points);
 	}
 	//--------------------------------------------------------------------------__
 	createPoint(){		
@@ -297,20 +300,54 @@ class LineAnimation extends Component{
 	evalSquaredDist(v0, v1){
 		return v0.distanceToSquared(v1);
 	}
+	evalComparePoints(quadrant){
+		const qoffs = this.QUADRANT_COMPARISON_OFFS;
+		let minx = Math.max(quadrant.x - qoffs, 0);
+		let maxx = Math.min(quadrant.x + qoffs, this.QUADRANT_COUNT-1);
+		
+		let miny = Math.max(quadrant.y - qoffs, 0);
+		let maxy = Math.min(quadrant.y + qoffs, this.QUADRANT_COUNT-1);
+		
+		let minz = Math.max(quadrant.z - qoffs, 0);
+		let maxz = Math.min(quadrant.z + qoffs, this.QUADRANT_COUNT-1);
+		
+		let points = [];
+		for(let qx=minx; qx <= maxx; ++qx){
+			for(let qy=miny; qy <= maxy; ++qy){
+				for(let qz=minz; qz <= maxz; ++qz){
+					let quadrantPoints = this.quadrants.get( this.evalQuadrantId(qx,qy,qz) );
+					
+					points.push.apply(points, quadrantPoints);
+				}
+			}
+		}
+		return points;
+	}
 	updateClosestPoints(){
 		this.closestPoints.clear();
 		
-		let qdrnts = [...this.quadrants.values()];
-		qdrnts.forEach(qdrnt=>{
-			let points = qdrnt;
+		let qdrntsPnts = [...this.quadrants.values()];
+		qdrntsPnts.forEach(qrdntPnts=>{
+			let points = qrdntPnts;
+			
+			if(points.length <= 0){
+				return;
+			}
+			
+			let comprPnts = this.evalComparePoints(points[0].quadrant);
+			
 			for(let i=0; i < points.length; ++i){
 				const v0 = points[i];
-				let mindst = this.evalSquaredDist(v0, points[0]);
+				
+				let mindst = this.evalSquaredDist(v0, comprPnts[0]);
 				let id = 0;
-				let cmpCnt = points.length;//Math.floor(points.length * 0.5);
+				
+				let cmpCnt = comprPnts.length;//Math.floor(points.length * 0.5);
+				
 				for(let j=1; j < cmpCnt; ++j){
-					if(j !== i){
-						let v1 = points[j];
+					let v1 = comprPnts[j];
+					
+					if(v0 !== v1){
 						let curdst = this.evalSquaredDist(v0, v1);
 						if(curdst < mindst){
 							mindst = curdst;
@@ -319,7 +356,7 @@ class LineAnimation extends Component{
 					}
 				}
 //				if(mindst <= this.MAX_DIST ** 2){
-					let v1 = points[id];
+					let v1 = comprPnts[id];
 					let pointId = this.evalPointId(v0, v1);
 					this.closestPoints.set(pointId, [v0, v1]);
 //				}
@@ -353,8 +390,12 @@ class LineAnimation extends Component{
 			vec.vel.z *= -1;
 		}
 	}
+	evalQuadrantId(qx,qy,qz){
+		const sgmnts = this.QUADRANT_COUNT;
+		return qx + qy * sgmnts + qz * sgmnts**2;
+	}
 	evalQuadrant(vec){
-		const sgmnts = 3;
+		const sgmnts = this.QUADRANT_COUNT;
 		let [wc, dc, hc]= [sgmnts, sgmnts, sgmnts];
 		const [minx, miny, minz, maxx, maxy, maxz] = this.evalWebGlBoundaries();
 		let [x,y,z] = [vec.x, vec.y, vec.z];
@@ -369,15 +410,20 @@ class LineAnimation extends Component{
 			console.log('minx: ', minx, 'miny: ', miny, 'minz: ', minz, 'maxx: ', maxx, 'maxy: ', maxy, 'maxz: ', maxz);
 		}*/
 		
-		return qx + qy * sgmnts + qz * sgmnts**2;
+		return {
+			id: this.evalQuadrantId(qx, qy, qz),
+			x: qx,
+			y: qy,
+			z: qz
+		};
 	}
 	addPointToQuadrant(quadrant, vec){
 		vec.quadrant = quadrant;
 		
-		if( !this.quadrants.has(quadrant) ){
-			this.quadrants.set(quadrant, []);
+		if( !this.quadrants.has(quadrant.id) ){
+			this.quadrants.set(quadrant.id, []);
 		}
-		this.quadrants.get(quadrant).push(vec);
+		this.quadrants.get(quadrant.id).push(vec);
 	}
 	movePoints(dt){
 		if(dt > 0){
@@ -504,17 +550,6 @@ class LineAnimation extends Component{
 		let pos = pipe.pos;
 		let relOffs = offs.clone().sub(pos);
 		
-		if(!this.printed){
-			this.printed = 0;
-		}
-		if(this.printed < 2){
-			console.log('pos: ', pos);
-			console.log('offs: ', offs);
-			console.log('relOffs: ', relOffs);
-			console.log('pipe: ', pipe);
-			++this.printed;
-		}
-		
 		pipe.rotation.setFromQuaternion( quat );
 		
 		let tarScl = scl * pipe.life;
@@ -575,7 +610,6 @@ class LineAnimation extends Component{
 		let light = this.webgl.light;
 		light.position.x += this.LIGHT_VEL;
 		light.position.set(light.position.x, light.position.y, light.position.z);
-		console.log(light.position);
 	}
 	update(){
 		let dt = this.evalDT();

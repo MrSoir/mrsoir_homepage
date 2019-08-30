@@ -1,6 +1,7 @@
-Main
-Ballin
-SlideShow
-Kubu
-Notes
-Reference Manager
+Main | Main
+Arduino | ArduinoFullstack
+Ballin' | Ballin
+SlideShow | SlideShow
+Kubu | Kubu
+Notes | Notes
+Reference Manager | ReferenceManager
