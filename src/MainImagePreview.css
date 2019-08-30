@@ -32,7 +32,10 @@
 	
 	transition-duration: 1s;
 }
-.ImagePreviewImage:hover{
+.ImagePreviewIndicatedImage:hover .ImagePreviewImage{
+	transform: scale(1.1);
+}
+.PreviewImageIndicatorDiv:hover .ImagePreviewImage{
 	transform: scale(1.1);
 }
 
