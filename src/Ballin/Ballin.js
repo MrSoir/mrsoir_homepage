@@ -60,7 +60,7 @@ class Ballin extends Component{
 	}
 	render(){
 		let infoText_GL = <div className="ProgramDescription BallinInfoMargins">Ballin' GL is a browser game written in 
-		JavaScript. Although the gameplay is in 2D, the game is rendered in 3D powered by the 
+		JavaScript. Although the gameplay is 2D, the game is rendered in 3D powered by the 
 		WebGL2 technology. The game is totally free, there are no in-app-purchases or 
 		advertisement. The reason I wrote this game was to learn programming 3D-graphics
 		using WebGL and to improve my skills in linear algebra.

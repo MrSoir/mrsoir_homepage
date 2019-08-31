@@ -218,8 +218,8 @@ class SlideShow extends Component{
 							<br/><br/>
 							With this library you can compute almost any image transformation. You only have
 							to write a small part of the GLSL-shader-code that computes the actual transformations.
-							The library takes care of all the rest, i.e. loading WebGL2 components, attributes and uniforms, 
-						    images as textures. I've also implemented several functions in the GLSL-shader-code that make 3D-calculations easier 
+							The library takes care of all the rest, i.e. loading WebGL2 components, attributes, uniforms and
+						    images as textures. I've also implemented several functions in the GLSL-shader-code that make some of the most common 3D-calculations easier 
 						   (e.g. computing rotation matrices using quaternions).
 							<br/><br/>
 							The library is also useful for non-programmers. If you are a web-devoloper, you can easily
@@ -228,7 +228,7 @@ class SlideShow extends Component{
 							homepage (created with the awesome React.js-framework) with just 4 lines of code.
 							<br/><br/>
 							Of course this code is free of any license. You are free to modify this code and use it in your projects/homepages!
-							I published the library as a npm-package. You can find detailed instructions on how to install and use SlideShowGL here:
+							I published the library as a npm-package. Detailed instructions on how to install and use SlideShowGL can be found here:
 					  	</p>;
 
 		return (

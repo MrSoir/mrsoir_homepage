@@ -57,7 +57,7 @@ class ImagedPreviews extends Component{
 		composedTxt = <span dangerouslySetInnerHTML={{__html: composedTxt}} />
 		return {
 			heading: heading,
-			text: ''//composedTxt
+			text: composedTxt
 		};
    }
 	render(){
