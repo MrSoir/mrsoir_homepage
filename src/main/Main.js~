@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
 import {readTextFile} from '../StaticFunctions';
-import ImagePreview from '../MainImagePreview';
+import MainImagePreview from '../MainImagePreview';
 import meta_info from './info.txt';
 import './Main.css';
 
@@ -12,9 +12,12 @@ class MainPage extends Component{
 		this.loadGIFs = this.loadGIFs.bind(this);
 		this.loadImage = this.loadImage.bind(this);
 		this.updatePreviewsToState = this.updatePreviewsToState.bind(this);
+		this.onScroll = this.onScroll.bind(this);
+		this.updateFocusedPreview = this.updateFocusedPreview.bind(this);
 		
 		this.state = {
-			previews: []
+			previews: [],
+			focusedPreviews: []
 		}
 	}
 	getIndicators(programs){
@@ -67,6 +70,13 @@ class MainPage extends Component{
    }
    componentDidMount(){
    	window.scrollTo(0, 0);
+   	window.addEventListener('scroll', this.onScroll);
+   	
+   	setTimeout(this.updateFocusedPreview, 1000);
+   }
+   componentWillUnmount(){
+   	console.log('about to unmount');
+   	window.removeEventListener('scroll', this.onScroll);
    }
    updatePreviewsToState(previews){
   		let newstate = this.state;
@@ -114,20 +124,46 @@ class MainPage extends Component{
 			window.hist.push('/' + relURL);
 		}
 	}
+	updateFocusedPreview(){
+		let scrOffs = Math.max(document.body.scrollTop, document.documentElement.scrollTop);
+		
+		let previews = document.getElementsByClassName('MainPrevDiv');
+		
+		let focusedPreviews = [];
+		
+		[...previews].forEach((prev, id)=>{
+			let br = prev.getBoundingClientRect();
+			let [top, btm, y, x] = [br.top, br.bottom, br.y, br.x];
+			
+			let viewPortHeight = window.innerHeight;
+			console.log('id: ', id, '	bottom: ', btm, '	vpheight: ', viewPortHeight);
+
+			if(y > 50 && btm < (viewPortHeight-50)){
+				focusedPreviews.push(id);
+			}
+		});
+		this.setState({focusedPreviews});
+	}
+	onScroll(e){
+		this.updateFocusedPreview();
+	}
 	render(){
 		return (
 		<div className="PreviewsDiv">
 			{this.state.previews.map((pi, id)=>
 				<div key={id}>
-					<MainImagePreview
-								meta={pi}
-								indicator={{
-									heading: pi.heading,
-									description: pi.description
-								}}
-								onPreviewClicked={()=>{this.onPreviewClicked(id);}}
-								separator={id < this.state.previews.length-1}
-					/>
+					<div className='MainPrevDiv'>
+						<MainImagePreview
+							meta={pi}
+							indicator={{
+								heading: pi.heading,
+								description: pi.description
+							}}
+							focusPreview={this.state.focusedPreviews.some(x=>x===id)}
+							onPreviewClicked={()=>{this.onPreviewClicked(id);}}
+							separator={id < this.state.previews.length-1}
+						/>
+					</div>
 					{id < this.state.previews.length-1 
 						? <div className="MainSeparator"></div>
 						: ''}

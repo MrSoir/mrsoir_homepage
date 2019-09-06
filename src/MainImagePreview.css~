@@ -35,9 +35,13 @@
 .ImagePreviewIndicatedImage:hover .ImagePreviewImage{
 	transform: scale(1.1);
 }
-.PreviewImageIndicatorDiv:hover{
+.PreviewImageIndicatorDiv:hover .ImagePreviewImage{
 	transform: scale(1.1);
 }
+.FocusedScaledMIP{
+	transform: scale(1.1);
+}
+
 
 .ImagePreviewText{
 	position: absolute;
@@ -60,7 +64,6 @@
 }
 
 .ImagePreviewIndicatedImage:hover .PreviewImageIndicatorDiv{
-	opacity: 1;
 	left: 0%;
 }
 
@@ -83,7 +86,6 @@
 	padding-bottom: 2px;
 }
 .PreviewImageIndicatorHeading{
-	font-size: 20px;
 	margin: 10px;
 	width: 80%;
 	font-weight: bold;
@@ -95,7 +97,10 @@
 .PreviewImageIndicatorDescription{
 	width: 80%;
 	margin-left: 10px;
-	font-size: 16px;
 	font-weight: normal;
 	color: white;
+}
+
+.FocusedLeftMIP{
+	left: 0%;
 }

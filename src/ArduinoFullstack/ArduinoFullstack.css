@@ -8,16 +8,24 @@
 #VideoASF{
 	display: inline-block;
 	margin: auto;
+	margin-top: 20px;
 }
 #VideoDescriptionASF{
 	font-style: italic;
 	font-size: 13px;
 	color: var(--fontColor);
 }
+.ProgramDescriptionAFS{
+	text-align: center;
+}
+#DocBtnDescrAFS{
+	margin: auto;
+	margin-top: 40px;
+}
 
 #DocsBtnAFS{
 	margin: auto;
-	margin-top: 50px;
+	margin-top: 20px;
 	margin-bottom: 50px;
 }
 
@@ -43,7 +51,7 @@
 }
 
 .TextBlockAFS{
-	margin-top: 10px;
+	margin-top: 30px;
 }
 
 .ulAFS {
@@ -53,13 +61,26 @@
   margin-top: 30px;
   margin-bottom: 30px;
 }
+#DisadvantagesUlAFS{
+	margin-top: 	10px;
+	margin-bottom: 10px;
+}
 
 .liAFS { 
-  padding-left: 16px; 
+  padding-left: 16px;
   margin-bottom: 5px;
 }
 
 .liAFS:before {
   content: "\2192";
   padding-right: 8px;
+  font-weight: bold;
+}
+.DisadvantagesLiAFS:before{
+	content: "-";
+	color: red;
+}
+.AdvantagesLiAFS:before{
+	content: "+";
+	color: blue;
 }

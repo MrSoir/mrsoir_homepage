@@ -7,22 +7,15 @@ class MainImagePreview extends Component{
 		super(props);
 		
 		this.onPreviewClicked = this.onPreviewClicked.bind(this);
+		this.genIndicator = this.genIndicator.bind(this);
 	}
-/*	loadPath(){
-		let name = this.props.meta.name;
-		console.log(name);
-		if (!!window.hist)
-		{
-			console.log('pushing: ', '/' + name);
-			window.hist.push('/' + name.replace(' ', ''));
-		}
-	}*/
 	genIndicator(){
 		let {heading, description} = this.props.indicator;
-		console.log('heading: ', heading);
-		console.log('description: ', description);
+		
+		let focusPreview = this.props.focusPreview;
+		let prevImgInctrDivClass = focusPreview ? "PreviewImageIndicatorDiv FocusedLeftMIP" : "PreviewImageIndicatorDiv";
 		return (
-			<div className="PreviewImageIndicatorDiv">
+			<div className={prevImgInctrDivClass}>
 				<div className="PreviewImageIndicatorHeadingDiv">
 					<div className="PreviewImageIndicatorHeading">
 						{heading}
@@ -42,15 +35,23 @@ class MainImagePreview extends Component{
 		}
 	}
 	render(){
-		let indicator = !!this.props.indicator ? this.genIndicator() : '';
+		let indicator = "";
+		let imgClass = "ImagePreviewImage";
+		if(!!this.props.indicator){
+			indicator = this.genIndicator();
+			
+			if(this.props.focusPreview){
+				imgClass += " FocusedScaledMIP";
+			}
+		}
+		
 		return (
 			<div className="ImagePreviewContainer">
-				<div className="ImagePreviewIndicatedImage">
-					<img  className="ImageMIP"
-							src={this.props.meta.image_path} 
+				<div className="ImagePreviewIndicatedImage"
+					  onClick={this.onPreviewClicked}>
+					<img 	src={this.props.meta.image_path} 
 							alt="logo"
-							className="ImagePreviewImage"
-							onClick={this.onPreviewClicked} />
+							className={imgClass}/>
 					{indicator}
 				</div>
 				<div className="PreviewText PreviewTextSizing">

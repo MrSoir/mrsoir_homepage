@@ -12,9 +12,12 @@ class MainPage extends Component{
 		this.loadGIFs = this.loadGIFs.bind(this);
 		this.loadImage = this.loadImage.bind(this);
 		this.updatePreviewsToState = this.updatePreviewsToState.bind(this);
+		this.onScroll = this.onScroll.bind(this);
+		this.updateFocusedPreview = this.updateFocusedPreview.bind(this);
 		
 		this.state = {
-			previews: []
+			previews: [],
+			focusedPreviews: []
 		}
 	}
 	getIndicators(programs){
@@ -32,7 +35,6 @@ class MainPage extends Component{
 	}
 	componentWillMount() {
 		let txt = readTextFile(meta_info);
-		console.log(txt);
 		let programs = txt.split('\n').filter((tn)=>!!tn).map((tn)=>{
 			let splt = tn.split('_|_').map(v=>v.trim());
 			let name = splt[0];
@@ -43,7 +45,6 @@ class MainPage extends Component{
 			};
 		});
 		
-		console.log(programs);
    	let f = (pi) => {
    		let text_path = process.env.PUBLIC_URL + '/MainPage/texts/' + pi.name + '.txt';
    		let prev_text = readTextFile(text_path);
@@ -53,7 +54,6 @@ class MainPage extends Component{
    				  text: prev_text };
    	};
    	let prev_programs = programs.map( p => f(p) );
-   	console.log(prev_programs);
    	
    	let indicators = this.getIndicators(programs.map(p=>p.name));
    	prev_programs.forEach((p, id)=>{
@@ -67,6 +67,12 @@ class MainPage extends Component{
    }
    componentDidMount(){
    	window.scrollTo(0, 0);
+   	window.addEventListener('scroll', this.onScroll);
+   	
+   	setTimeout(this.updateFocusedPreview, 1000);
+   }
+   componentWillUnmount(){
+   	window.removeEventListener('scroll', this.onScroll);
    }
    updatePreviewsToState(previews){
   		let newstate = this.state;
@@ -94,7 +100,6 @@ class MainPage extends Component{
    loadImage(imgPath, onLoaded){
    	let image = new Image();
 		image.addEventListener('load', evnt=>{
-			console.log('success: loaded image: ', imgPath);
 			if(onLoaded){
 				onLoaded(imgPath);
 			}
@@ -105,29 +110,51 @@ class MainPage extends Component{
 		image.src = imgPath;
    }
 	onPreviewClicked(id){
-		console.log('onPreviewClicked: id: ', id, '	previews: ', this.state.previews);
 		let relURL = this.state.previews[id].url;
-		console.log('onPreviewClicked: ', relURL);
 		if (!!window.hist)
 		{
-			console.log('pushing: ', '/' + relURL);
 			window.hist.push('/' + relURL);
 		}
+	}
+	updateFocusedPreview(){
+		let scrOffs = Math.max(document.body.scrollTop, document.documentElement.scrollTop);
+		
+		let previews = document.getElementsByClassName('MainPrevDiv');
+		
+		let focusedPreviews = [];
+		
+		[...previews].forEach((prev, id)=>{
+			let br = prev.getBoundingClientRect();
+			let [top, btm, y, x] = [br.top, br.bottom, br.y, br.x];
+			
+			let viewPortHeight = window.innerHeight;
+
+			if(y > 50 && btm < (viewPortHeight-50)){
+				focusedPreviews.push(id);
+			}
+		});
+		this.setState({focusedPreviews});
+	}
+	onScroll(e){
+		this.updateFocusedPreview();
 	}
 	render(){
 		return (
 		<div className="PreviewsDiv">
 			{this.state.previews.map((pi, id)=>
 				<div key={id}>
-					<MainImagePreview
-								meta={pi}
-								indicator={{
-									heading: pi.heading,
-									description: pi.description
-								}}
-								onPreviewClicked={()=>{this.onPreviewClicked(id);}}
-								separator={id < this.state.previews.length-1}
-					/>
+					<div className='MainPrevDiv'>
+						<MainImagePreview
+							meta={pi}
+							indicator={{
+								heading: pi.heading,
+								description: pi.description
+							}}
+							focusPreview={this.state.focusedPreviews.some(x=>x===id)}
+							onPreviewClicked={()=>{this.onPreviewClicked(id);}}
+							separator={id < this.state.previews.length-1}
+						/>
+					</div>
 					{id < this.state.previews.length-1 
 						? <div className="MainSeparator"></div>
 						: ''}

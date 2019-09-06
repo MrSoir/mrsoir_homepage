@@ -238,7 +238,7 @@ class SlideShow extends Component{
 				</div>
 				
 				<div className="AnimationKeyHeading PlainTextSize">
-					Select an animation style:
+					Select an animation:
 					<div className="AnimationKeyButtons PlainTextSize">
 						{this.animationIDs.sort().map(animID=>{
 							let clsNme = "AnimKeyBtn" + (animID === this.state.selctdAnimID ? " AnimKeyBtnSelected" : "");

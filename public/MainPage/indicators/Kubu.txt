@@ -1,2 +1,2 @@
 Kubu
-An advanced file system viewer.
+An advanced file system viewer - coded in C++/Qt to meet requirements like speed and resource-efficiency.

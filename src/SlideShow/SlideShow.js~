@@ -223,11 +223,11 @@ class SlideShow extends Component{
 						   (e.g. computing rotation matrices using quaternions).
 							<br/><br/>
 							The library is also useful for non-programmers. If you are a web-devoloper, you can easily
-							integrate this library into your homepage-project and choose from the already implemented transformation-algorithms.
-							It only requires a few lines of code to get things going. The above demo is integrated into this
-							homepage (created with the awesome React.js-framework) with just 4 lines of code.
+							embed this library in your website and choose from the already implemented transformation algorithms.
+							It requires only few lines of code. The above demo is embedded in this
+							website (created with the awesome React.js-framework) with just 4 lines of code.
 							<br/><br/>
-							Of course this code is free of any license. You are free to modify this code and use it in your projects/homepages!
+							This code is free of any license. You are free to modify this code and use it in your projects/homepages!
 							I published the library as a npm-package. Detailed instructions on how to install and use SlideShowGL can be found here:
 					  	</p>;
 
