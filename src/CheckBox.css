@@ -1,0 +1,24 @@
+.checkbox{
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	border-radius: 15%;
+	color: white;
+	font-weight: bold;
+	box-sizing: border-box; /*border is inside the element and doesn't expand its size*/
+	margin-top: 5px;
+	transition-duration: 0.5s;
+	cursor: pointer;
+}
+.checkbox.checked{
+	background-color: var(--Nili-color);
+	border-style: none;
+	transition-duration: 0.5s;
+	opacity: 1.0;
+}
+.checkbox.unchecked{
+	background-color: transparent;
+	border: 2px solid var(--Nili-color);
+	transition-duration: 0.5s;
+	opacity: 0.5;
+}

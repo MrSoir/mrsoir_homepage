@@ -16,12 +16,12 @@ class MainImagePreview extends Component{
 		let prevImgInctrDivClass = focusPreview ? "PreviewImageIndicatorDiv FocusedLeftMIP" : "PreviewImageIndicatorDiv";
 		return (
 			<div className={prevImgInctrDivClass}>
-				<div className="PreviewImageIndicatorHeadingDiv">
+				<div className="PreviewImageIndicatorHeadingDiv PreviewHeadingSizing">
 					<div className="PreviewImageIndicatorHeading">
 						{heading}
 					</div>
 				</div>
-				<div className="PreviewImageIndicatorDescriptionDiv">
+				<div className="PreviewImageIndicatorDescriptionDiv PreviewTextSizing">
 					<div className="PreviewImageIndicatorDescription">
 						{description}
 					</div>

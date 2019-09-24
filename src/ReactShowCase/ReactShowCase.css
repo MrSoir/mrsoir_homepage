@@ -1,0 +1,99 @@
+
+.ReactShowCase{
+	position: relative;
+	display: block;
+	
+	width: calc(100vw - 10px);
+	height: calc(100vh - 300px);
+	min-height: 400px;
+	
+	margin: auto;
+	margin-top: 0px;
+	margin-bottom: 10px;
+	
+	box-sizing: border-box;
+	
+	border: 1px solid black;
+	box-sizing: border-box;
+}
+.FullScreenRSC{
+	position: absolute;
+	right: 0%;
+	line-height: 100%;
+	padding: 10px;
+	margin: 7px 10px;
+	font-size: 50px;
+	font-weight: bold;
+	color: orange;
+	z-index: 100;
+	cursor: pointer;
+	transition-duration: 0.5s;
+	background-color: #ffffff44;
+	border-radius: 10%;
+}
+.FullScreenRSC:hover{
+	transform: scale(1.2);
+}
+.DiaSelectorRSC{
+	position: absolute;
+	top: 0%;
+	left: 0%;
+	width: 100%;
+	height: 100%;
+	z-index: 0;
+}
+.CurtainButtonRSC{
+	height: 100%;
+	width: 100%;
+	margin: auto;
+	margin-top: 50vh;
+	transform: translateY(-100%);
+	font-size: 30px;
+}
+.HeadingRSC{
+	font-size: 40px;
+	font-weight: normal;
+	margin-top: 20px;
+}
+.DescriptionRSC{
+	font-size: 20px;
+	font-weight: normal;
+	text-align: justify;
+	width: 90%;
+	margin: auto;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.SettingsDivRSC{
+	margin-bottom: 50px;
+	font-size: 20px;
+}
+.SliderContainerRSC{
+	font-weight: bold;
+	font-size: 40px;
+}
+.SliderDivRSC{
+	position: relative;
+	width: 90%;
+	max-width: 800px;
+	height: 40px;
+	margin: auto;
+	margin-bottom: 20px;
+}
+
+.CheckBoxDivRSC{
+	display: flex;
+	font-size: 20px;
+	margin: auto;
+	width: 100%;
+	justify-content: center;
+	margin-bottom: 20px;
+}
+.CheckBoxLabelRSC{
+	font-size: 30px;
+	margin-right: 20px;
+}
+.CheckBoxRSC{
+	margin-top: 4px;
+}

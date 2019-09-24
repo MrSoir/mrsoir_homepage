@@ -54,13 +54,6 @@ class MainImagePreview extends Component{
 							className={imgClass}/>
 					{indicator}
 				</div>
-				<div className="PreviewText PreviewTextSizing">
-					<u className="PreviewHeadingSizing Cursor" 
-						onClick={this.onPreviewClicked}>
-						{this.props.meta.name}
-					</u>
-					<p className="PreviewTextHeadingSpace"/> {this.props.meta.text}
-				</div>
 			</div>
 		);
 	}

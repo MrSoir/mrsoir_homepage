@@ -14,6 +14,7 @@ import Notes from './Notes/Notes';
 import SlideShow from './SlideShow/SlideShow';
 import ArduinoFullstack from './ArduinoFullstack/ArduinoFullstack';
 import LineAnimation from './LineAnimation/LineAnimation';
+import ReactShowCase from './ReactShowCase/ReactShowCase';
 
 class App extends Component {
 	constructor(){
@@ -25,7 +26,6 @@ class App extends Component {
 		}
 		
 		this.tabClicked = this.tabClicked.bind(this);
-		this.genTabSelection = this.genTabSelection.bind(this);
 		this.updateTabSelection = this.updateTabSelection.bind(this);
 		this.onScroll = this.onScroll.bind(this);
 		
@@ -74,21 +74,6 @@ class App extends Component {
    }
    getCurrentRelPath(){
    	return this.props.location.pathname.slice(1);
-   }
-   genTabSelection(){
-   	let tabs = this.state.tabs;
-   	
-   	let slctn = [];
-   	
-      let curPath = this.getCurrentRelPath();
-      
-   	for(let i=0; i < tabnames.length; ++i){
-   		slctn.push( curPath.startsWith(tabs[i].path) );
-   	}
-   	if ( !slctn.some(t=>t) ){
-   		slctn[0] = true;
-   	}
-   	return slctn;
    }
 	componentDidMount() {
 		window.scrollTo(0, 0);
@@ -151,6 +136,7 @@ class App extends Component {
 				<div className="MainDiv" ref={this.body}>
 					<Switch>
 						<Route exact path='/' component={MainPage}/>
+						<Route exact path='/ReactShowCase' component={ReactShowCase}/>
 						<Route exact path='/Main' component={MainPage}/>
 						<Route exact path='/ArduinoFullstack' component={ArduinoFullstack}/>
 						<Route exact path='/Ballin' component={Ballin}/>

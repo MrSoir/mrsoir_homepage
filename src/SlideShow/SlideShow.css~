@@ -121,8 +121,9 @@
 	background: #880000;
 	color: white;
 	cursor: pointer;
+	transition-duration: 0.5s;
 }
 .AnimKeyBtn.AnimKeyBtnSelected{
 	background: #000088ff;
-	color: #00ff00;
+	color: #00aa00;
 }

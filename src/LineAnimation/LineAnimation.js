@@ -98,7 +98,6 @@ const COLOR_IDS = [
 
 function genMaterial(){
 	return new THREE.MeshStandardMaterial({color: 0xff0000, 
-									
 														metalness: 0.0, 
 														roughness: 0.25});
 }

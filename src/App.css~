@@ -208,7 +208,7 @@
 /*-----------------------------------------*/
 
 .App-header {
-	background-color: #ffffffaa;
+	background-color: #ffffff;
 	width: 100vw;
 	display: flex;
 	flex-direction: column;

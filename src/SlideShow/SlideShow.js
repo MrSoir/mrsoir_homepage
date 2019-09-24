@@ -5,6 +5,7 @@ import './SlideShow.css';
 import '../SlideShow.css';
 import {readTextFile} from '../StaticFunctions';
 import CurtainButton from '../CurtainButton';
+import * as WAITINGBAR  from '../WaitingBar/WaitingBar';
 
 //import {SlideShowGL} from '../SlideShowGL/SlideShowGL';
 //const SlideShowGL = require('slideshowgl');
@@ -40,7 +41,8 @@ class SlideShow extends Component{
 		this.loadingMsg = 'loading...';
 		
 		this.state = {
-			selctdAnimID: 'Wave2'
+			selctdAnimID: 'Wave2',
+			stopWaitingBar: false
 		};
 	}
 	loadImages(){
@@ -181,6 +183,7 @@ class SlideShow extends Component{
 		const loadingDiv = this.loadingDiv.current;
 		loadingDiv.style.display = 'none';
 		loadingDiv.style.animationPlayState = 'paused';
+		this.setState({stopWaitingBar: true});
 	}
 	setAnimationID(animID){
 		let state = this.state;
@@ -254,9 +257,14 @@ class SlideShow extends Component{
 				
 				<div id="canvasDiv">
 					<div id="loadingDiv" ref={this.loadingDiv}>
-						<div id="loadingDivMsg">
+						<WAITINGBAR.WaitingBar
+				      	innerRadius={200}
+				      	outerRadius={230}
+				      	stop={this.state.stopWaitingBar}
+				      />
+						{/*<div id="loadingDivMsg">
 							{this.loadingMsg}
-						</div>
+						</div>*/}
 					</div>
 					<canvas id="slideShowCanvas"/>
 				</div>
