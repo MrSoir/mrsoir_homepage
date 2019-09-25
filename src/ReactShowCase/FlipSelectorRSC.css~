@@ -1,7 +1,7 @@
 
 .FlipSelectorFlexRSC{
 	display: flex;
-	justify-content: center;
+	justify-content: space-around;
 	align-content: space-around;
 	width: 100%;
 	max-width: 600px;

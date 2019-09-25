@@ -2,14 +2,14 @@
 
 
 .TabBar {
-/*	width: 10000vw;*/
-	display: inline;
-	overflow: hidden;
-/*	display: inline-block;*/
-	border: 1px solid #00000022;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	box-sizing: border-box;
 }
 .TabElement{
-	display: inline-block;
+}
+.TabElement.acitve{
 }
 .TabIndicator{
 	height: 2px;
@@ -29,19 +29,21 @@
 }
 
 .TabLink {
+	border-right: 1px solid #00880044;
 	background-color: transparent;
 	color: var(--main-bg-color);
-	border-style: none;
-	border: none;
 /*  	font-size: calc(10px + 2vmin);*/
   	font-family: hand_written_font;
-  	padding: 0px 30px;
+  	padding: 0px 10px;
   	animation-name: example;
    animation-duration: 5s;
    margin: 1px;
    display:block;
    outline: none;
    cursor: pointer;
+}
+.lastttt{
+	border-right: none;
 }
 
 .TabLink:hover {

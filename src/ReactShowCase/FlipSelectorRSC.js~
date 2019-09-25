@@ -48,7 +48,7 @@ class FlipSelectorRSC extends Component{
 		let min = this.state.min;
 		let sec = this.state.sec;
 		
-		let indicatorString = 'selected: ' 
+		let indicatorString = 'selected' 
 										 + this.ensureTowDigitString('' + hour) + ' : ' 
 										 + this.ensureTowDigitString('' + min)  + ' : ' 
 										 + this.ensureTowDigitString('' + sec);

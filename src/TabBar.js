@@ -12,13 +12,16 @@ class TabBar extends Component{
 	render(){
     return (
       <div className="TabBar HeadingTextSize">
-   		{this.props.tabs.map((tab, i) =>
-				<TabElement key={i}
-								tab={tab} 
-								tabid={i}
-								tabClicked={()=>this.tabClicked(i, this.props.tabCallback)}
-								selected={(i % 2 ? true : false)}
+   		{this.props.tabs.map((tab, i) =>{
+   			let isLast = (i >= (this.props.tabs.length-1));
+				return <TabElement key={i}
+									isLast={isLast}
+									tab={tab} 
+									tabid={i}
+									tabClicked={()=>this.tabClicked(i, this.props.tabCallback)}
+									selected={(i % 2 ? true : false)}
 				/>
+			}
       	)}
       </div>
     );
@@ -56,12 +59,16 @@ class TabElement extends Component{
 		}
 	}
 	render(){
+		let isLast = !!this.props.isLast;
+		const tabLinkClass = "TabLink" + (isLast ? " lastttt" : "");
+		console.log('tabLinkClass: ', tabLinkClass);
 		return(
 		   <div className="TabElement HeadingTextSize">
-      		<div className="TabLink" key={this.props.tabid}
-      			onClick={()=>this.props.tabClicked(this.props.tabid)}
-      			onMouseEnter={()=>this.tabMouseEnter()}
-      			onMouseOut={()=>this.tabMouseOut()}>
+      		<div className={tabLinkClass} 
+      			  key={this.props.tabid}
+      			  onClick={()=>this.props.tabClicked(this.props.tabid)}
+      			  onMouseEnter={()=>this.tabMouseEnter()}
+      			  onMouseOut={()=>this.tabMouseOut()}>
       			{this.props.tab.name}
       		</div>
       		<div className={"TabIndicator" + (this.props.tab.selected ? " Selected" : "")}

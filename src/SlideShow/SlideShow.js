@@ -172,11 +172,11 @@ class SlideShow extends Component{
 	}*/
 	
 	onErrorOccured(){
-		const warningNode = document.querySelectorAll('#loadingDivMsg')[0];
+		const warningNode = document.querySelectorAll('#loadingDivMsgSS')[0];
 		warningNode.innerHTML = `Sorry, your browser <br/> doesn't seem to like <br/> WebGL2...`;
 	}
 	onWebGL_InitError(){
-		const warningNode = document.querySelectorAll('#loadingDivMsg')[0];
+		const warningNode = document.querySelectorAll('#loadingDivMsgSS')[0];
 		warningNode.innerHTML = `Sorry, your browser <br/> doesn't support <br/> WebGL2!`;
 	}
 	onImagesLoaded(){
@@ -256,13 +256,15 @@ class SlideShow extends Component{
 				<br/>
 				
 				<div id="canvasDiv">
-					<div id="loadingDiv" ref={this.loadingDiv}>
-						<WAITINGBAR.WaitingBar
-				      	innerRadius={200}
-				      	outerRadius={230}
-				      	stop={this.state.stopWaitingBar}
-				      />
-						{/*<div id="loadingDivMsg">
+					<div id="loadingDivSS" ref={this.loadingDiv}>
+						<div id="WaitingBarDivSS">
+							<WAITINGBAR.WaitingBar
+					      	innerRadius={200}
+					      	outerRadius={230}
+					      	stop={this.state.stopWaitingBar}
+					      />
+				      </div>
+						{/*<div id="loadingDivMsgSS">
 							{this.loadingMsg}
 						</div>*/}
 					</div>

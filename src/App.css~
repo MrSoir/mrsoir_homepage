@@ -1,8 +1,17 @@
+@import url('https://fonts.googleapis.com/css?family=Ubuntu&display=swap');
+
 :root {
   --main-bg-color: #00AA00;
   --headerLogoMaxHeight: 300px;
   --fontColor: #00AA00;
   --separatorColor: #66CC66;
+  
+  --Nili-color: #ff00ff; 
+  --Nili-color-dark: #aa00aa;
+  --Nili-color-light: #ffaaff;
+  --Nili-color-border: #ff88ff33;
+  --Nili-color-tableHighlight: #ff00ff22;
+  --Nili-color-blockBorder: #ff00ff88;
 }
 
 .App {
@@ -207,19 +216,15 @@
 }
 /*-----------------------------------------*/
 
-.App-header {
+.App-header{
 	background-color: #ffffff;
-	width: 100vw;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
 	font-size: calc(10px + 2vmin);
 	color: white;
-  
+
   	position: fixed;
+  	  left: 0;
+  	right: 0;
   	top: 0;
-  	padding-top: 10px;
 	z-index: 999;
 }
 
@@ -227,7 +232,6 @@
 	position: relative;
 	transition: 1s;
 	
-	width: 100vw;
 	height: auto;
 	overflow: hidden;
 }

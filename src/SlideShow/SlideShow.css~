@@ -18,7 +18,7 @@
 }
 
 #CredentialsDiv{
-	margin-top: -80px;
+	margin-top: -20px;
 	z-index: 10;
 }
 #ImageCredentialsHeading{
@@ -27,7 +27,7 @@
 #ImageCredentials{
 	display: inline-block;
 	margin-bottom: 20px;
-	margin-top: 20px;
+	margin-top: 5px;
 }
 .ImageCredentialTag{
 	display: inline-block;
@@ -46,7 +46,8 @@
 }
 
 #canvasDiv{
-	display: inline-block;
+	display: block;
+	margin: auto;
 	position: relative;
 	left: 0;
 	width: 80vw;
@@ -54,8 +55,7 @@
 	max-width: 1500px;
 	max-height: 800px;
 	z-index: 0;
-}
-#loadingDiv{
+#loadingDivSS{
 	position: absolute;
 	left: 0;
 	top: 0;
@@ -63,7 +63,18 @@
 	height: 100%;
 	z-index: 1;
 }
-#loadingDivMsg{
+#WaitingBarDivSS{
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	width: 100%;
+	max-width: 600px;
+	height: 100%;
+	max-height: 400px;
+	z-index: 1;
+}
+#loadingDivMsgSS{
 	position: relative;
 	top: 10%;
 	width: 100%;
@@ -75,7 +86,7 @@
 	animation-timing-function: linear;
 	animation-iteration-count: infinite;
 }
-@keyframes loadingDivMsgAnim {
+@keyframes loadingDivMsgAnimSS {
   0%   {color: #ff4400; font-size: 7vw; transform: rotate(0deg);}
   25%  {transform: rotate(-10deg);}
   50%  {color: #00ff00; font-size: 4vw; transform: rotate(0deg);}
@@ -121,7 +132,7 @@
 	background: #880000;
 	color: white;
 	cursor: pointer;
-	transition-duration: 0.5s;
+	transition-duration: 1s;
 }
 .AnimKeyBtn.AnimKeyBtnSelected{
 	background: #000088ff;

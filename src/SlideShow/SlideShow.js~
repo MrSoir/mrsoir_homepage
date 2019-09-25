@@ -5,7 +5,7 @@ import './SlideShow.css';
 import '../SlideShow.css';
 import {readTextFile} from '../StaticFunctions';
 import CurtainButton from '../CurtainButton';
-import WAITINGBAR from '../WaitingBar/WaitingBar';
+import * as WAITINGBAR  from '../WaitingBar/WaitingBar';
 
 //import {SlideShowGL} from '../SlideShowGL/SlideShowGL';
 //const SlideShowGL = require('slideshowgl');
@@ -256,12 +256,14 @@ class SlideShow extends Component{
 				<br/>
 				
 				<div id="canvasDiv">
-					<div id="loadingDiv" ref={this.loadingDiv}>
-						<WAITINGBAR.WaitingBar
-				      	innerRadius={200}
-				      	outerRadius={230}
-				      	stop={this.state.stopWaitingBar}
-				      />
+					<div id="loadingDivSS" ref={this.loadingDiv}>
+						<div id="WaitingBarDivSS">
+							<WAITINGBAR.WaitingBar
+					      	innerRadius={200}
+					      	outerRadius={230}
+					      	stop={this.state.stopWaitingBar}
+					      />
+				      </div>
 						{/*<div id="loadingDivMsg">
 							{this.loadingMsg}
 						</div>*/}
