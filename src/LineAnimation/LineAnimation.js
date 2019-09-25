@@ -4,7 +4,13 @@ import './LineAnimation.css';
 
 
 
-//----------------------------------
+//-------------------constants-------------------
+
+let MATERIAL_COLOR = 0x00aa00;
+let USE_PHONG = false;
+let POINT_COUNT = 200;
+
+//-------------------constants-------------------
 
 const {
 	WebGLRenderer, Scene, PerspectiveCamera, Mesh, Color,
@@ -96,10 +102,12 @@ const COLOR_IDS = [
 	0x00ff00,
 ];
 
-function genMaterial(){
-	return new THREE.MeshStandardMaterial({color: 0xff0000, 
-														metalness: 0.0, 
-														roughness: 0.25});
+function genMaterial(materialOptions={color: MATERIAL_COLOR, 
+							metalness: 0.0, 
+							roughness: 0.25}){
+	return (USE_PHONG 
+				? new THREE.MeshPhongMaterial(materialOptions)
+				: new THREE.MeshBasicMaterial(materialOptions) );
 }
 
 class PipeCurve extends THREE.Curve{
@@ -153,14 +161,13 @@ class Pipe extends Mesh {
 						radius = 1,
 						radialSegments = 4,
 						closed = false,
-						color = 0x003300
-						
+						color = MATERIAL_COLOR
 					}={}){
 		let path = new PipeCurve(points);
 		
 		let geometry = new THREE.TubeGeometry( path, tubularSegments, radius, radialSegments, closed );
 		
-		let material = genMaterial();
+		let material = genMaterial({color});
 		
 		super(geometry, material);
 		
@@ -197,12 +204,14 @@ class LineAnimation extends Component{
 		
 		this.MIN_VEL = -0.01;
 		this.MAX_VEL =  0.01;
+		
 		this.Z_VEL_FCTR = 2;
+		this.useZ = false;
 		
 		this.PIPE_RADIUS = 1;
 		this.SPHERE_RADIUS = 3;
 		
-		this.POINT_COUNT = 250;
+		this.POINT_COUNT = POINT_COUNT;
 		
 		this.LIFE_GROWTH_RATE = 0.05;
 		
@@ -249,13 +258,13 @@ class LineAnimation extends Component{
 	createPoint(){		
 		const vec = new THREE.Vector3( genRandomFloat(this.XMIN, this.XMAX),
 									 			 genRandomFloat(this.YMIN, this.YMAX),
-									 			 genRandomFloat(this.ZMIN, this.ZMAX) )
+									 			 (this.useZ ? genRandomFloat(this.ZMIN, this.ZMAX) : 0) );
 		vec.id = this.vecId;
 		this.vecId += 1; // keep track of all points and ensure unique id for every point
 		
 		vec.vel = new THREE.Vector3( genRandomFloat(this.MIN_VEL, this.MAX_VEL),
 											  genRandomFloat(this.MIN_VEL, this.MAX_VEL),
-											  genRandomFloat(this.MIN_VEL, this.MAX_VEL) * this.Z_VEL_FCTR );
+											  (this.useZ ? genRandomFloat(this.MIN_VEL, this.MAX_VEL) * this.Z_VEL_FCTR : 0) );
 		this.points.push( vec );
 		
 
@@ -457,11 +466,11 @@ class LineAnimation extends Component{
 		this.webgl.clearCircles();
 		this.circles = [];
 		this.points.forEach(p=>{
-			this.circles.push( this.genCircle(p, {color: 0x004400, radius: this.SPHERE_RADIUS }) );
+			this.circles.push( this.genCircle(p, {color: MATERIAL_COLOR, radius: this.SPHERE_RADIUS }) );
 		});
 	}
 	genCircle(p0, {
-							color = 0x00ff00,
+							color = MATERIAL_COLOR,
 							radius = 1,
 							widthSegments = 3,
 							heightSegments = 2
@@ -469,7 +478,7 @@ class LineAnimation extends Component{
 //		let geometry = new THREE.CircleGeometry(radius, segments);
 		let geometry = new THREE.SphereGeometry(radius, widthSegments, heightSegments);
 		
-		let material = genMaterial();
+		let material = genMaterial({color});
 		
 		let circle = new THREE.Mesh( geometry, material );
 		circle.position.set(p0.x, p0.y,p0.z);
