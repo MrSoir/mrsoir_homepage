@@ -24,7 +24,7 @@ class ReactShowCase extends Component{
 		this.showcase = React.createRef();
 		
 		this.state = {
-			selectedPreviewId: 1,
+			selectedPreviewId: 0,
 			previewImagePaths: this.getPreviewImagePaths(),
 			fullScreen: false
 		}
@@ -132,18 +132,36 @@ class ReactShowCase extends Component{
 		this.setState({fullScreen: !oldState});
 	}
 	render(){
+		const heading = 'React.js Components';
+		const description = `
+			For several React.js projects I needed some custom React/HTML-components. Some of these
+			are presented below. Click on the fullscreen-button for a better user experience.
+		`;
 		return (
-			<div className="ReactShowCase"
-				  ref={this.showcase}>
-				<div className="FullScreenRSC"
-						onClick={this.setFullScreen}>
-					&#9974;
+			<div className="MainRSC">
+				<div className="ProgramHeading">
+					{heading}
 				</div>
-				<div className="DiaSelectorRSC">
-				<DiaSelector mainContent={this.genMainComponent()}
-								 selectedId={this.state.selectedPreviewId}
-								 previewImagePaths={this.state.previewImagePaths}
-								 previewSelected={this.previewSelected}/>
+				<div id="DescriptionRSC"
+					  className="ProgramDescription">
+					{description}
+				</div>
+				<div id="FullScreenRSC">
+					<CurtainButton text="change to fullscreen"
+								onClick={this.setFullScreen}/>
+				</div>
+				<div className="ReactShowCase"
+					  ref={this.showcase}>
+					<div className="FullScreenRSC"
+							onClick={this.setFullScreen}>
+						&#9974;
+					</div>
+					<div className="DiaSelectorRSC">
+					<DiaSelector mainContent={this.genMainComponent()}
+									 selectedId={this.state.selectedPreviewId}
+									 previewImagePaths={this.state.previewImagePaths}
+									 previewSelected={this.previewSelected}/>
+					</div>
 				</div>
 			</div>
 		);

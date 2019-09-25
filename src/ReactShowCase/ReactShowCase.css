@@ -16,6 +16,12 @@
 	border: 1px solid black;
 	box-sizing: border-box;
 }
+#DescriptionRSC{
+	margin-bottom: 30px;
+}
+#FullScreenRSC{
+	margin-bottom: 20px;
+}
 .FullScreenRSC{
 	position: absolute;
 	right: 0%;

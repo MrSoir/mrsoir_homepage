@@ -6,45 +6,106 @@ class DownloadButton extends Component{
 		super(props);
 		
 		this.onClick = this.onClick.bind(this);
-		this.onMouseOver = this.onMouseOver.bind(this);
+		this.onMouseEnter = this.onMouseEnter.bind(this);
 		this.onMouseLeave = this.onMouseLeave.bind(this);
+		this.onClickActionContinue = this.onClickActionContinue.bind(this);
 
 		this.leftRect = React.createRef();
 		this.rightRect = React.createRef();
+		this.leftClickedRect = React.createRef();
+		this.rightClickedRect = React.createRef();
 		this.mainRef = React.createRef();
+		
+		this.curtainsClosed = true;
+		this.clickedCurtainsClosed = true;
 	}
 	onClick(){
 		if(this.props.onClick){
 			this.props.onClick();
 		}
+		this.startOnClickAnimation();
 	}
-	onMouseOver(){		
-		let lr = this.leftRect.current;
-		let rr = this.rightRect.current;
-		lr.style.width = '0%';
-		rr.style.width = '0%';
+	startOnClickAnimation(){
+		this.isExecutingClickAnimation = true;
+		if(this.curtainsClosed){
+			this.openForegroundCurtains();
+			setTimeout(this.onClickActionContinue, 500);
+		}else{
+			this.onClickActionContinue();
+		}
+	}
+	onClickActionContinue(){
+		this.openClickedCurtains();
+		setTimeout(()=>{
+			this.closeClickedCurtains();
+			setTimeout(()=>{
+				this.closeForegroundCurtains();
+				this.isExecutingClickAnimation = false;
+			}, 500);
+		}, 500);
+	}
+	closeClickedCurtains(){
+		this.clickedCurtainsClosed = true;
+		this.closeCurtains_hlpr(this.leftClickedRect.current, this.rightClickedRect.current);
+	}
+	closeForegroundCurtains(){
+		this.curtainsClosed = true;
+		this.closeCurtains_hlpr(this.leftRect.current, this.rightRect.current);
+	}
+	openClickedCurtains(){
+		this.clickedCurtainsClosed = false;
+		this.openCurtains_hlpr(this.leftClickedRect.current, this.rightClickedRect.current);
+	}
+	openForegroundCurtains(){
+		this.curtainsClosed = false;
+		this.openCurtains_hlpr(this.leftRect.current, this.rightRect.current);
+	}
+	closeCurtains_hlpr(left, right){
+		left.style  = "width: 51%";
+		right.style = "width: 51%";
+	}
+	openCurtains_hlpr(left, right){
+		left.style  = "width: 0%";
+		right.style = "width: 0%";
+	}
+	onMouseEnter(){
+		if(this.isExecutingClickAnimation){
+			return;
+		}
+		this.openForegroundCurtains();
 	}
 	onMouseLeave(){
-		let lr = this.leftRect.current;
-		let rr = this.rightRect.current;
-		lr.style.width = '51%';
-		rr.style.width = '51%';
+		if(this.isExecutingClickAnimation){
+			return;
+		}
+		this.closeForegroundCurtains();
 	}
 	render(){
 		let buttonText = this.props.text ? this.props.text : "Download";
 		return (
 			<div id="CurtainButton"
 				  className="CurtainButton HeadingTextSize"
+				  ref={this.mainRef}
 				  onClick={this.onClick}
-				  onMouseOver={this.onMouseOver}
-				  onMouseLeave={this.onMouseLeave}>				
-				<div id="LeftRect"
+				  onMouseEnter={this.onMouseEnter}
+				  onMouseLeave={this.onMouseLeave}>
+				<div id="LeftClickedRectCB"
+					  className="CurtainCB ClickedCurtainCB"
+					  ref={this.leftClickedRect}
+				/>
+				<div id="RightClickedRectCB"
+					  className="CurtainCB ClickedCurtainCB"
+					  ref={this.rightClickedRect}
+				/>
+				<div id="LeftRectCB"
+					  className="CurtainCB"
 					  ref={this.leftRect}/>
 					  
-				<div id="RightRect"
+				<div id="RightRectCB"
+					  className="CurtainCB"
 					  ref={this.rightRect}/>
 					  
-				<div id="ButtonText">
+				<div id="ButtonTextCB">
 					{buttonText}
 				</div>
 			</div>
