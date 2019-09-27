@@ -163,7 +163,7 @@ class FlipSelector extends Component{
 		let tarVal = vals[id];
 		
 		return (
-			<div className="FlipPicker TextNotSelectable">
+			<div className="FlipPicker">
 				<div className="IncrementButtonFP"
 					onMouseDown  = { !window.mobilecheck() ? this.startMouseIncrement.bind(this) : ()=>{}}
 					onTouchStart = {  window.mobilecheck() ? this.startTouchIncrement.bind(this) : ()=>{}}

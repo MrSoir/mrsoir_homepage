@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
+
 import CurtainButton from '../CurtainButton';
+import IndicatorBar from '../IndicatorBar';
+import SpinningWheel from '../SpinningWheel';
+import DiaSelector from '../DiaSelector/DiaSelector';
 
 import FlipSelectorRSC from './FlipSelectorRSC';
 import SlideBarRSC from './SlideBarRSC';
@@ -8,10 +12,11 @@ import SpinningWheelRSC from './SpinningWheelRSC';
 import WaitingBarRSC from './WaitingBarRSC';
 import DataVisualizationRSC from './DataVisualizationRSC';
 
-import IndicatorBar from '../IndicatorBar';
-import SpinningWheel from '../SpinningWheel';
-import DiaSelector from '../DiaSelector/DiaSelector';
+
 import './ReactShowCase.css';
+
+import Prism from 'prismjs';
+import "../prism/themes/Okaidia.css";
 
 class ReactShowCase extends Component{
 	constructor(props){
@@ -24,7 +29,7 @@ class ReactShowCase extends Component{
 		this.showcase = React.createRef();
 		
 		this.state = {
-			selectedPreviewId: 0,
+			selectedPreviewId: 2,
 			previewImagePaths: this.getPreviewImagePaths(),
 			fullScreen: false
 		}
@@ -53,8 +58,6 @@ class ReactShowCase extends Component{
 				return this.genFlipSelector();
 			case 4:
 				return this.genSlideBar();
-			case 5:
-				return this.genCurtainButtonDiv();
 			default:
 				return (
 					<div>
@@ -66,13 +69,6 @@ class ReactShowCase extends Component{
 	genFlipSelector(){
 		return (
 			<FlipSelectorRSC/>
-		);
-	}
-	genCurtainButtonDiv(){
-		return (
-			<div className="CurtainButtonRSC">
-				<CurtainButton text="test button"/>
-			</div>
 		);
 	}
 	genSlideBar(){
@@ -137,6 +133,13 @@ class ReactShowCase extends Component{
 			For several React.js projects I needed some custom React/HTML-components. Some of these
 			are presented below. Click on the fullscreen-button for a better user experience.
 		`;
+		let code = `
+import React, { Component } from 'react';
+import SlideBar from '../SlideBar';
+import './SlideBarRSC.css';
+
+		`;
+		
 		return (
 			<div className="MainRSC">
 				<div className="ProgramHeading">
@@ -163,6 +166,24 @@ class ReactShowCase extends Component{
 									 previewSelected={this.previewSelected}/>
 					</div>
 				</div>
+				{/*
+				<div id="CodeDivRSC">
+					<div id="CodeHeadingRSC">
+						Code
+					</div>
+					<div id="CodeFilesRSC">
+						<button className="CodeFileRSC">
+							JavaScript
+						</button>
+						<button className="CodeFileRSC">
+							CSS
+						</button>
+					</div>
+					<div id="CodeRSC">
+						<pre><code class="language-js">{code}</code></pre>
+					</div>
+				</div>
+				*/}
 			</div>
 		);
 	}

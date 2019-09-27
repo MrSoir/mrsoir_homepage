@@ -14,7 +14,7 @@ import Notes from './Notes/Notes';
 import SlideShow from './SlideShow/SlideShow';
 import ArduinoFullstack from './ArduinoFullstack/ArduinoFullstack';
 import LineAnimation from './LineAnimation/LineAnimation';
-import ReactShowCase from './ReactShowCase/ReactShowCase';
+//import ReactShowCase from './ReactShowCase/ReactShowCase';
 
 class App extends Component {
 	constructor(){
@@ -86,14 +86,13 @@ class App extends Component {
 		window.removeEventListener('scroll', this.onScroll);
 	}
    tabClicked(id){
-   	console.log('tab clicked: ' + id, '   ', this.state.tabs[id].name);
    	let newstate = this.state;
    	let tabs = this.state.tabs;
    	
    	tabs.forEach((t,i)=>t.selected = (id===i));
    	
-   	let trmdName = this.state.tabs[id].path;
-		this.props.history.push('/' + trmdName);
+   	let path = this.state.tabs[id].path;
+		this.props.history.push('/' + path);
    	
    	this.setState(newstate);
    }
@@ -136,7 +135,7 @@ class App extends Component {
 				<div className="MainDiv" ref={this.body}>
 					<Switch>
 						<Route exact path='/' component={MainPage}/>
-						<Route exact path='/ReactShowCase' component={ReactShowCase}/>
+						{/*<Route exact path='/ReactShowCase' component={ReactShowCase}/>*/}
 						<Route exact path='/Main' component={MainPage}/>
 						<Route exact path='/ArduinoFullstack' component={ArduinoFullstack}/>
 						<Route exact path='/Ballin' component={Ballin}/>

@@ -59,7 +59,7 @@ class RotatedDiv extends Component{
 		 				+ ' translateY(calc(' + translateY + 'px - 50%)) '
 		 				+ ' rotate(' + rotRad + 'rad)',
 		 			
-			transitionDuration: this.props.transitionDuration
+			transformationDuration: this.props.transformationDuration
 		};
 		 
 		return (
@@ -78,7 +78,7 @@ class SpinningWheel extends Component{
 		
 		this.state = {
 			focusedId: 0,
-			transitionDuration: '0.15s'
+			transformationDuration: '0.15s'
 		}
 		this.initTagAlreadySet = false;
 		
@@ -143,7 +143,7 @@ class SpinningWheel extends Component{
    componentWillUnmount(){
    }
    rotateElementsAtOnce(idOffs){
-   	this.setState({transitionDuration: '1s'});
+   	this.setState({transformationDuration: '1s'});
 		let focusedId = this.state.focusedId;
 		let newFocusedId = (focusedId + idOffs) % this.props.tags.length;
 		if(newFocusedId < 0){
@@ -155,7 +155,7 @@ class SpinningWheel extends Component{
 		});
    }
    rotateElementsIncremental(idOffs){
-   	this.setState({transitionDuration: '0s'});
+   	this.setState({transformationDuration: '0s'});
    	let totalDuration = 500;
    	let dt = 10;
    	
@@ -244,7 +244,7 @@ class SpinningWheel extends Component{
 					return <RotatedDiv
 							key={i}
 							className="SpinningEntry"
-							transitionDuration={this.state.transitionDuration}
+							transformationDuration={this.state.transformationDuration}
 							tag={tag}
 							width={width}
 							height={height}

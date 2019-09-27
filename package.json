@@ -5,10 +5,11 @@
   "dependencies": {
     "file-saver": "^2.0.1",
     "gl-matrix": "^3.0.0",
+    "prismjs": "^1.17.1",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-player": "^1.12.0",
-    "react-router-dom": "^5.0.0",
+    "react-router-dom": "^5.1.0",
     "react-scripts": "^3.1.2",
     "redux": "^4.0.4",
     "slideshowgl": "latest",

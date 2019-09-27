@@ -36,7 +36,7 @@ class SpinningWheelRSC extends Component{
 		const heading = 'Spinner';
 		const description = `
 			This spinner is inspired by rotary dials and 
-			lets the user make a selection between several options.
+			lets the user make a select between several options.
 			It takes up more space than a drop down menu but is 
 			much more intuitive.
 		`;

@@ -15,7 +15,7 @@ class DiaSelector extends Component{
 		
 		this.state = {
 			showPreviewBar: true,
-			imgPaths: this.evalImagePaths()
+			imgPaths: this.props.previewImagePaths
 		};
 	}
    componentDidMount(){
@@ -30,8 +30,9 @@ class DiaSelector extends Component{
 		let previewBarShowBtnRef = this.previewBarShowBtnRef.current;
 		
 		if(showPreviewBar){
-			previewBarDSRef.style.width = '250';
-			previewBarDSRef.style.minWidth = '250px';
+			previewBarDSRef.style.width = '25%';
+			previewBarDSRef.style.minWidth = '100px';
+			previewBarDSRef.style.maxWidth = '250px';
 			previewBarShowBtnRef.style.opacity = '0';
 			setTimeout(()=>{
 				previewBarShowBtnRef.innerHTML = '⮜';
@@ -49,17 +50,7 @@ class DiaSelector extends Component{
 		
 		this.setState({showPreviewBar});
 	}
-	evalImagePaths(){
-/*		let imgBaseURI = process.env.PUBLIC_URL + '/pics/hippos/';
-		let imgPaths = []
-		for(let i=0; i < 6; ++i){
-			imgPaths.push( imgBaseURI + 'HippoPreview' + i + '.jpg' );
-		}
-		return imgPaths;*/
-		return this.props.previewImagePaths;
-	}
 	onPreviewClicked(id){
-		console.log('id: ', id);
 		let mainWindowRef = this.mainWindowRef.current;
 		mainWindowRef.style.opacity = '0';
 		mainWindowRef.style.transform = 'scale(0)';
@@ -72,10 +63,6 @@ class DiaSelector extends Component{
 				mainWindowRef.style.transform = 'scale(1)';
 			}, 10);			
 		}, 500);
-	}
-	setMainContent(id){
-		let mainWindowRef = this.mainWindowRef.current;
-		mainWindowRef.innerHTML = 'Preview # ' + id;
 	}
 	render(){
 		return (
@@ -95,8 +82,9 @@ class DiaSelector extends Component{
 						</div>
 					</div>
 				</div>
-				<div className="PreviewBarShowBtn">
-						<div className="PreviewBarShowBtnTxt"
+				
+				<div className="PreviewBarShowBtnDS">
+						<div className="PreviewBarShowBtnTxtDS"
 							  ref={this.previewBarShowBtnRef}
 							  onMouseOver={()=>{if(!window.mobilecheck()){this.onOverPreviewBarShowBtn();}}}
 							  onClick    ={()=>{if( window.mobilecheck()){this.onOverPreviewBarShowBtn();}}}>

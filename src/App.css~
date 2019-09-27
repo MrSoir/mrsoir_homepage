@@ -25,6 +25,19 @@
 
 /*-----------------------------------------*/
 
+/*noselect: text is not selectable/copyable/highlightable -> useful for buttons*/
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Opera and Firefox */
+}
+
+/*-----------------------------------------*/
+
 .ProgramHeading{
 	color: var(--fontColor);
 	font-family: Times;
@@ -222,7 +235,7 @@
 	color: white;
 
   	position: fixed;
-  	  left: 0;
+  	left: 0;
   	right: 0;
   	top: 0;
 	z-index: 999;
