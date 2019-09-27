@@ -32,7 +32,7 @@ class ReactShowCase extends Component{
 		this.addFullScreenChangeListener();
 		
 		this.state = {
-			selectedPreviewId: 0,
+			selectedPreviewId: 2,
 			previewImagePaths: this.getPreviewImagePaths(),
 			fullScreen: false
 		}

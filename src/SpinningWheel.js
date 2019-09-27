@@ -155,9 +155,10 @@ class SpinningWheel extends Component{
 		});
    }
    rotateElementsIncremental(idOffs){
+   	console.log('idOffs: ', idOffs);
    	this.setState({transitionDuration: '0s'});
-   	let totalDuration = 500;
-   	let dt = 10;
+   	let totalDuration = Math.abs(idOffs) * 200;// 500;
+   	let dt = 16;
    	
    	let tagCount = this.props.tags.length;
    	let fctnToOffs = idOffs / tagCount;
