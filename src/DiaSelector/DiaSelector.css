@@ -5,6 +5,7 @@
 	height: 100%;
 	text-align: left;
 	align-items: center;
+	box-sizing: border-box;
 }
 .PreviewBarDS{
 	width: 20%;
@@ -18,18 +19,18 @@
 	overflow-y: auto;
 	height: 100%;
 }
-::-webkit-scrollbar {
-    width: 7px;
+.DiaSelector ::-webkit-scrollbar {
+    width: 10px;
 }
-::-webkit-scrollbar-track {
+.DiaSelector ::-webkit-scrollbar-track {
   background: #333333;
 }
 
-::-webkit-scrollbar-thumb {
+.DiaSelector ::-webkit-scrollbar-thumb {
   background: #555555;
 }
 
-::-webkit-scrollbar-thumb:hover {
+.DiaSelector ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
 

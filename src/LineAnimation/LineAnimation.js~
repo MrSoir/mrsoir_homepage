@@ -8,7 +8,7 @@ import './LineAnimation.css';
 
 let MATERIAL_COLOR = 0x00aa00;
 let USE_PHONG = false;
-let POINT_COUNT = 100;
+let POINT_COUNT = 300;
 
 //-------------------constants-------------------
 

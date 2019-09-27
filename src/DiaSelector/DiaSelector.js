@@ -6,12 +6,17 @@ class DiaSelector extends Component{
 	constructor(props){
 		super(props);
 		
-		this.previewBarDSRef 	  = React.createRef();
-		this.previewBarShowBtnRef = React.createRef();
-		this.mainWindowRef 		  = React.createRef();
+		this.previewBarDSRef 	  		= React.createRef();
+		this.previewBarShowBtnLblRef  = React.createRef();
+		this.mainWindowRef 		  		= React.createRef();
 		
 		this.onOverPreviewBarShowBtn = this.onOverPreviewBarShowBtn.bind(this);
 		this.onPreviewClicked = this.onPreviewClicked.bind(this);
+		this.activatePrevBar = this.activatePrevBar.bind(this);
+		
+		this.executingPrevBarAnimation = false;
+		
+		this.prevBarActive = false;
 		
 		this.state = {
 			showPreviewBar: true,
@@ -21,30 +26,40 @@ class DiaSelector extends Component{
    componentDidMount(){
    	
 	}
+	activatePrevBar(){
+		this.prevBarActive = true;
+	}
 	onOverPreviewBarShowBtn(){
+		if(this.executingPrevBarAnimation){
+			return;
+		}
+		if( !this.prevBarActive && !window.mobilecheck() ){
+			return;
+		}
+		this.executingPrevBarAnimation = true;
 		let showPreviewBar = !this.state.showPreviewBar;
 		
-		console.log('showPreviewBar: ', showPreviewBar);
-		
 		let previewBarDSRef = this.previewBarDSRef.current;
-		let previewBarShowBtnRef = this.previewBarShowBtnRef.current;
+		let previewBarShowBtnLblRef = this.previewBarShowBtnLblRef.current;
 		
 		if(showPreviewBar){
 			previewBarDSRef.style.width = '25%';
 			previewBarDSRef.style.minWidth = '100px';
 			previewBarDSRef.style.maxWidth = '250px';
-			previewBarShowBtnRef.style.opacity = '0';
+			previewBarShowBtnLblRef.style.opacity = '0';
 			setTimeout(()=>{
-				previewBarShowBtnRef.innerHTML = '⮜';
-				previewBarShowBtnRef.style.opacity = '1';
+				previewBarShowBtnLblRef.innerHTML = '⮜';
+				previewBarShowBtnLblRef.style.opacity = '1';
+				this.executingPrevBarAnimation = false;
 			}, 500);
 		}else{
 			previewBarDSRef.style.width = '0px';
 			previewBarDSRef.style.minWidth = '0px';
-			previewBarShowBtnRef.style.opacity = '0';
+			previewBarShowBtnLblRef.style.opacity = '0';
 			setTimeout(()=>{
-				previewBarShowBtnRef.innerHTML = '⮞';
-				previewBarShowBtnRef.style.opacity = '1';
+				previewBarShowBtnLblRef.innerHTML = '⮞';
+				previewBarShowBtnLblRef.style.opacity = '1';
+				this.executingPrevBarAnimation = false;
 			}, 500);
 		}
 		
@@ -68,7 +83,8 @@ class DiaSelector extends Component{
 		return (
 			<div className="DiaSelector">
 				<div className="PreviewBarDS"
-					  ref={this.previewBarDSRef}>
+					  ref={this.previewBarDSRef}
+					  onMouseEnter={()=>{if(!window.mobilecheck()){this.activatePrevBar();}}}>
 					<div className="PreviewBarImgContainerDS">
 						<div className="PreviewBarImgFlexDS">
 							{this.state.imgPaths.map((imgPath,id)=>{
@@ -83,11 +99,13 @@ class DiaSelector extends Component{
 					</div>
 				</div>
 				
-				<div className="PreviewBarShowBtnDS">
+				<div className="PreviewBarShowBtnDS"
+					  onMouseOver={()=>{if(!window.mobilecheck()){this.onOverPreviewBarShowBtn();}}}
+					  onClick    ={()=>{if( window.mobilecheck()){this.onOverPreviewBarShowBtn();}}}>
 						<div className="PreviewBarShowBtnTxtDS"
-							  ref={this.previewBarShowBtnRef}
+							  ref={this.previewBarShowBtnLblRef}
 							  onMouseOver={()=>{if(!window.mobilecheck()){this.onOverPreviewBarShowBtn();}}}
-							  onClick    ={()=>{if( window.mobilecheck()){this.onOverPreviewBarShowBtn();}}}>
+					  		  onClick    ={()=>{if( window.mobilecheck()){this.onOverPreviewBarShowBtn();}}}>
 							⮜
 						</div>
 				</div>

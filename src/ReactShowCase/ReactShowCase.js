@@ -25,11 +25,14 @@ class ReactShowCase extends Component{
 		this.previewSelected = this.previewSelected.bind(this);
 		this.getPreviewImagePaths = this.getPreviewImagePaths.bind(this);
 		this.setFullScreen = this.setFullScreen.bind(this);
+		this.onFullScreenChange = this.onFullScreenChange.bind(this);
 		
 		this.showcase = React.createRef();
 		
+		this.addFullScreenChangeListener();
+		
 		this.state = {
-			selectedPreviewId: 2,
+			selectedPreviewId: 0,
 			previewImagePaths: this.getPreviewImagePaths(),
 			fullScreen: false
 		}
@@ -94,35 +97,55 @@ class ReactShowCase extends Component{
 	previewSelected(previewId){
 		this.setState({selectedPreviewId: previewId});
 	}
+	addFullScreenChangeListener(){
+		/* Standard syntax */
+/*		document.addEventListener("fullscreenchange", this.onFullScreenChange);*/
+		/* Firefox */
+		document.addEventListener("mozfullscreenchange", this.onFullScreenChange);
+		/* Chrome, Safari and Opera */
+		document.addEventListener("webkitfullscreenchange", this.onFullScreenChange);
+		/* IE / Edge */
+		document.addEventListener("msfullscreenchange", this.onFullScreenChange);
+	}
+	onFullScreenChange(e){
+		if(this.dontChangeStateOnFullScreenChangeEvent){
+			this.dontChangeStateOnFullScreenChangeEvent = false;
+			return;
+		}
+		if(this.state.fullScreen){
+			this.setState({fullScreen: false});
+		}
+	}
 	setFullScreen(){
 		let oldState = this.state.fullScreen;
 		var elem = this.showcase.current;//document.getElementById("myvideo");
 		function openFullscreen() {
-			if (elem.requestFullscreen) {
-				elem.requestFullscreen();
-			} else if (elem.mozRequestFullScreen) { /* Firefox */
+			if (elem.mozRequestFullScreen) { /* Firefox */
 				elem.mozRequestFullScreen();
 			} else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
 				elem.webkitRequestFullscreen();
 			} else if (elem.msRequestFullscreen) { /* IE/Edge */
 				elem.msRequestFullscreen();
+			} else if (elem.requestFullscreen) {
+				elem.requestFullscreen();
 			}
 		}
 		function closeFullscreen() {
-			if (document.exitFullscreen) {
-				document.exitFullscreen();
-			} else if (document.mozCancelFullScreen) { /* Firefox */
+			if (document.mozCancelFullScreen) { /* Firefox */
 				document.mozCancelFullScreen();
 			} else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
 				document.webkitExitFullscreen();
 			} else if (document.msExitFullscreen) { /* IE/Edge */
 				document.msExitFullscreen();
+			} else if (document.exitFullscreen) {
+				document.exitFullscreen();
 			}
 		}
-		console.log('oldState: ', oldState);
+		
 		if(oldState){
 			closeFullscreen();
 		}else{
+			this.dontChangeStateOnFullScreenChangeEvent = true;
 			openFullscreen();
 		}
 		this.setState({fullScreen: !oldState});
