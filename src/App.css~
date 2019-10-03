@@ -26,7 +26,7 @@
 /*-----------------------------------------*/
 
 /*noselect: text is not selectable/copyable/highlightable -> useful for buttons*/
-.noselect {
+.TextNotSelectable{
   -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
      -khtml-user-select: none; /* Konqueror HTML */
@@ -320,7 +320,7 @@
 .TopMargin{
 	height: 300px;
 }
-.MainDiv {
+.MainDivAPP {
 /*	width: 100vw;*/
 /*	height: 100000px;*/
 /*	text-align: center;*/

@@ -60,7 +60,7 @@ class SlideBarRSC extends Component{
 					<SlideBar
 						sliderVal={this.state.slideBarValue}
 						indicatorValue={this.state.indicatorValue}
-						label='demo SlideBar'
+						label='some demo SlideBar'
 						onMouseUp={(val)=>{this.setState({slideBarValue: val})}}
 					/>
 				</div>

@@ -312,20 +312,13 @@
 	color: var(--main-bg-color);/*#FFB76B;*/
 	font-family: hand_written_font;
 	font-weight: lighter;
-	font-size: min(10vmin, 50);
-/*	width: 10000vw;*/
-	
+	font-size: min(10vmin, 50);	
 }
 
 .TopMargin{
 	height: 300px;
 }
-.MainDiv {
-/*	width: 100vw;*/
-/*	height: 100000px;*/
-/*	text-align: center;*/
-/*	background: linear-gradient(#8ba881, #f69d3c);*/
-/*	overflow: scroll;*/
+.MainDivAPP {
 }
 
 .ContactInfoBox{

@@ -33,7 +33,7 @@ class MainPage extends Component{
 		let indicators = programs.map(p=>f(p));
 		return indicators;
 	}
-	componentWillMount() {
+	loadPreviews(){
 		let txt = readTextFile(meta_info);
 		let programs = txt.split('\n').filter((tn)=>!!tn).map((tn)=>{
 			let splt = tn.split('_|_').map(v=>v.trim());
@@ -64,8 +64,10 @@ class MainPage extends Component{
    	this.updatePreviewsToState(prev_programs);
    	
    	this.loadGIFs();
-   }
+	}
    componentDidMount(){
+   	this.loadPreviews();
+   	
    	window.scrollTo(0, 0);
    	window.addEventListener('scroll', this.onScroll);
    	
@@ -104,8 +106,8 @@ class MainPage extends Component{
 				onLoaded(imgPath);
 			}
 		});
-		image.addEventListener('onerror', evnt=>{
-			console.log('error: could not load image: ', imgPath);
+		image.addEventListener('error', evnt=>{
+//			console.log('error: could not load image: ', imgPath);
 		});
 		image.src = imgPath;
    }
@@ -139,28 +141,37 @@ class MainPage extends Component{
 		this.updateFocusedPreview();
 	}
 	render(){
+		let description = `
+			The following shows some of the programs/projects that I've created
+			over the past years. I published most of these projects on
+			dedicated platforms. This website is created with the React.js-library
+			and mainly serves me to test concepts of modern
+			single page application development.
+		`;
 		return (
-		<div className="PreviewsDiv">
-			{this.state.previews.map((pi, id)=>
-				<div key={id}>
-					<div className='MainPrevDiv'>
-						<MainImagePreview
-							meta={pi}
-							indicator={{
-								heading: pi.heading,
-								description: pi.description
-							}}
-							focusPreview={this.state.focusedPreviews.some(x=>x===id)}
-							onPreviewClicked={()=>{this.onPreviewClicked(id);}}
-							separator={id < this.state.previews.length-1}
-						/>
-					</div>
-					{id < this.state.previews.length-1 
-						? <div className="MainSeparator"></div>
-						: ''}
+			<div id="MainDivMN">
+				<div id="DescriptionMN"
+					  className="ProgramDescription">
+					{description}
 				</div>
-			)}
-		</div>
+				<div className="MainPrevDivMN">
+					{this.state.previews.map((pi, id)=>
+						<div key={id}
+							  className="PreviewsDivMN">
+							<MainImagePreview
+								meta={pi}
+								indicator={{
+									heading: pi.heading,
+									description: pi.description
+								}}
+								focusPreview={this.state.focusedPreviews.some(x=>x===id)}
+								onPreviewClicked={()=>{this.onPreviewClicked(id);}}
+								separator={id < this.state.previews.length-1}
+							/>
+						</div>
+					)}
+				</div>
+			</div>
 		);
 	}
 }

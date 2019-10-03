@@ -12,16 +12,16 @@ class MainImagePreview extends Component{
 	genIndicator(){
 		let {heading, description} = this.props.indicator;
 		
-		let focusPreview = this.props.focusPreview;
+		let focusPreview = window.mobilecheck() || this.props.focusPreview;
 		let prevImgInctrDivClass = focusPreview ? "PreviewImageIndicatorDiv FocusedLeftMIP" : "PreviewImageIndicatorDiv";
 		return (
 			<div className={prevImgInctrDivClass}>
-				<div className="PreviewImageIndicatorHeadingDiv PreviewHeadingSizing">
+				<div className="PreviewImageIndicatorHeadingDiv">
 					<div className="PreviewImageIndicatorHeading">
 						{heading}
 					</div>
 				</div>
-				<div className="PreviewImageIndicatorDescriptionDiv PreviewTextSizing">
+				<div className="PreviewImageIndicatorDescriptionDiv">
 					<div className="PreviewImageIndicatorDescription">
 						{description}
 					</div>

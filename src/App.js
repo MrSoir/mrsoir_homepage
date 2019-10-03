@@ -20,12 +20,12 @@ class App extends Component {
 	constructor(){
 		super();
 		
-		console.log('app-constructor');
 		this.state = {
 			tabs: []
 		}
 		
 		this.tabClicked = this.tabClicked.bind(this);
+		this.initTabs = this.initTabs.bind(this);
 		this.updateTabSelection = this.updateTabSelection.bind(this);
 		this.onScroll = this.onScroll.bind(this);
 		
@@ -33,9 +33,8 @@ class App extends Component {
 		this.body = React.createRef();
 		this.logoHeader = React.createRef();
 	}
-	componentWillMount() {
+	initTabs() {
 		window.hist = this.props.history;
-		console.log('window.hist: ', window.hist);
 		
       let txt = readTextFile(tabs_info);
       
@@ -48,45 +47,50 @@ class App extends Component {
       		selected: false
       	};
       });
-      let newstate = this.state;
-
-      newstate.tabs = tabs;
-
-      this.setState(newstate);
-      
+      if(tabs.length > 0){
+      	tabs[0].selected = true;
+      }
+      this.setState( {tabs: tabs} );
       this.updateTabSelection();
    }
    componentDidUpdate(prevProps) {
-		if (this.props.location !== prevProps.location) {
+//		if (this.props.location !== prevProps.location) {
 			this.updateTabSelection();
-		}
+//		}
 	}
    updateTabSelection(){
-   	let newstate = this.state;
    	let tabs = this.state.tabs;
    	let curRelPath = this.getCurrentRelPath();
    	
+   	let selectionChanged = false;
+   	
    	tabs.forEach(t=>{
-   		t.selected = curRelPath.startsWith( t.path );
+   		let slctd = curRelPath.startsWith( t.path );
+   		if(slctd !== t.selected){
+   			selectionChanged = true;
+   		}
+   		 t.selected = slctd;
    	});
    	
-   	this.setState(newstate);
+   	if(selectionChanged){
+   		this.setState(tabs);
+   	}
    }
    getCurrentRelPath(){
    	return this.props.location.pathname.slice(1);
    }
 	componentDidMount() {
+		this.initTabs();
+		
 		window.scrollTo(0, 0);
 		window.addEventListener('scroll', this.onScroll);
 		this.lastYScroll = 0;
-//		window.scrollY = 0;
 	}
 	
 	componentWillUnmount() {
 		window.removeEventListener('scroll', this.onScroll);
 	}
    tabClicked(id){
-   	let newstate = this.state;
    	let tabs = this.state.tabs;
    	
    	tabs.forEach((t,i)=>t.selected = (id===i));
@@ -94,7 +98,7 @@ class App extends Component {
    	let path = this.state.tabs[id].path;
 		this.props.history.push('/' + path);
    	
-   	this.setState(newstate);
+   	this.setState(tabs);
    }
    onScroll(){
    	let y = window.scrollY;
@@ -115,8 +119,8 @@ class App extends Component {
 		return (
 			<div className="App">
 			
-				<LineAnimation />
-			
+				{window.mobilecheck() ? "" : <LineAnimation />}
+				
 				<div className="App-header" ref={this.header}>
 					<TabBar tabs={this.state.tabs} tabCallback={this.tabClicked}/>
 					
@@ -132,7 +136,7 @@ class App extends Component {
 				<div className="TopMargin">
 				</div>
 					
-				<div className="MainDiv" ref={this.body}>
+				<div className="MainDivAPP" ref={this.body}>
 					<Switch>
 						<Route exact path='/' component={MainPage}/>
 						<Route exact path='/ReactShowCase' component={ReactShowCase}/>

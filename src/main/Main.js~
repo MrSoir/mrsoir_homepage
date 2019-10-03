@@ -33,9 +33,8 @@ class MainPage extends Component{
 		let indicators = programs.map(p=>f(p));
 		return indicators;
 	}
-	componentWillMount() {
+	loadPreviews(){
 		let txt = readTextFile(meta_info);
-		console.log(txt);
 		let programs = txt.split('\n').filter((tn)=>!!tn).map((tn)=>{
 			let splt = tn.split('_|_').map(v=>v.trim());
 			let name = splt[0];
@@ -46,7 +45,6 @@ class MainPage extends Component{
 			};
 		});
 		
-		console.log(programs);
    	let f = (pi) => {
    		let text_path = process.env.PUBLIC_URL + '/MainPage/texts/' + pi.name + '.txt';
    		let prev_text = readTextFile(text_path);
@@ -56,7 +54,6 @@ class MainPage extends Component{
    				  text: prev_text };
    	};
    	let prev_programs = programs.map( p => f(p) );
-   	console.log(prev_programs);
    	
    	let indicators = this.getIndicators(programs.map(p=>p.name));
    	prev_programs.forEach((p, id)=>{
@@ -67,15 +64,16 @@ class MainPage extends Component{
    	this.updatePreviewsToState(prev_programs);
    	
    	this.loadGIFs();
-   }
+	}
    componentDidMount(){
+   	this.loadPreviews();
+   	
    	window.scrollTo(0, 0);
    	window.addEventListener('scroll', this.onScroll);
    	
    	setTimeout(this.updateFocusedPreview, 1000);
    }
    componentWillUnmount(){
-   	console.log('about to unmount');
    	window.removeEventListener('scroll', this.onScroll);
    }
    updatePreviewsToState(previews){
@@ -104,23 +102,19 @@ class MainPage extends Component{
    loadImage(imgPath, onLoaded){
    	let image = new Image();
 		image.addEventListener('load', evnt=>{
-			console.log('success: loaded image: ', imgPath);
 			if(onLoaded){
 				onLoaded(imgPath);
 			}
 		});
-		image.addEventListener('onerror', evnt=>{
-			console.log('error: could not load image: ', imgPath);
+		image.addEventListener('error', evnt=>{
+//			console.log('error: could not load image: ', imgPath);
 		});
 		image.src = imgPath;
    }
 	onPreviewClicked(id){
-		console.log('onPreviewClicked: id: ', id, '	previews: ', this.state.previews);
 		let relURL = this.state.previews[id].url;
-		console.log('onPreviewClicked: ', relURL);
 		if (!!window.hist)
 		{
-			console.log('pushing: ', '/' + relURL);
 			window.hist.push('/' + relURL);
 		}
 	}
@@ -136,7 +130,6 @@ class MainPage extends Component{
 			let [top, btm, y, x] = [br.top, br.bottom, br.y, br.x];
 			
 			let viewPortHeight = window.innerHeight;
-			console.log('id: ', id, '	bottom: ', btm, '	vpheight: ', viewPortHeight);
 
 			if(y > 50 && btm < (viewPortHeight-50)){
 				focusedPreviews.push(id);
@@ -148,28 +141,37 @@ class MainPage extends Component{
 		this.updateFocusedPreview();
 	}
 	render(){
+		let description = `
+			The following shows some of the programs/projects that I've created
+			over the past years. I published most of these projects on
+			dedicated platforms. This website is created with the React.js-library
+			and mainly serves for me to test concepts of modern
+			single page application development.
+		`;
 		return (
-		<div className="PreviewsDiv">
-			{this.state.previews.map((pi, id)=>
-				<div key={id}>
-					<div className='MainPrevDiv'>
-						<MainImagePreview
-							meta={pi}
-							indicator={{
-								heading: pi.heading,
-								description: pi.description
-							}}
-							focusPreview={this.state.focusedPreviews.some(x=>x===id)}
-							onPreviewClicked={()=>{this.onPreviewClicked(id);}}
-							separator={id < this.state.previews.length-1}
-						/>
-					</div>
-					{id < this.state.previews.length-1 
-						? <div className="MainSeparator"></div>
-						: ''}
+			<div id="MainDivMN">
+				<div id="DescriptionMN"
+					  className="ProgramDescription">
+					{description}
 				</div>
-			)}
-		</div>
+				<div className="MainPrevDivMN">
+					{this.state.previews.map((pi, id)=>
+						<div key={id}
+							  className="PreviewsDivMN">
+							<MainImagePreview
+								meta={pi}
+								indicator={{
+									heading: pi.heading,
+									description: pi.description
+								}}
+								focusPreview={this.state.focusedPreviews.some(x=>x===id)}
+								onPreviewClicked={()=>{this.onPreviewClicked(id);}}
+								separator={id < this.state.previews.length-1}
+							/>
+						</div>
+					)}
+				</div>
+			</div>
 		);
 	}
 }
