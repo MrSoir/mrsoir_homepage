@@ -15,7 +15,7 @@
 }
 
 .App {
-  text-align: center;
+	text-align: center;
 }
 
 .App-logo {
@@ -67,12 +67,18 @@
 
 /*-----------------------------------------*/
 
-@media (max-width:600px) {
+@media screen and (max-width:600px) {
   .ProgramHeading {
     font-size: 30px;
   }
   .ProgramDescription {
     font-size: 10px;
+  }
+  .PreviewImageIndicatorHeading{
+		font-size: 18px;
+  }
+  .PreviewImageIndicatorDescription{
+  	font-size: 13px;
   }
   .ProgramDescriptionSmall {
     font-size: 8px;
@@ -90,12 +96,18 @@
     font-size: 12px;
   }
 }
-@media (min-width:600px) {
+@media screen and (min-width:600px) {
   .ProgramHeading {
     font-size: 40px;
   }
   .ProgramDescription {
     font-size: 14px;
+  }
+  .PreviewImageIndicatorHeading{
+	 font-size: 19px;
+  }
+  .PreviewImageIndicatorDescription{
+  	font-size: 14px;
   }
   .ProgramDescriptionSmall {
     font-size: 12px;
@@ -113,12 +125,18 @@
     font-size: 14px;
   }
 }
-@media (min-width:800px) {
+@media screen and (min-width:800px) {
   .ProgramHeading {
     font-size: 60px;
   }
   .ProgramDescription {
     font-size: 16px;
+  }
+  .PreviewImageIndicatorHeading {
+  	font-size: 20px;
+  }
+  .PreviewImageIndicatorDescription{
+  	font-size: 15px;
   }
   .ProgramDescriptionSmall {
     font-size: 14px;
@@ -136,7 +154,7 @@
     font-size: 18px;
   }
 }
-@media (min-width:1000px) {
+@media screen and (min-width:1000px) {
   .ProgramHeading {
     font-size: 70px;
   }
@@ -159,7 +177,7 @@
     font-size: 20px;
   }
 }
-@media (min-width:1500px){
+@media screen and (min-width:1500px){
   .PreviewTextSizing {
     font-size: 20px;
   }
@@ -312,29 +330,22 @@
 	color: var(--main-bg-color);/*#FFB76B;*/
 	font-family: hand_written_font;
 	font-weight: lighter;
-	font-size: min(10vmin, 50);
-/*	width: 10000vw;*/
-	
+	font-size: min(10vmin, 50);	
 }
 
 .TopMargin{
 	height: 300px;
 }
 .MainDivAPP {
-/*	width: 100vw;*/
-/*	height: 100000px;*/
-/*	text-align: center;*/
-/*	background: linear-gradient(#8ba881, #f69d3c);*/
-/*	overflow: scroll;*/
 }
 
 .ContactInfoBox{
 	text-align: left;
 	font-family: Times;
 	color: white;
-	padding: 50px 7vw;
+	padding: 50px 30px;
 	background-color: #DBA25A;
-	margin-bottom: 40px;
+/*	margin-bottom: 40px;*/
 }
 .ContactHeading{
 	font-size: 35px;

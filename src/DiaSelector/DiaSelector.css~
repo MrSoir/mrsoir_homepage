@@ -92,7 +92,9 @@
 .MainWindowContainerDS{
 	background-color: #222222;
 	width: 100%;
+/*	min-width: 350px;*/
 	height: 100%;
+	overflow: auto;
 }
 .MainWindowDS{
 	width: 100%;

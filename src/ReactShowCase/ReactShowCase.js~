@@ -173,7 +173,7 @@ import './SlideBarRSC.css';
 					{description}
 				</div>
 				<div id="FullScreenRSC">
-					<CurtainButton text="change to fullscreen"
+					<CurtainButton text="switch to fullscreen"
 								onClick={this.setFullScreen}/>
 				</div>
 				<div className="ReactShowCase"
@@ -183,10 +183,10 @@ import './SlideBarRSC.css';
 						&#9974;
 					</div>
 					<div className="DiaSelectorRSC">
-					<DiaSelector mainContent={this.genMainComponent()}
-									 selectedId={this.state.selectedPreviewId}
-									 previewImagePaths={this.state.previewImagePaths}
-									 previewSelected={this.previewSelected}/>
+						<DiaSelector mainContent={this.genMainComponent()}
+										 selectedId={this.state.selectedPreviewId}
+										 previewImagePaths={this.state.previewImagePaths}
+										 previewSelected={this.previewSelected}/>
 					</div>
 				</div>
 				{/*

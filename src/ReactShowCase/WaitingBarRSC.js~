@@ -14,11 +14,11 @@ class WaitingBarRSC extends Component{
 		
 		this.state = {
 			fading: true,
-			outerCurved: true,
+			outerCurved: false,
 			innerCurved: true,
 			
 			fragmentCount: {
-				val: 4,
+				val: 8,
 				min: 3,
 				max: 100
 			},

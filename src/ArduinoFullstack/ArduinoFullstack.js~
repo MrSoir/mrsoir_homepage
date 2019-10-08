@@ -116,7 +116,7 @@ class ArduinoFullstack extends Component{
 				<li className="liAFS AdvantagesLiAFS">
 					<div className='CornerstonesDescrAFS'>
 						 All devices are kept synchronzied. Even when multiple devices simultaneously
-						 operate on the website, they instantaneously receive updates whenever any
+						 operate on the website, updated data is instantaneously pushed to each device whenever any
 						 device modifies settings using technologies like Socket.io.
 					</div>
 				</li>
@@ -131,7 +131,7 @@ class ArduinoFullstack extends Component{
 			So far, I've installed 2 Wemos D1 mini microcontrollers that
 			control
 				{arduinosDesrcp}
-			The system is mainly based on three pillars:
+			This is a three tier system:
 				{arduinoCornerstones}
 			The cool thing about this system is it let's you control and monitor all
 			microcontrollers from any device that is connected to your local WiFi
@@ -152,7 +152,7 @@ class ArduinoFullstack extends Component{
 		
 		return (
 			<div className="ArduinoFullStack">				
-				<div className="ProgramHeading">Full stack RESTful MERN Arduino infractructure</div>
+				<div className="ProgramHeading">Full stack RESTful MERN Arduino infrastructure</div>
 				
 				{infoText}
 				

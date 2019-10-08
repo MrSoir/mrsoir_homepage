@@ -1,45 +1,96 @@
 @import "../App.css";
 
 #MainDivMN{
+	margin: auto;
 	margin-top: -50px;
 	margin-bottom: 20px;
+	background-color: lime;
 }
 #DescriptionMN{
 	text-align: center;
-	margin: 20px auto;
+	margin: auto;
+	margin-bottom: 20px;
 }
 .MainPrevDivMN{
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-	grid-auto-rows: minmax(270px, 30vh);
-	grid-gap: 30px 10px;
+	
+	grid-gap: 20px 10px;
 	box-sizing: border-box;
 	
-	justify-content: space-around;
-	width: calc(100% - 10px);
+	justify-items: space-between;
+	justify-content: center;
+	width: 100%;
+	padding: 0 10px;
 	max-width: 1500px;
 	margin: auto;
 	transition-duration: 1s;
+	background-color: red;
+}
+@media screen and (max-width:300px) {
+	.MainPrevDivMN{
+		grid-template-columns: 100%;
+		grid-auto-rows: 150px;
+	}
+	.PreviewImageIndicatorHeading{
+		font-size: 10px;
+	}
+	.PreviewImageIndicatorDescription{
+		font-size: 8px;
+	}
+}
+@media screen and (min-width:300px) {
+	.MainPrevDivMN{
+		grid-template-columns: 100%;
+		grid-auto-rows: 180px;
+	}
+	.PreviewImageIndicatorHeading{
+		font-size: 12px;
+	}
+	.PreviewImageIndicatorDescription{
+		font-size: 10px;
+	}
+}
+@media screen and (min-width:400px) {
+	.MainPrevDivMN{
+		grid-template-columns: 100%;
+		grid-auto-rows: 230px;
+	}
+	.PreviewImageIndicatorHeading{
+		font-size: 15px;
+	}
+	.PreviewImageIndicatorDescription{
+		font-size: 12px;
+	}
+}
+@media screen and (min-width:500px) {
+	.MainPrevDivMN{
+		grid-template-columns: 100%;
+		grid-auto-rows: 270px;
+	}
+	.PreviewImageIndicatorHeading{
+		font-size: 18px;
+	}
+	.PreviewImageIndicatorDescription{
+		font-size: 14px;
+	}
+}
+@media screen and (min-width:600px) {
+	.MainPrevDivMN{
+		grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+		grid-auto-rows: minmax(270px, 30vh);
+	}
+	.PreviewImageIndicatorHeading{
+		font-size: 20px;
+	}
+	.PreviewImageIndicatorDescription{
+		font-size: 15px;
+	}
 }
 .PreviewsDivMN{
+	width: 100%;
+	height: 100%;
 	border-bottom: 1px solid black;
-	padding-bottom: 5px;
-/*	margin-bottom: 50px;*/
+/*	padding-bottom: 5px;*/
 }
 
-.imgDivMN{
-}
-
-
-.MainSeparator{
-/*	background-color: var(--separatorColor);
-	height: 1px;*/
-	
-	display: inline-block;
-	background-color: var(--separatorColor);
-	width: 80vw;
-	height: 1px;
-	margin-top: 50px;
-	margin-bottom: 20px;
-}
 

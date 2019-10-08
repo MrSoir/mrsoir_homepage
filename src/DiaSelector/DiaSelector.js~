@@ -11,6 +11,8 @@ class DiaSelector extends Component{
 		this.mainWindowRef 		  		= React.createRef();
 		
 		this.onOverPreviewBarShowBtn = this.onOverPreviewBarShowBtn.bind(this);
+		this.onClickedPreviewBarShowBtn = this.onClickedPreviewBarShowBtn.bind(this);
+		this.closePrevBar = this.closePrevBar.bind(this);
 		this.onPreviewClicked = this.onPreviewClicked.bind(this);
 		this.activatePrevBar = this.activatePrevBar.bind(this);
 		
@@ -29,14 +31,10 @@ class DiaSelector extends Component{
 	activatePrevBar(){
 		this.prevBarActive = true;
 	}
-	onOverPreviewBarShowBtn(){
-		if(this.executingPrevBarAnimation){
-			return;
-		}
-		if( !this.prevBarActive && !window.mobilecheck() ){
-			return;
-		}
+	closePrevBar(){
 		this.executingPrevBarAnimation = true;
+		this.activatePrevBar();
+		
 		let showPreviewBar = !this.state.showPreviewBar;
 		
 		let previewBarDSRef = this.previewBarDSRef.current;
@@ -65,6 +63,18 @@ class DiaSelector extends Component{
 		
 		this.setState({showPreviewBar});
 	}
+	onClickedPreviewBarShowBtn(){
+		this.closePrevBar();
+	}
+	onOverPreviewBarShowBtn(){
+		if(this.executingPrevBarAnimation){
+			return;
+		}
+		if( !this.prevBarActive && !window.mobilecheck() ){
+			return;
+		}
+		this.closePrevBar();
+	}
 	onPreviewClicked(id){
 		let mainWindowRef = this.mainWindowRef.current;
 		mainWindowRef.style.opacity = '0';
@@ -85,6 +95,7 @@ class DiaSelector extends Component{
 				<div className="PreviewBarDS"
 					  ref={this.previewBarDSRef}
 					  onMouseEnter={()=>{if(!window.mobilecheck()){this.activatePrevBar();}}}>
+					<div className="PreviewBarImgContainerDS">
 						<div className="PreviewBarImgFlexDS">
 							{this.state.imgPaths.map((imgPath,id)=>{
 								return <img className={"PreviewImgDS" + ((id===this.props.selectedId) ? " chckd" : " unchckd")}
@@ -95,15 +106,16 @@ class DiaSelector extends Component{
 												height={'150px'}/>;
 							})}
 						</div>
+					</div>
 				</div>
 				
 				<div className="PreviewBarShowBtnDS"
 					  onMouseOver={()=>{if(!window.mobilecheck()){this.onOverPreviewBarShowBtn();}}}
-					  onClick    ={()=>{if( window.mobilecheck()){this.onOverPreviewBarShowBtn();}}}>
+					  onClick    ={()=>{this.onClickedPreviewBarShowBtn}>
 						<div className="PreviewBarShowBtnTxtDS"
 							  ref={this.previewBarShowBtnLblRef}
 							  onMouseOver={()=>{if(!window.mobilecheck()){this.onOverPreviewBarShowBtn();}}}
-					  		  onClick    ={()=>{if( window.mobilecheck()){this.onOverPreviewBarShowBtn();}}}>
+					  		  onClick    ={this.onClickedPreviewBarShowBtn}>
 							⮜
 						</div>
 				</div>

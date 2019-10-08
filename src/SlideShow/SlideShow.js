@@ -259,6 +259,7 @@ class SlideShow extends Component{
 					<div id="loadingDivSS" ref={this.loadingDiv}>
 						<div id="WaitingBarDivSS">
 							<WAITINGBAR.WaitingBar
+								fading={true}
 					      	innerRadius={200}
 					      	outerRadius={230}
 					      	stop={this.state.stopWaitingBar}

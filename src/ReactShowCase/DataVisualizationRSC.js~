@@ -96,7 +96,7 @@ class DataVisualizationRSC extends Component{
 		};
 		
 		let data = [];
-		for(let i=0; i < Math.floor(this.state.dataCount.val); ++i){
+		for(let i=0; i < this.state.dataCount.val; ++i){
 			data.push( {points: this.generateRandomPoints(100), label: randomLabelGenerator(i)} );
 		}
 		
@@ -186,10 +186,11 @@ class DataVisualizationRSC extends Component{
 										 sliderVal={this.evalRangePercentageInt(this.state.dataCount)}
 										 onMouseUp={(value)=>{
 										 	let lastVal = Math.floor(this.state.dataCount.val);
-										 	let setter = this.genPercentageSetter(this.state.dataCount);
+										 	let setter  = Math.floor(this.genPercentageSetter(this.state.dataCount));
 										 	setter(value);
 										 	let newVal = Math.floor(this.state.dataCount.val);
 										 	if(lastVal != newVal){
+										 		
 										 		this.updatePlotDataCount();
 										 	}
 										 }}/>

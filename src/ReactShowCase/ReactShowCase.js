@@ -11,6 +11,7 @@ import SlideBarRSC from './SlideBarRSC';
 import SpinningWheelRSC from './SpinningWheelRSC';
 import WaitingBarRSC from './WaitingBarRSC';
 import DataVisualizationRSC from './DataVisualizationRSC';
+import CarrouselDiaShowRSC from './CarrouselDiaShowRSC';
 
 
 import './ReactShowCase.css';
@@ -21,18 +22,18 @@ import "../prism/themes/Okaidia.css";
 class ReactShowCase extends Component{
 	constructor(props){
 		super(props);
-		
+
 		this.previewSelected = this.previewSelected.bind(this);
 		this.getPreviewImagePaths = this.getPreviewImagePaths.bind(this);
 		this.setFullScreen = this.setFullScreen.bind(this);
 		this.onFullScreenChange = this.onFullScreenChange.bind(this);
-		
+
 		this.showcase = React.createRef();
-		
+
 		this.addFullScreenChangeListener();
-		
+
 		this.state = {
-			selectedPreviewId: 0,
+			selectedPreviewId: 1,
 			previewImagePaths: this.getPreviewImagePaths(),
 			fullScreen: false
 		}
@@ -40,26 +41,29 @@ class ReactShowCase extends Component{
 	getPreviewImagePaths(){
 		let basePath = process.env.PUBLIC_URL + '/ReactShowCase/previews/';
 		return [basePath + 'WaitingBar.png',
-				  basePath + 'DataVisualization.png',
-				  basePath + 'SpinningSelector.png',
-				  basePath + 'FlipSelector.png',
-				  basePath + 'SlideBar2.png'
+						basePath + 'Carousel.png',
+				  	basePath + 'DataVisualization.png',
+				  	basePath + 'SpinningSelector.png',
+				  	basePath + 'FlipSelector.png',
+				  	basePath + 'SlideBar2.png'
 				  ];
 	}
    componentDidMount(){
-   	
+
 	}
 	genMainComponent(){
 		switch(this.state.selectedPreviewId){
 			case 0:
 				return this.genWaitingBar();
 			case 1:
-				return this.genDataVisualization();
+				return this.genCarrouselDiaShow();
 			case 2:
-				return this.genSpinningWheel();
+				return this.genDataVisualization();
 			case 3:
-				return this.genFlipSelector();
+				return this.genSpinningWheel();
 			case 4:
+				return this.genFlipSelector();
+			case 5:
 				return this.genSlideBar();
 			default:
 				return (
@@ -68,6 +72,11 @@ class ReactShowCase extends Component{
 					</div>
 				);
 		}
+	}
+	genCarrouselDiaShow(){
+		return (
+			<CarrouselDiaShowRSC/>
+		)
 	}
 	genFlipSelector(){
 		return (
@@ -141,7 +150,7 @@ class ReactShowCase extends Component{
 				document.exitFullscreen();
 			}
 		}
-		
+
 		if(oldState){
 			closeFullscreen();
 		}else{
@@ -162,7 +171,7 @@ import SlideBar from '../SlideBar';
 import './SlideBarRSC.css';
 
 		`;
-		
+
 		return (
 			<div className="MainRSC">
 				<div className="ProgramHeading">
@@ -173,7 +182,7 @@ import './SlideBarRSC.css';
 					{description}
 				</div>
 				<div id="FullScreenRSC">
-					<CurtainButton text="change to fullscreen"
+					<CurtainButton text="switch to fullscreen"
 								onClick={this.setFullScreen}/>
 				</div>
 				<div className="ReactShowCase"
@@ -183,10 +192,10 @@ import './SlideBarRSC.css';
 						&#9974;
 					</div>
 					<div className="DiaSelectorRSC">
-					<DiaSelector mainContent={this.genMainComponent()}
-									 selectedId={this.state.selectedPreviewId}
-									 previewImagePaths={this.state.previewImagePaths}
-									 previewSelected={this.previewSelected}/>
+						<DiaSelector mainContent={this.genMainComponent()}
+										 selectedId={this.state.selectedPreviewId}
+										 previewImagePaths={this.state.previewImagePaths}
+										 previewSelected={this.previewSelected}/>
 					</div>
 				</div>
 				{/*
@@ -213,4 +222,3 @@ import './SlideBarRSC.css';
 }
 
 export default withRouter(ReactShowCase);
-

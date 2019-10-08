@@ -5,9 +5,6 @@ import './SpinningWheel.css';
 
 
 class RotatedDiv extends Component{
-	componentDidMount()
-	{
-	}
 	render(){
 		const tag = this.props.tag;
 		
@@ -31,15 +28,16 @@ class RotatedDiv extends Component{
 		}
 		
 		let lblStyle = {
-			transform: 'rotate(' + lblRot + 'rad) translateX(' + lblTranslX + ')',
+			fontSize: this.props.fontSize ? this.props.fontSize : '20px',
+			transform: 'rotate(' + lblRot + 'rad) translateX(' + lblTranslX + ')'
 		};
 		let lblClass = !!this.props.selected 
 							? "SpinningEntryLabel selected" 
 							: "SpinningEntryLabel";
 		this.div = (
 				<button style={lblStyle}
-						className={lblClass}
-						onClick={()=>{if(!!this.props.onLabelClicked){
+						  className={lblClass}
+						  onClick={()=>{if(!!this.props.onLabelClicked){
 							this.props.onLabelClicked();
 						}}}>
 					{tag}
@@ -76,14 +74,19 @@ class SpinningWheel extends Component{
 	constructor(props){
 		super(props);
 		
+		this.spinningWheelDivRef = React.createRef();
+		
 		this.state = {
 			focusedId: 0,
-			transitionDuration: '0.15s'
+			transitionDuration: '0.15s',
+			spinningWheelDivSize: [0,0]
 		}
 		this.initTagAlreadySet = false;
 		
 		this.rotateElementsAtOnce = this.rotateElementsAtOnce.bind(this);
 		this.rotateElementsIncremental = this.rotateElementsIncremental.bind(this);
+		this.setSpinningWheelFontSize = this.setSpinningWheelFontSize.bind(this);
+		this.setSpinningWheelSize = this.setSpinningWheelSize.bind(this);
 	}
 	elementClicked(elmntId){
 		this.rotateToElementId(elmntId);
@@ -133,14 +136,27 @@ class SpinningWheel extends Component{
    		}
    	}
    }
+   componentDidMount(){
+   	this.setSpinningWheelFontSize();
+   	
+   	if(ResizeObserver){
+   		console.log('ResizeObserver available!');
+   		this.resizeObserver = new ResizeObserver(entries =>{
+   			for(let entry in entries){
+   				console.log('observer - entry: ', entry);
+   				this.
+   			}
+   		});
+   		this.resizeObserver.observe(this.spinningWheelDivRef.current);
+   	}
+   }
 	componentDidUpdate(){
    	this.focuseInitTagIfNotAlreadyDone();
    }
-	componentWillMount(){
-   }
-   componentDidMount(){
-   }
    componentWillUnmount(){
+   	 if(this.resizeObserver){
+   		this.resizeObserver.unobserve(this.spinningWheelDivRef.current);
+   	}
    }
    rotateElementsAtOnce(idOffs){
    	this.setState({transitionDuration: '1s'});
@@ -157,7 +173,7 @@ class SpinningWheel extends Component{
    rotateElementsIncremental(idOffs){
    	console.log('idOffs: ', idOffs);
    	this.setState({transitionDuration: '0s'});
-   	let totalDuration = Math.abs(idOffs) * 400;// 500;
+   	let totalDuration = Math.abs(idOffs) * 200;// 500;
    	let dt = 16;
    	
    	let tagCount = this.props.tags.length;
@@ -201,7 +217,27 @@ class SpinningWheel extends Component{
    	const tagsSize = this.props.tags.length;
    	return Math.PI * 2 / tagsSize;
    }
-
+   setSpinningWheelFontSize(){
+   	this.setSpinningWheelSize();
+		let sw = this.spinningWheelDivRef.current;
+		let w = sw.offsetWidth;
+		let h = sw.offsetHeight;
+		let mn = w < h ? w : h;
+		if(mn < 300){
+			this.setState({spinningWheelFontSize: '12px'});
+		}else if(mn < 500){
+			this.setState({spinningWheelFontSize: '15px'});
+		}else if(mn < 800){
+			this.setState({spinningWheelFontSize: '25px'});
+		}else{
+			this.setState({spinningWheelFontSize: '35px'});
+		}
+	}
+   setSpinningWheelSize(){
+		let sw = this.spinningWheelDivRef.current;
+		let sze = sw.getBoundingClientRect();
+		this.setState({spinninWheelSize: [sw.offsetWidth, sw.offsetHeight]});
+	}
 	render(){
 		const focusedId = this.state.focusedId;
 		
@@ -209,29 +245,13 @@ class SpinningWheel extends Component{
 		const rotRadPerTag = this.getRotRadPerTag();
 		const rotRadOffs = -rotRadPerTag * focusedId + Math.PI * 0.5;
 		
-		let width = 400;
-		let height = 400;
+		let width  = this.props.width;
+		let height = this.props.height;
 		
 		let rad = 0.9;
 		let labelRotation = Math.PI / 2 * 3;
 		
 		const testTag = this.props.tags[0];
-		
-/*		return (
-			<div className="SpinningWheel">
-				{<RotatedDiv	
-							className="SpinningEntry"
-							tag={testTag}
-							width={width}
-							height={height}
-							xOffset={rad}
-							yOffset={rad}
-							labelRotation={labelRotation}
-							rotationRad={this.state.rotation}
-				 />
-				}
-			</div>
-		);*/
 		
 		let isFocused = (i)=>{
 			let rng = 0.5
@@ -240,15 +260,17 @@ class SpinningWheel extends Component{
 		};
 		
 		return (
-			<div className="SpinningWheel TextNotSelectable">
+			<div className="SpinningWheel TextNotSelectable"
+				  ref={this.spinningWheelDivRef}>
 				{this.props.tags.map( (tag,i)=>{
 					return <RotatedDiv
 							key={i}
 							className="SpinningEntry"
 							transitionDuration={this.state.transitionDuration}
 							tag={tag}
-							width={width}
-							height={height}
+							width={this.state.spinninWheelSize[0]}
+							height={this.state.spinninWheelSize[1]}
+							fontSize={this.state.spinningWheelFontSize}
 							xOffset={rad}
 							yOffset={rad}
 							selected={isFocused(i)}

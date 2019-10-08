@@ -172,11 +172,11 @@ class SlideShow extends Component{
 	}*/
 	
 	onErrorOccured(){
-		const warningNode = document.querySelectorAll('#loadingDivMsg')[0];
+		const warningNode = document.querySelectorAll('#loadingDivMsgSS')[0];
 		warningNode.innerHTML = `Sorry, your browser <br/> doesn't seem to like <br/> WebGL2...`;
 	}
 	onWebGL_InitError(){
-		const warningNode = document.querySelectorAll('#loadingDivMsg')[0];
+		const warningNode = document.querySelectorAll('#loadingDivMsgSS')[0];
 		warningNode.innerHTML = `Sorry, your browser <br/> doesn't support <br/> WebGL2!`;
 	}
 	onImagesLoaded(){
@@ -264,7 +264,7 @@ class SlideShow extends Component{
 					      	stop={this.state.stopWaitingBar}
 					      />
 				      </div>
-						{/*<div id="loadingDivMsg">
+						{/*<div id="loadingDivMsgSS">
 							{this.loadingMsg}
 						</div>*/}
 					</div>

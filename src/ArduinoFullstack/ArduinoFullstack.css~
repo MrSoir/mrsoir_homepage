@@ -6,9 +6,12 @@
 }
 
 #VideoASF{
-	display: inline-block;
+	display: grid;
+	justify-items: center;
+	width: 80%;
 	margin: auto;
 	margin-top: 20px;
+	background-color: red;
 }
 #VideoDescriptionASF{
 	font-style: italic;
@@ -67,21 +70,20 @@
 }
 
 .liAFS { 
-  padding-left: 16px; 
+  padding-left: 16px;
   margin-bottom: 5px;
 }
 
 .liAFS:before {
   content: "\2192";
   padding-right: 8px;
+  font-weight: bold;
 }
 .DisadvantagesLiAFS:before{
 	content: "-";
 	color: red;
-	font-weight: bold;
 }
 .AdvantagesLiAFS:before{
 	content: "+";
 	color: blue;
-	font-weight: bold;
 }

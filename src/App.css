@@ -15,7 +15,7 @@
 }
 
 .App {
-  text-align: center;
+	text-align: center;
 }
 
 .App-logo {
@@ -67,7 +67,7 @@
 
 /*-----------------------------------------*/
 
-@media (max-width:600px) {
+@media screen and (max-width:600px) {
   .ProgramHeading {
     font-size: 30px;
   }
@@ -90,7 +90,7 @@
     font-size: 12px;
   }
 }
-@media (min-width:600px) {
+@media screen and (min-width:600px) {
   .ProgramHeading {
     font-size: 40px;
   }
@@ -113,7 +113,7 @@
     font-size: 14px;
   }
 }
-@media (min-width:800px) {
+@media screen and (min-width:800px) {
   .ProgramHeading {
     font-size: 60px;
   }
@@ -136,7 +136,7 @@
     font-size: 18px;
   }
 }
-@media (min-width:1000px) {
+@media screen and (min-width:1000px) {
   .ProgramHeading {
     font-size: 70px;
   }
@@ -159,7 +159,7 @@
     font-size: 20px;
   }
 }
-@media (min-width:1500px){
+@media screen and (min-width:1500px){
   .PreviewTextSizing {
     font-size: 20px;
   }
@@ -325,9 +325,9 @@
 	text-align: left;
 	font-family: Times;
 	color: white;
-	padding: 50px 7vw;
+	padding: 50px 30px;
 	background-color: #DBA25A;
-	margin-bottom: 40px;
+/*	margin-bottom: 40px;*/
 }
 .ContactHeading{
 	font-size: 35px;

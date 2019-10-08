@@ -3,15 +3,17 @@
 	position: relative;
 	display: block;
 	
-	width: 95%;
+	width: calc(100% - 50px);
+/*	min-width: 500px;*/
 	height: calc(100vh - 300px);
 	min-height: 400px;
 	
 	margin: auto;
 	margin-top: 0px;
-	margin-bottom: 10px;
+	margin-bottom: 40px;
 	
 	box-sizing: border-box;
+	border: 3px solid #aaa;
 }
 #DescriptionRSC{
 	margin-bottom: 30px;
@@ -69,21 +71,21 @@
 }
 
 .SettingsDivRSC{
-	margin-bottom: 50px;
 	font-size: 20px;
 }
 .SliderContainerRSC{
 	font-weight: bold;
 	font-size: 40px;
 }
-.SliderDivRSC{
+/*.SliderDivRSC{
 	position: relative;
 	width: 90%;
 	max-width: 800px;
-	height: 40px;
+	height: 30px;
 	margin: auto;
 	margin-bottom: 20px;
-}
+	font-size: 25px;
+}*/
 
 .CheckBoxDivRSC{
 	display: flex;
@@ -94,7 +96,7 @@
 	margin-bottom: 20px;
 }
 .CheckBoxLabelRSC{
-	font-size: 30px;
+	font-size: 20px;
 	margin-right: 20px;
 }
 .CheckBoxRSC{

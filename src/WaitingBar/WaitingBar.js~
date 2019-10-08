@@ -61,7 +61,7 @@ class WaitingBar extends Component{
 		
 		this.setCanvasSize({
 			width: 1000,
-			height: 1000
+			height: 800
 		});
    	
 		this.nextFrame();
@@ -210,7 +210,7 @@ class WaitingBar extends Component{
 		return (
 			<div className="WaitingBar">				
 				<canvas className="WaitingBarCanvas"
-							 width="1000" height="1000"
+							 width="1000" height="800"
 						  ref={this.canvas}>
 				</canvas>
 			</div>

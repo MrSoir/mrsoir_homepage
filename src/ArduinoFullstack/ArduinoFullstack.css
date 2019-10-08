@@ -6,7 +6,9 @@
 }
 
 #VideoASF{
-	display: inline-block;
+	display: grid;
+	justify-items: center;
+	width: 80%;
 	margin: auto;
 	margin-top: 20px;
 }

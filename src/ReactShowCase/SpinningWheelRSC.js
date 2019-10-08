@@ -11,25 +11,28 @@ class SpinningWheelRSC extends Component{
 		
 		this.state = {
 			tags: [],//this.genTags(1),
-			selectedTag: 0
+			selectedTag: 0,
 		};
 	}
-	genTags(n){
+	getNTags(n){
 		let tags = ['Sun', 'Mercury', 'Venus', 'Mother Earth', 'Moon', 'Juipter', 'Saturn', 'Uranus', 'Neptune', 'Pluto'];
 		return tags.slice(0,n);
 	}
-	onTagClicked(tag, tagId){
-		this.setState({selectedTag: tagId});
-	}
-   componentDidMount(){
-   	let i = 1;
+	genTags(){
+		let i = 1;
    	let genTagsCaller = (i)=>{
-   		this.setState({tags: this.genTags(i)});
+   		this.setState({tags: this.getNTags(i)});
    		if(i <= 9){
    			setTimeout(()=>{genTagsCaller(i+1)}, 200);
    		}
    	};
    	genTagsCaller(i);
+	}
+	onTagClicked(tag, tagId){
+		this.setState({selectedTag: tagId});
+	}
+   componentDidMount(){
+   	this.genTags();
 	}
 	render(){
 		let resultsString = 'selected: ' +this.state.tags[this.state.selectedTag];
@@ -40,6 +43,7 @@ class SpinningWheelRSC extends Component{
 			It takes up more space than a drop down menu but is 
 			much more intuitive.
 		`;
+		console.log('spinninWheelSize: ', this.state.spinninWheelSize);
 		return (
 			<div className="SpinningWheelRSC">
 				<div className="HeadingRSC">
@@ -48,11 +52,13 @@ class SpinningWheelRSC extends Component{
 				<div className="DescriptionRSC">
 					{description}
 				</div>
-				<div className="SpinningWheelDivRSC">
-					<SpinningWheel
-						tags={this.state.tags}
-						onTagClicked={this.onTagClicked}
-					/>
+				<div id="SpinningWheelHelperGrid">
+					<div className="SpinningWheelDivRSC">
+						<SpinningWheel
+							tags={this.state.tags}
+							onTagClicked={this.onTagClicked}
+						/>
+					</div>
 				</div>
 				<div className="SpinningWheelResultsRSC">
 					{resultsString}

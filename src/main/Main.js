@@ -63,7 +63,7 @@ class MainPage extends Component{
    	
    	this.updatePreviewsToState(prev_programs);
    	
-   	this.loadGIFs();
+//   	this.loadGIFs();
 	}
    componentDidMount(){
    	this.loadPreviews();

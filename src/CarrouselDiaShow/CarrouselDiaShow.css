@@ -1,0 +1,62 @@
+
+.MainDivCDS{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.ImgCDS{
+  position: absolute;
+  top: 50%;
+  width: 40%;
+  height: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 1;
+  /* box-sizing: border-box; */
+
+}
+.selectableCDS{
+  cursor: pointer;
+  opacity: 0.9;
+}
+.selectableCDS:hover{
+  opacity: 1;
+}
+#Img0CDS{
+  background-color: lime;
+}
+#Img1CDS{
+  background-color: blue;
+}
+#Img2CDS{
+  background-color: orange;
+}
+
+#IndicatorsCDS{
+  position: absolute;
+  display: flex;
+  bottom: 20px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  z-index: 99;
+}
+.IndicatorCDS{
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  box-sizing: border-box;;
+  border: 2px solid white;
+  background-color: #00000044;
+  margin: auto;
+  margin-left: 3px;
+  margin-right: 3px;
+  transition-duration: 1s;
+}
+.IndicatorCDS.focused{
+  background-color: white;
+}
+.IndicatorCDS:not(.focused):hover{
+  cursor: pointer;
+  border-color: lime;
+}
