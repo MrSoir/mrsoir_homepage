@@ -8,7 +8,7 @@ class CarrouselDiaShowRSC extends Component{
 		super(props);
 
 		this.state = {
-			autoplay: false
+			autoplay: true
 		};
 	}
   generateImagePaths(){
