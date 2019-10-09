@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { withRouter } from "react-router-dom";
+import React, {Component} from 'react';
+import {withRouter} from "react-router-dom";
 import {readTextFile} from '../StaticFunctions';
 import './ImagedPreviews.css';
 
@@ -7,107 +7,89 @@ import './ImagedPreviews.css';
 //		1. baseName: e.g. Kubu or Ballin or...
 //		2. meta_info_path: the info.txt-path, e.g. './Kubu/info.txt'
 
-class ImagedPreviews extends Component{
-	constructor(){
-		super();
-		
-		this.data = [];
-	}
-	componentWillMount() {
-		let txt = readTextFile(this.props.meta_info_path);
-		
-		let info_lines = txt.split('\n').filter((tn)=>!!tn);
-		// first line in info_lines gives the number of images to render for Ballin'GL
-		let imgCount   = parseInt(info_lines[0].split(' ').filter(s=>!!s).slice(-1)[0]);
-		console.log('imgCount: ', imgCount);
-		
-   	let data   = [];
-   	let f = (fileBaseName)=>{
-   		let img_path       = process.env.PUBLIC_URL + '/' + this.props.baseName + '/pics/' + fileBaseName + '.png';
-   		let info_text_path = process.env.PUBLIC_URL + '/' + this.props.baseName + '/'      + fileBaseName + '.txt';
-   		let info_text = this.parseData( readTextFile(info_text_path) );
-   		return {
-   			name: fileBaseName,
-   			img_path: img_path,
-   			heading: info_text.heading,
-   			text: info_text.text
-   		};
-   	};
-   	for(let i=0; i < imgCount; ++i){
-   		data.push( f(this.props.baseName + i) );
-   	}
-   	console.log('ImagedPreview.data: ', data);
-   	for (let i=0; i < data.length; ++i){
-   		console.log('data ' + i + ': ', data[i]);
-   	}
+class ImagedPreviews extends Component {
+  constructor() {
+    super();
 
-   	this.data = data;
-   }
-   parseData(txt){
-   	let paragraphs = txt.split('\n').filter(s=>!!s);
-   	let heading = paragraphs[0];
-   	paragraphs = paragraphs.splice(1);
-		let composedTxt = '';
-		for (let i=0; i < paragraphs.length; ++i){
-			composedTxt += paragraphs[i];
-			if (i < paragraphs.length -1){
-				composedTxt += '<br/>';
-			}
-		}
-		composedTxt = <span dangerouslySetInnerHTML={{__html: composedTxt}} />
-		return {
-			heading: heading,
-			text: composedTxt
-		};
-   }
-	render(){
-		return (
-		<div>
-			{this.data.map((da, id)=>
-				<Preview key={id} 
-							name={da.name}
-							image_path={da.img_path}
-							heading={da.heading}
-							text={da.text}
-							separator={id < this.data.length-1}
-				/>
-			)}
-		</div>
-		);
-	}
+    this.data = [];
+  }
+  componentWillMount() {
+    let txt = readTextFile(this.props.meta_info_path);
+
+    let info_lines = txt.split('\n').filter((tn) => !!tn);
+    // first line in info_lines gives the number of images to render for Ballin'GL
+    let imgCount = parseInt(info_lines[0].split(' ').filter(s => !!s).slice(-1)[0]);
+    console.log('imgCount: ', imgCount);
+
+    let data = [];
+    let f = (fileBaseName) => {
+      let img_path = process.env.PUBLIC_URL + '/' + this.props.baseName + '/pics/' + fileBaseName + '.png';
+      let info_text_path = process.env.PUBLIC_URL + '/' + this.props.baseName + '/' + fileBaseName + '.txt';
+      let info_text = this.parseData(readTextFile(info_text_path));
+      return {name: fileBaseName, img_path: img_path, heading: info_text.heading, text: info_text.text};
+    };
+    for (let i = 0; i < imgCount; ++i) {
+      data.push(f(this.props.baseName + i));
+    }
+    console.log('ImagedPreview.data: ', data);
+    for (let i = 0; i < data.length; ++i) {
+      console.log('data ' + i + ': ', data[i]);
+    }
+
+    this.data = data;
+  }
+  parseData(txt) {
+    let paragraphs = txt.split('\n').filter(s => !!s);
+    let heading = paragraphs[0];
+    paragraphs = paragraphs.splice(1);
+    let composedTxt = '';
+    for (let i = 0; i < paragraphs.length; ++i) {
+      composedTxt += paragraphs[i];
+      if (i < paragraphs.length - 1) {
+        composedTxt += '<br/>';
+      }
+    }
+    composedTxt = <span dangerouslySetInnerHTML={{
+        __html: composedTxt
+      }}/>
+    return {heading: heading, text: composedTxt};
+  }
+  render() {
+    return (<div>
+      {this.data.map((da, id) => <Preview key={id} name={da.name} image_path={da.img_path} heading={da.heading} text={da.text} separator={id < this.data.length - 1}/>)}
+    </div>);
+  }
 }
 
-class Preview extends Component{
-	constructor(){
-		super();
-		
-		this.onClick = this.onClick.bind(this);
-	}
-	onClick(){
-		let name = this.props.name;
-		console.log(name);
-	}
-	
-	render(){
-		let sep = this.props.separator ? <div className="MainSeparator"></div> : '';
-		return (
-			<div>
-				<div className="PreviewContainer">
-					<img 	src={this.props.image_path} 
-							alt="logo"
-							className="PreviewImage"
-							onClick={this.onClick} />
-					<div className="PreviewText PreviewTextSizing">
-						<u className="PreviewTextHeading PreviewHeadingSizing">
-							{this.props.heading}
-						</u>
-						: <p className="PreviewTextHeadingSpace"/>{this.props.text}
-					</div>
-				</div>
-				{sep}
-			</div>
-		);
-	}
+class Preview extends Component {
+  constructor() {
+    super();
+
+    this.onClick = this.onClick.bind(this);
+  }
+  onClick() {
+    let name = this.props.name;
+    console.log(name);
+  }
+
+  render() {
+    let sep = this.props.separator
+      ? <div className="Separator"></div>
+      : '';
+    return (<div>
+      <div className="PreviewContainer">
+        <img src={this.props.image_path} alt="logo" className="PreviewImage" onClick={this.onClick}/>
+        <div className="PreviewText PreviewTextSizing">
+          <u className="PreviewTextHeading PreviewHeadingSizing">
+            {this.props.heading}
+          </u>
+          :
+          <p className="PreviewTextHeadingSpace"/>{this.props.text}
+        </div>
+      </div>
+      {sep}
+    </div>);
+  }
 }
 
 export default withRouter(ImagedPreviews);

@@ -2,7 +2,6 @@
 
 #MainDivMN{
 	margin: auto;
-	margin-top: -50px;
 	margin-bottom: 20px;
 }
 #DescriptionMN{
@@ -12,10 +11,10 @@
 }
 .MainPrevDivMN{
 	display: grid;
-	
+
 	grid-gap: 20px 10px;
 	box-sizing: border-box;
-	
+
 	justify-items: space-between;
 	justify-content: center;
 	width: 100%;
@@ -90,5 +89,3 @@
 	border-bottom: 1px solid black;
 /*	padding-bottom: 5px;*/
 }
-
-

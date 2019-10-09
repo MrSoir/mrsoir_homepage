@@ -5,28 +5,28 @@ import './DiaSelector.css';
 class DiaSelector extends Component{
 	constructor(props){
 		super(props);
-		
+
 		this.previewBarDSRef 	  		= React.createRef();
 		this.previewBarShowBtnLblRef  = React.createRef();
 		this.mainWindowRef 		  		= React.createRef();
-		
+
 		this.onOverPreviewBarShowBtn = this.onOverPreviewBarShowBtn.bind(this);
 		this.onClickedPreviewBarShowBtn = this.onClickedPreviewBarShowBtn.bind(this);
 		this.closePrevBar = this.closePrevBar.bind(this);
 		this.onPreviewClicked = this.onPreviewClicked.bind(this);
 		this.activatePrevBar = this.activatePrevBar.bind(this);
-		
+
 		this.executingPrevBarAnimation = false;
-		
+
 		this.prevBarActive = false;
-		
+
 		this.state = {
 			showPreviewBar: true,
 			imgPaths: this.props.previewImagePaths
 		};
 	}
    componentDidMount(){
-   	
+
 	}
 	activatePrevBar(){
 		this.prevBarActive = true;
@@ -34,12 +34,12 @@ class DiaSelector extends Component{
 	closePrevBar(){
 		this.executingPrevBarAnimation = true;
 		this.activatePrevBar();
-		
+
 		let showPreviewBar = !this.state.showPreviewBar;
-		
+
 		let previewBarDSRef = this.previewBarDSRef.current;
 		let previewBarShowBtnLblRef = this.previewBarShowBtnLblRef.current;
-		
+
 		if(showPreviewBar){
 			previewBarDSRef.style.width = '25%';
 			previewBarDSRef.style.minWidth = '100px';
@@ -60,7 +60,7 @@ class DiaSelector extends Component{
 				this.executingPrevBarAnimation = false;
 			}, 500);
 		}
-		
+
 		this.setState({showPreviewBar});
 	}
 	onClickedPreviewBarShowBtn(){
@@ -79,6 +79,7 @@ class DiaSelector extends Component{
 		let mainWindowRef = this.mainWindowRef.current;
 		mainWindowRef.style.opacity = '0';
 		mainWindowRef.style.transform = 'scale(0)';
+		mainWindowRef.scrollTo(0,0);
 		setTimeout(()=>{
 			if(!!this.props.previewSelected){
 				this.props.previewSelected(id);
@@ -86,7 +87,7 @@ class DiaSelector extends Component{
 			setTimeout(()=>{
 				mainWindowRef.style.opacity = '1';
 				mainWindowRef.style.transform = 'scale(1)';
-			}, 10);			
+			}, 10);
 		}, 500);
 	}
 	render(){
@@ -100,15 +101,15 @@ class DiaSelector extends Component{
 							{this.state.imgPaths.map((imgPath,id)=>{
 								return <img className={"PreviewImgDS" + ((id===this.props.selectedId) ? " chckd" : " unchckd")}
 												key={id}
-												onClick={()=>{this.onPreviewClicked(id)}} 
-												src={imgPath} 
-												width={'80%'} 
+												onClick={()=>{this.onPreviewClicked(id)}}
+												src={imgPath}
+												width={'80%'}
 												height={'150px'}/>;
 							})}
 						</div>
 					</div>
 				</div>
-				
+
 				<div className="PreviewBarShowBtnDS"
 					  onMouseOver={()=>{if(!window.mobilecheck()){this.onOverPreviewBarShowBtn();}}}
 					  onClick    ={this.onClickedPreviewBarShowBtn}>
@@ -131,4 +132,3 @@ class DiaSelector extends Component{
 }
 
 export default DiaSelector;
-

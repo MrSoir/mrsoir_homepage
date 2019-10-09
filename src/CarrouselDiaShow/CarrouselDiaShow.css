@@ -12,9 +12,11 @@
   width: 40%;
   height: 50%;
   transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
   opacity: 1;
+  animation-fill-mode: forwards;
+  -webkit-animation-fill-mode: forwards;
   /* box-sizing: border-box; */
-
 }
 .selectableCDS{
   cursor: pointer;
@@ -39,6 +41,7 @@
   bottom: 20px;
   left: 50%;
   transform: translate(-50%, 0);
+  -webkit-transform: translate(-50%, 0);
   z-index: 99;
 }
 .IndicatorCDS{
@@ -60,3 +63,94 @@
   cursor: pointer;
   border-color: lime;
 }
+
+/*--------------------------------------------*/
+@keyframes leftToBackgroundCDS {
+  0%   {left: 20%;}
+  100% {left: 50%;}
+}
+@-webkit-keyframes leftToBackgroundCDS {
+  0%   {left: 20%;}
+  100% {left: 50%;}
+}
+/*---------------------*/
+@keyframes rightToBackgroundCDS {
+  0%   {left: 80%;}
+  100% {left: 50%;}
+}
+@-webkit-keyframes rightToBackgroundCDS {
+  0%   {left: 80%;}
+  100% {left: 50%;}
+}
+/*---------------------*/
+@keyframes backgroundFakeAnimCDS {
+  0%   {left: 50%;}
+  100% {left: 50%;}
+}
+@-webkit-keyframes backgroundFakeAnimCDS {
+  0%   {left: 50%;}
+  100% {left: 50%;}
+}
+/*---------------------*/
+@keyframes backgroundToLeftCDS {
+  0%   {left: 50%;}
+  100% {left: 20%;}
+}
+@-webkit-keyframes backgroundToLeftCDS {
+  0%   {left: 50%;}
+  100% {left: 20%;}
+}
+/*---------------------*/
+@keyframes backgroundToRightCDS {
+  0%   {left:  50%;}
+  100% {left:  80%;}
+}
+@-webkit-keyframes backgroundToRightCDS {
+  0%   {left:  50%;}
+  100% {left:  80%;}
+}
+/*---------------------*/
+@keyframes leftToCenterCDS {
+  0%   {left: 20%;}
+  25%  {left: 10%;}
+  100% {left: 50%;}
+}
+@-webkit-keyframes leftToCenterCDS {
+  0%   {left: 20%;}
+  25%  {left: 10%;}
+  100% {left: 50%;}
+}
+/*---------------------*/
+@keyframes rightToCenterCDS {
+  0%   {left: 80%;}
+  25%  {left: 90%;}
+  100% {left: 50%;}
+}
+@-webkit-keyframes rightToCenterCDS {
+  0%   {left: 80%;}
+  25%  {left: 90%;}
+  100% {left: 50%;}
+}
+/*---------------------*/
+@keyframes centerToLeftCDS {
+  0%   {left: 50%;}
+  25%  {left: 10%;}
+  100% {left: 20%;}
+}
+@-webkit-keyframes centerToLeftCDS {
+  0%   {left: 50%;}
+  25%  {left: 10%;}
+  100% {left: 20%;}
+}
+/*---------------------*/
+@keyframes centerToRightCDS {
+  0%   {left:  50%;}
+  25%  {left:  90%;}
+  100% {left:  80%;}
+}
+@-webkit-keyframes centerToRightCDS {
+  0%   {left:  50%;}
+  25%  {left:  90%;}
+  100% {left:  80%;}
+}
+/*--------------------------------------------*/

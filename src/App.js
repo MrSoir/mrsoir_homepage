@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Switch, Route, withRouter } from "react-router-dom";
+import React, {Component} from 'react';
+import {Switch, Route, withRouter} from "react-router-dom";
 import logo from './MrSoir_grass.png';
 //import logo from './logo.svg';
 import './App.css';
@@ -17,151 +17,145 @@ import LineAnimation from './LineAnimation/LineAnimation';
 import ReactShowCase from './ReactShowCase/ReactShowCase';
 
 class App extends Component {
-	constructor(){
-		super();
-		
-		this.state = {
-			tabs: []
-		}
-		
-		this.tabClicked = this.tabClicked.bind(this);
-		this.initTabs = this.initTabs.bind(this);
-		this.updateTabSelection = this.updateTabSelection.bind(this);
-		this.onScroll = this.onScroll.bind(this);
-		
-		this.header = React.createRef();
-		this.body = React.createRef();
-		this.logoHeader = React.createRef();
-	}
-	initTabs() {
-		window.hist = this.props.history;
-		
-      let txt = readTextFile(tabs_info);
-      
-      let tabInfos = txt.split('\n').filter((tn)=>!!tn);
-      let tabs = tabInfos.map(ti=>{
-      	let [name, path] = ti.split(' | ');
-      	return {
-      		name,
-      		path,
-      		selected: false
-      	};
-      });
-      if(tabs.length > 0){
-      	tabs[0].selected = true;
-      }
-      this.setState( {tabs: tabs} );
-      this.updateTabSelection();
-   }
-   componentDidUpdate(prevProps) {
-//		if (this.props.location !== prevProps.location) {
-			this.updateTabSelection();
-//		}
-	}
-   updateTabSelection(){
-   	let tabs = this.state.tabs;
-   	let curRelPath = this.getCurrentRelPath();
-   	
-   	let selectionChanged = false;
-   	
-   	tabs.forEach(t=>{
-   		let slctd = curRelPath.startsWith( t.path );
-   		if(slctd !== t.selected){
-   			selectionChanged = true;
-   		}
-   		 t.selected = slctd;
-   	});
-   	
-   	if(selectionChanged){
-   		this.setState(tabs);
-   	}
-   }
-   getCurrentRelPath(){
-   	return this.props.location.pathname.slice(1);
-   }
-	componentDidMount() {
-		this.initTabs();
-		
-		window.scrollTo(0, 0);
-		window.addEventListener('scroll', this.onScroll);
-		this.lastYScroll = 0;
-	}
-	
-	componentWillUnmount() {
-		window.removeEventListener('scroll', this.onScroll);
-	}
-   tabClicked(id){
-   	let tabs = this.state.tabs;
-   	
-   	tabs.forEach((t,i)=>t.selected = (id===i));
-   	
-   	let path = this.state.tabs[id].path;
-		this.props.history.push('/' + path);
-   	
-   	this.setState(tabs);
-   }
-   onScroll(){
-   	let y = window.scrollY;
-   	const logohdr = this.logoHeader.current;
-   	if (y > 30 && this.lastYScroll <= 30){
-   		//logohdr.style.opacity = '0';
-   		logohdr.classList.add('Hide');
-   		logohdr.classList.remove('Show');
-   		this.lastYScroll = y;
-   	}else if (y <= 30 && this.lastYScroll > 30){
-   		//logohdr.style.opacity = '100';
-   		logohdr.classList.add('Show');
-   		logohdr.classList.remove('Hide');
-   		this.lastYScroll = y;
-   	}
-   }
-	render() {
-		return (
-			<div className="App">
-			
-				{window.mobilecheck() ? "" : <LineAnimation />}
-				
-				<div className="App-header" ref={this.header}>
-					<TabBar tabs={this.state.tabs} tabCallback={this.tabClicked}/>
-					
-					<div className="LogoHeader Show" ref={this.logoHeader}>
-						<div id="LogoHeaderText" className="MrSoirHeading">Welcome to the World of</div>
-						<div id="LogoHeaderImageDiv">
-							<img id="LogoHeaderImage" src={logo} alt="logo" />
-						</div>
-					</div>
-					<div id="LogoHeaderSep"></div>
-				</div>
-				
-				<div className="TopMargin">
-				</div>
-					
-				<div className="MainDivAPP" ref={this.body}>
-					<Switch>
-						<Route exact path='/' component={MainPage}/>
-						<Route exact path='/ReactShowCase' component={ReactShowCase}/>
-						<Route exact path='/Main' component={MainPage}/>
-						<Route exact path='/ArduinoFullstack' component={ArduinoFullstack}/>
-						<Route exact path='/Ballin' component={Ballin}/>
-						<Route exact path='/Kubu' component={Kubu}/>
-						<Route exact path='/ReferenceManager' component={ReferenceManager}/>
-						<Route exact path='/Notes' component={Notes}/>
-						<Route exact path='/SlideShow' component={SlideShow}/>
-					</Switch>
-				</div>
-				
-				<div className="ContactInfoBox">
-					<div className="ContactHeading">CONTACT</div>
-					_____
-					<br/><br/>
-					<div className="ContactText">MrSoir</div>
-					<div className="ContactText">support@MrSoir.com</div>
-					<div className="ContactText">Tel. +49 157 703 458 32</div>
-				</div>
-			</div>
-		);
-	}
-}
+  constructor() {
+    super();
 
+    this.state = {
+      tabs: []
+    }
+
+    this.tabClicked = this.tabClicked.bind(this);
+    this.initTabs = this.initTabs.bind(this);
+    this.updateTabSelection = this.updateTabSelection.bind(this);
+    this.onScroll = this.onScroll.bind(this);
+
+    this.header = React.createRef();
+    this.body = React.createRef();
+    this.logoHeader = React.createRef();
+  }
+  initTabs() {
+    window.hist = this.props.history;
+
+    let txt = readTextFile(tabs_info);
+
+    let tabInfos = txt.split('\n').filter((tn) => !!tn);
+    let tabs = tabInfos.map(ti => {
+      let [name, path] = ti.split(' | ');
+      return {name, path, selected: false};
+    });
+    if (tabs.length > 0) {
+      tabs[0].selected = true;
+    }
+    this.setState({tabs: tabs});
+    this.updateTabSelection();
+  }
+  componentDidUpdate(prevProps) {
+    //		if (this.props.location !== prevProps.location) {
+    this.updateTabSelection();
+    //		}
+  }
+  updateTabSelection() {
+    let tabs = this.state.tabs;
+    let curRelPath = this.getCurrentRelPath();
+
+    let selectionChanged = false;
+
+    tabs.forEach(t => {
+      let slctd = curRelPath.startsWith(t.path);
+      if (slctd !== t.selected) {
+        selectionChanged = true;
+      }
+      t.selected = slctd;
+    });
+
+    if (selectionChanged) {
+      this.setState(tabs);
+    }
+  }
+  getCurrentRelPath() {
+    return this.props.location.pathname.slice(1);
+  }
+  componentDidMount() {
+    this.initTabs();
+
+    window.scrollTo(0, 0);
+    window.addEventListener('scroll', this.onScroll);
+    this.lastYScroll = 0;
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.onScroll);
+  }
+  tabClicked(id) {
+    let tabs = this.state.tabs;
+
+    tabs.forEach((t, i) => t.selected = (id === i));
+
+    let path = this.state.tabs[id].path;
+    this.props.history.push('/' + path);
+
+    this.setState(tabs);
+  }
+  onScroll() {
+    let y = window.scrollY;
+    const logohdr = this.logoHeader.current;
+    if (y > 30 && this.lastYScroll <= 30) {
+      //logohdr.style.opacity = '0';
+      logohdr.classList.add('Hide');
+      logohdr.classList.remove('Show');
+      this.lastYScroll = y;
+    } else if (y <= 30 && this.lastYScroll > 30) {
+      //logohdr.style.opacity = '100';
+      logohdr.classList.add('Show');
+      logohdr.classList.remove('Hide');
+      this.lastYScroll = y;
+    }
+  }
+  render() {
+    return (<div className="App">
+
+      {
+        window.mobilecheck()
+          ? ""
+          : <LineAnimation/>
+      }
+
+      <div className="App-header" ref={this.header}>
+        <TabBar tabs={this.state.tabs} tabCallback={this.tabClicked}/>
+      </div>
+
+      <div className="LogoHeader Show" ref={this.logoHeader}>
+        <div id="LogoHeaderText" className="MrSoirHeading">Welcome to the World of</div>
+        <div id="LogoHeaderImageDiv">
+          <img id="LogoHeaderImage" src={logo} alt="logo"/>
+        </div>
+        <div id="LogoHeaderSep"></div>
+      </div>
+
+      <div className="MainDivAPP" ref={this.body}>
+        <Switch>
+          <Route exact="exact" path='/' component={MainPage}/>
+          <Route exact="exact" path='/ReactShowCase' component={ReactShowCase}/>
+          <Route exact="exact" path='/Main' component={MainPage}/>
+          <Route exact="exact" path='/ArduinoFullstack' component={ArduinoFullstack}/>
+          <Route exact="exact" path='/Ballin' component={Ballin}/>
+          <Route exact="exact" path='/Kubu' component={Kubu}/>
+          <Route exact="exact" path='/ReferenceManager' component={ReferenceManager}/>
+          <Route exact="exact" path='/Notes' component={Notes}/>
+          <Route exact="exact" path='/SlideShow' component={SlideShow}/>
+        </Switch>
+      </div>
+
+      <div className="ContactInfoBox">
+        <div className="ContactHeading">CONTACT</div>
+        _____
+        <br/><br/>
+        <div className="ContactText">MrSoir</div>
+        <div className="ContactText">support@MrSoir.com</div>
+        <div className="ContactText">Tel. +49 157 703 458 32</div>
+      </div>
+    </div>);
+  }
+}
 
 export default withRouter(App);

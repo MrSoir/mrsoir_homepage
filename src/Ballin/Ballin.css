@@ -16,14 +16,20 @@
 	margin-bottom: 30px;
 }
 
+.CarrouselDiaShowBallin{
+	width: calc(100% - 20px);
+	height: 400px;
+	max-height: 50vh;
+}
+
 .Button{
 	display: inline-block;
 	border: 1px solid var(--fontColor);
 	padding: 20px;
-	
+
 	font-size: 20px;
 	color: var(--fontColor);
-	
+
 	cursor: pointer;
 }
 .BtmMargin{
@@ -37,7 +43,7 @@
 	font-size: 20px;
 	color: var(--fontColor);
 	width: 80vw;
-	
+
 	margin-bottom: 30px;
 	margin-top: 20px;
 	margin-right: auto;
@@ -48,9 +54,9 @@
 .BallinSeparator{
 	width: 60vw;
 	height: 2px;
-	
+
 	background-color: var(--separatorColor);
-	
+
 	margin: 50px auto;
 }
 

@@ -6,16 +6,19 @@
 }
 
 #VideoASF{
-	display: grid;
-	justify-items: center;
 	width: 80%;
+	height: 100vw;
+	max-height: 40vh;
 	margin: auto;
 	margin-top: 20px;
+	overflow: hidden;
 }
 #VideoDescriptionASF{
 	font-style: italic;
 	font-size: 13px;
 	color: var(--fontColor);
+	width: 80%;
+	margin: auto;
 }
 .ProgramDescriptionAFS{
 	text-align: center;
@@ -68,7 +71,7 @@
 	margin-bottom: 10px;
 }
 
-.liAFS { 
+.liAFS {
   padding-left: 16px;
   margin-bottom: 5px;
 }

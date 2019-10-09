@@ -5,8 +5,8 @@
   --headerLogoMaxHeight: 300px;
   --fontColor: #00AA00;
   --separatorColor: #66CC66;
-  
-  --Nili-color: #ff00ff; 
+
+  --Nili-color: #ff00ff;
   --Nili-color-dark: #aa00aa;
   --Nili-color-light: #ffaaff;
   --Nili-color-border: #ff88ff33;
@@ -48,7 +48,7 @@
 
 .PreviewTextHeadingSpace{
 	margin-bottom: -0.3em;
-	
+
 	background-color: black;
 }
 .PreviewText{
@@ -56,11 +56,11 @@
 	right: 0;
 	height: 100%;
 	width: 27%;
-	
+
 	text-align: left;
 	color: var(--fontColor);
 	font-family: hand_written_font;
-	
+
 	overflow-y: auto;
 	overflow-x: visible;
 }
@@ -176,7 +176,7 @@
 	width: 80vw;
 	max-width: 1500px;
 	text-align: justify;
-	
+
 	color: var(--fontColor);
 	font-family: hand_written_font;
 }
@@ -190,7 +190,7 @@
 	width: 80vw;
 	max-width: 1500px;
 	text-align: justify;
-	
+
 	color: var(--fontColor);
 	font-family: hand_written_font;
 }
@@ -198,11 +198,11 @@
 /*-----------------------------------------*/
 
 .FootNote{
-	
+
 	margin: auto;
 	width: 80vw;
 
-	
+
 	color: var(--fontColor);
 	font-family: hand_written_font;
 }
@@ -234,39 +234,34 @@
 	font-size: calc(10px + 2vmin);
 	color: white;
 
-  	position: fixed;
-  	left: 0;
-  	right: 0;
-  	top: 0;
+	position: sticky;
+	left: 0;
+	right: 0;
+	top: 0;
 	z-index: 999;
 }
 
 .LogoHeader{
-	position: relative;
+  width: 100%;
+  margin: auto;
+  margin-bottom: 20px;
+  overflow: hidden;
 	transition: 1s;
-	
-	height: auto;
-	overflow: hidden;
 }
 #LogoHeaderText{
-	position: relative;
 	display: block;
 	width: 100%;
 }
 #LogoHeaderImageDiv{
-	position: relative;
 	width: 80vw;
 	display: block;
 	margin: auto;
 	max-width: 40vh;
 }
 #LogoHeaderImage{
-	position: relative;
 	width: 100%;
 }
 #LogoHeaderSep{
-	position: relative;
-	display: block;
 	margin: auto;
 	width: 80%;
 	height: 2px;
@@ -302,9 +297,9 @@
 .SmallSeparator{
 	width: 60vw;
 	height: 1px;
-	
+
 	background-color: var(--separatorColor);
-	
+
 	margin: 50px auto;
 }
 
@@ -312,7 +307,7 @@
 	color: var(--main-bg-color);/*#FFB76B;*/
 	font-family: hand_written_font;
 	font-weight: lighter;
-	font-size: min(10vmin, 50);	
+	font-size: min(10vmin, 50);
 }
 
 .TopMargin{
