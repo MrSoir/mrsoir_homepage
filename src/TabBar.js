@@ -16,13 +16,15 @@ class TabBar extends Component{
    			let isLast = (i >= (this.props.tabs.length-1));
 				return <TabElement key={i}
 									isLast={isLast}
-									tab={tab} 
+									tab={tab}
 									tabid={i}
 									tabClicked={()=>this.tabClicked(i, this.props.tabCallback)}
 									selected={(i % 2 ? true : false)}
 				/>
 			}
       	)}
+				<div className="TabSeparator">
+				</div>
       </div>
     );
   }
@@ -31,7 +33,7 @@ class TabBar extends Component{
 class TabElement extends Component{
 	constructor(props){
 		super(props);
-		
+
 		this.indicator = React.createRef();
 		this.tabMouseEnter = this.tabMouseEnter.bind(this);
 		this.tabMouseOut = this.tabMouseOut.bind(this);
@@ -40,9 +42,7 @@ class TabElement extends Component{
 		const ind = this.indicator.current;
 		if ( !this.props.tab.selected ) {
 			ind.classList.add('Selected');
-			ind.classList.remove('UnSelected');
 		}else{
-			ind.classList.add('UnSelected');
 			ind.classList.remove('Selected');
 		}
 	}
@@ -60,15 +60,22 @@ class TabElement extends Component{
 	}
 	render(){
 		let isLast = !!this.props.isLast;
-		const tabLinkClass = "TabLink" + (isLast ? " lastttt" : "");
-		console.log('tabLinkClass: ', tabLinkClass);
+		let tabLinkClass = "TabLink" + (isLast ? " LastTabElement" : "");
+		let tabElementClass = "TabElement HeadingTextSize";
+		if(this.props.tab.selected){
+			tabLinkClass += ' Selected';
+			tabElementClass += ' Selected';
+		}
+
 		return(
-		   <div className="TabElement HeadingTextSize">
-      		<div className={tabLinkClass} 
+		   <div className={tabElementClass}
+			 			onClick={()=>this.props.tabClicked(this.props.tabid)}
+						onMouseEnter={()=>this.tabMouseEnter()}
+						onMouseOut={()=>this.tabMouseOut()} >
+      		<div className={tabLinkClass}
       			  key={this.props.tabid}
-      			  onClick={()=>this.props.tabClicked(this.props.tabid)}
-      			  onMouseEnter={()=>this.tabMouseEnter()}
-      			  onMouseOut={()=>this.tabMouseOut()}>
+							onMouseEnter={()=>this.tabMouseEnter()}
+							onMouseOut={()=>this.tabMouseOut()}>
       			{this.props.tab.name}
       		</div>
       		<div className={"TabIndicator" + (this.props.tab.selected ? " Selected" : "")}

@@ -60,13 +60,21 @@ class App extends Component {
 
     let selectionChanged = false;
 
-    tabs.forEach(t => {
-      let slctd = curRelPath.startsWith(t.path);
-      if (slctd !== t.selected) {
+    if(!curRelPath){
+      // landing page - curRelPath is empty!
+      if(tabs.length > 0 && !tabs[0].selected){
+        tabs[0].selected = true;
         selectionChanged = true;
       }
-      t.selected = slctd;
-    });
+    }else{
+      tabs.forEach(t => {
+        let slctd = curRelPath.startsWith(t.path);
+        if (slctd !== t.selected) {
+          selectionChanged = true;
+        }
+        t.selected = slctd;
+      });
+    }
 
     if (selectionChanged) {
       this.setState(tabs);
@@ -99,12 +107,13 @@ class App extends Component {
   onScroll() {
     let y = window.scrollY;
     const logohdr = this.logoHeader.current;
-    if (y > 30 && this.lastYScroll <= 30) {
+    const offset = 1;
+    if (y > offset && this.lastYScroll <= offset) {
       //logohdr.style.opacity = '0';
       logohdr.classList.add('Hide');
       logohdr.classList.remove('Show');
       this.lastYScroll = y;
-    } else if (y <= 30 && this.lastYScroll > 30) {
+    } else if (y <= offset && this.lastYScroll > offset) {
       //logohdr.style.opacity = '100';
       logohdr.classList.add('Show');
       logohdr.classList.remove('Hide');
@@ -129,7 +138,6 @@ class App extends Component {
         <div id="LogoHeaderImageDiv">
           <img id="LogoHeaderImage" src={logo} alt="logo"/>
         </div>
-        <div id="LogoHeaderSep"></div>
       </div>
 
       <div className="MainDivAPP" ref={this.body}>

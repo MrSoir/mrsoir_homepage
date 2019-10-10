@@ -2,6 +2,9 @@
 
 :root {
   --main-bg-color: #00AA00;
+  --main-bg-color-dark: #005500;
+  --main-bg-color-lightdark: #008800;
+  --main-bg-color-light: #00ff00;
   --headerLogoMaxHeight: 300px;
   --fontColor: #00AA00;
   --separatorColor: #66CC66;

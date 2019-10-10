@@ -1,4 +1,4 @@
-@import "App.css"; 
+@import "App.css";
 
 
 .TabBar {
@@ -7,9 +7,19 @@
 	justify-content: center;
 	box-sizing: border-box;
 }
+.TabSeparator{
+	height: 2px;
+	width: 90%;
+	background-color: var(--separatorColor);
+	margin: auto;
+	margin-bottom: 0px;
+}
 .TabElement{
 }
 .TabElement.acitve{
+}
+.TabElement:hover{
+	cursor: pointer;
 }
 .TabIndicator{
 	height: 2px;
@@ -19,17 +29,16 @@
 	transition: 0.5s;
 	margin-bottom: 10px;
 	margin-top: 0px;
+	transition-duration: 1s;
 }
 .TabIndicator.Hovered{
-	transition: 1s;
-	background-color: var(--main-bg-color);
+	background-color: var(--main-bg-color-lightdark);
 }
 .TabIndicator.Selected{
-	background-color: var(--main-bg-color);
 }
 
 .TabLink {
-	border-right: 1px solid #00880044;
+	border-right: 1px solid var(--main-bg-color-light);
 	background-color: transparent;
 	color: var(--main-bg-color);
 /*  	font-size: calc(10px + 2vmin);*/
@@ -40,15 +49,17 @@
    margin: 1px;
    display:block;
    outline: none;
-   cursor: pointer;
+	 transition-duration: 0.6s;
 }
-.lastttt{
+.LastTabElement{
 	border-right: none;
 }
 
 .TabLink:hover {
-/*	background-color: #CCCCCC44;*/
-/*  	border: 1px solid #00FF00;*/
+}
+.TabLink.Selected {
+	background-color: var(--main-bg-color-dark);
+	color: white;
 }
 .TabLink:active {
 /*  	border: 1px solid #00FF00;*/
@@ -56,9 +67,9 @@
 
 @keyframes indicator_fading {
   0%   {background-color: transparent;}
-  100% {background-color: var(--main-bg-color);}
+  100% {background-color: var(--main-bg-color-dark);}
 }
 @keyframes indicator_fading_out {
-  0%   {background-color: var(--main-bg-color);}
+  0%   {background-color: var(--main-bg-color-dark);}
   100% {background-color: transparent;}
 }
