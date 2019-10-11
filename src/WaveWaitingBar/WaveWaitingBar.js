@@ -8,7 +8,10 @@ const [cw2, ch2] = [
 ];
 
 function rgbToHex(r, g, b) {
-  return "#" + ((1 << 24) + (Math.floor(r) << 16) + (Math.floor(g) << 8) + Math.floor(b)).toString(16).slice(1);
+  r = Math.min(Math.trunc(r));
+  g = Math.min(Math.trunc(g));
+  b = Math.min(Math.trunc(b));
+  return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
 }
 
 class Bounce {
@@ -36,14 +39,14 @@ class Bounce {
   }
   genColorVal() {
     const mincolval = 80;
-    return Math.floor( mincolval + Math.random() * (255 - mincolval) );
+    return Math.min(Math.trunc( mincolval + Math.random() * (255 - mincolval) ), 255);
   }
   genColor() {
     let rndm = Math.random();
 
-		let rv = this.r * this.genColorVal();
-		let gv = this.g * this.genColorVal();
-		let bv = this.b * this.genColorVal();
+		let rv = Math.min(Math.trunc(this.r * this.genColorVal()), 255);
+		let gv = Math.min(Math.trunc(this.g * this.genColorVal()), 255);
+		let bv = Math.min(Math.trunc(this.b * this.genColorVal()), 255);
 		this.color = [rv, gv, bv];
 
     this.colorHex = rgbToHex(...this.color);
@@ -78,9 +81,6 @@ function WaveWaitingBar(props) {
 	useEffect(()=>{
     console.log('initializing!');
 		initializeBounces(r,g,b);
-    return ()=>{
-
-    }
 	}, []);
 
 	function initializeBounces(){
@@ -101,7 +101,7 @@ function WaveWaitingBar(props) {
 		}else{
       console.log('stopping animation!!!');
     }
-  }, [lastRenderTime, bounces, props.stop]);
+  }, [lastRenderTime, bounces]);
 
 	// render the canvas:
 	useEffect(()=>{
@@ -141,21 +141,20 @@ function WaveWaitingBar(props) {
         while(bounces.length < elementCount && cntr++ < 3){
           addBounce();
         }
-        setUpdatedBounces();
         break;
       }
     }
   }
 	function addBounce(){
 		bounces.push( new Bounce(r,g,b) );
-	}
-  function setUpdatedBounces(){
     setBounces(bounces);
-  }
+	}
+
   function renderBounce(bounce) {
     let ctx = canvas.current.getContext('2d');
 
-    ctx.fillStyle = bounce.colorHex;
+    const color = bounce.color;
+    ctx.fillStyle = `rgb(${color[0]}, ${color[1]}, ${color[2]})`;//bounce.colorHex;
 
     let baseWidth = bounce.width;
     let bw2 = baseWidth * 0.5;

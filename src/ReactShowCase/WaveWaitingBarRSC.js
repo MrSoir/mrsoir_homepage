@@ -34,6 +34,7 @@ function WaveWaitingBarRSC(props){
 	let heading = `
 		another 'waiting bar'...
 	`;
+	
 	let description = `
 		a waiting bar following no real sense, just one of those lazy days
 		as a programmer where You play around and try out some new things
