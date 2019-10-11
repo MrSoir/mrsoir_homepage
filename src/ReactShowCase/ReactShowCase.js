@@ -10,6 +10,7 @@ import FlipSelectorRSC from './FlipSelectorRSC';
 import SlideBarRSC from './SlideBarRSC';
 import SpinningWheelRSC from './SpinningWheelRSC';
 import WaitingBarRSC from './WaitingBarRSC';
+import WaveWaitingBarRSC from './WaveWaitingBarRSC';
 import DataVisualizationRSC from './DataVisualizationRSC';
 import CarrouselDiaShowRSC from './CarrouselDiaShowRSC';
 
@@ -33,15 +34,16 @@ class ReactShowCase extends Component{
 		this.addFullScreenChangeListener();
 
 		this.state = {
-			selectedPreviewId: 1,
+			selectedPreviewId: 2,
 			previewImagePaths: this.getPreviewImagePaths(),
 			fullScreen: false
 		}
 	}
 	getPreviewImagePaths(){
 		let basePath = process.env.PUBLIC_URL + '/ReactShowCase/previews/';
-		return [basePath + 'WaitingBar.png',
-						basePath + 'Carousel.png',
+		return [basePath + 'Carousel.png',
+						basePath + 'WaitingBar.png',
+						basePath + 'WaveWaitingBar.png',
 				  	basePath + 'DataVisualization.png',
 				  	basePath + 'SpinningSelector.png',
 				  	basePath + 'FlipSelector.png',
@@ -54,16 +56,18 @@ class ReactShowCase extends Component{
 	genMainComponent(){
 		switch(this.state.selectedPreviewId){
 			case 0:
-				return this.genWaitingBar();
-			case 1:
 				return this.genCarrouselDiaShow();
+			case 1:
+				return this.genWaitingBar();
 			case 2:
-				return this.genDataVisualization();
+				return this.genWaveWaitingBar();
 			case 3:
-				return this.genSpinningWheel();
+				return this.genDataVisualization();
 			case 4:
-				return this.genFlipSelector();
+				return this.genSpinningWheel();
 			case 5:
+				return this.genFlipSelector();
+			case 6:
 				return this.genSlideBar();
 			default:
 				return (
@@ -76,7 +80,7 @@ class ReactShowCase extends Component{
 	genCarrouselDiaShow(){
 		return (
 			<CarrouselDiaShowRSC/>
-		)
+		);
 	}
 	genFlipSelector(){
 		return (
@@ -96,6 +100,11 @@ class ReactShowCase extends Component{
 	genWaitingBar(){
 		return (
 			<WaitingBarRSC/>
+		);
+	}
+	genWaveWaitingBar(){
+		return (
+			<WaveWaitingBarRSC/>
 		);
 	}
 	genDataVisualization(){
