@@ -8,15 +8,15 @@ import './WaitingBarRSC.css';
 class WaitingBarRSC extends Component{
 	constructor(props){
 		super(props);
-		
+
 		this.updateValue = this.updateValue.bind(this);
 		this.changeFadingState = this.changeFadingState.bind(this);
-		
+
 		this.state = {
 			fading: true,
 			outerCurved: true,
 			innerCurved: true,
-			
+
 			fragmentCount: {
 				val: 4,
 				min: 3,
@@ -104,7 +104,7 @@ class WaitingBarRSC extends Component{
 						<div className="CheckBoxLabelRSCWB">
 							fading:
 						</div>
-						<CheckBox className="CheckBoxRSC"
+						<CheckBox
 									 checked={this.state.fading}
 									 onClick={this.changeFadingState}
 						/>
@@ -113,7 +113,7 @@ class WaitingBarRSC extends Component{
 						<div className="CheckBoxLabelRSCWB">
 							{"outer border curved:"}
 						</div>
-						<CheckBox className="CheckBoxRSC"
+						<CheckBox
 									 checked={this.state.outerCurved}
 									 onClick={ (()=>{this.setState({outerCurved: !this.state.outerCurved})}).bind(this) }
 						/>
@@ -122,7 +122,7 @@ class WaitingBarRSC extends Component{
 						<div className="CheckBoxLabelRSCWB">
 							{"inner border curved:"}
 						</div>
-						<CheckBox className="CheckBoxRSC"
+						<CheckBox
 									 checked={this.state.innerCurved}
 									 onClick={ (()=>{this.setState({innerCurved: !this.state.innerCurved})}).bind(this) }
 						/>
@@ -164,5 +164,3 @@ class WaitingBarRSC extends Component{
 }
 
 export default WaitingBarRSC;
-
-	

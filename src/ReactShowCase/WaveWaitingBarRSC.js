@@ -1,19 +1,28 @@
 import React, { Component, useState, useEffect, useLayoutEffect } from 'react';
 import SlideBar from '../SlideBar';
+import CheckBox from '../CheckBox';
 import WaveWaitingBar from '../WaveWaitingBar/WaveWaitingBar';
 import './WaveWaitingBarRSC.css';
 
 function WaveWaitingBarRSC(props){
+	const mobile = window.mobilecheck();
 
 	const [red, setRed] = useState(0);
 	const [green, setGreen] = useState(1);
 	const [blue, setBlue] = useState(0);
 	const [elementCount, setElementCount] = useState(mobile ? 50 : 200);
-
-	const mobile = window.mobilecheck();
+	const [stopAnimation, setStopAnimation] = useState(false);
+	const [roundedEdges, setRoundedEdges] = useState(false);
 
 	const MAX_ELEMENT_COUNT = mobile ? 200 : 1000;
 	const MIN_ELEMENT_COUNT = 10;
+
+	useEffect(()=>{
+		return ()=>{
+			console.log('stopping animation!');
+			setStopAnimation(true);
+		}
+	}, []);
 
 	function setPercentageElementCount(prctg){
 		setElementCount( MIN_ELEMENT_COUNT + prctg * (MAX_ELEMENT_COUNT - MIN_ELEMENT_COUNT) );
@@ -43,9 +52,20 @@ function WaveWaitingBarRSC(props){
 												g={green}
 												b={blue}
 												elementCount={elementCount}
+												stop={stopAnimation}
+												roundedEdges={roundedEdges}
 				/>
 			</div>
 			<div className="SettingsWBRSC">
+				<div className="CheckBoxFlexWB CheckBoxWWBRSC">
+					<div className="CheckBoxLabelRSCWB">
+						{"rounded edges:"}
+					</div>
+					<CheckBox
+								 checked={roundedEdges}
+								 onClick={ ()=>{setRoundedEdges( !roundedEdges)} }
+					/>
+				</div>
 				<div className="SliderWBRSC">
 					<SlideBar label="red"
 								 sliderVal={red}

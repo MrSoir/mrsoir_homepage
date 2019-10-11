@@ -25,9 +25,6 @@ class DiaSelector extends Component{
 			imgPaths: this.props.previewImagePaths
 		};
 	}
-   componentDidMount(){
-
-	}
 	activatePrevBar(){
 		this.prevBarActive = true;
 	}

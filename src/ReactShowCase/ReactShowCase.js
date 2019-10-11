@@ -51,7 +51,7 @@ class ReactShowCase extends Component{
 				  ];
 	}
    componentDidMount(){
-
+		 window.scrollTo(0,0);
 	}
 	genMainComponent(){
 		switch(this.state.selectedPreviewId){
