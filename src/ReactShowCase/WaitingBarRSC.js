@@ -38,14 +38,14 @@ class WaitingBarRSC extends Component{
 				max: 0.05
 			},
 			innerRadius: {
-				val: 220,
-				min: 100,
-				max: 300
+				val: 0.4,
+				min: 0.0,
+				max: 0.5
 			},
 			outerRadius: {
-				val: 250,
-				min: 110,
-				max: 330
+				val: 0.45,
+				min: 0.0,
+				max: 0.5
 			}
 		};
 	}
@@ -64,6 +64,7 @@ class WaitingBarRSC extends Component{
 	}
 	evalRangeValue(prctg, stateObj, floor=false){
 		let x =  stateObj.min + prctg * (stateObj.max - stateObj.min);
+		console.log('x: ', x);
 		return !!floor ? Math.floor(x) : x;
 	}
 	genPercentageSetter(stateObj, floor=false){

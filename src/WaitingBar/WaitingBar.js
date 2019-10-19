@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import * as THREE from 'three';
 import './WaitingBar.css';
 
+const [cw, ch] = [500,500];
+
 function toTwoDigitHexString(x){
 	let s = x.toString(16);
 	if(s.length === 1){
@@ -16,7 +18,7 @@ class Color extends THREE.Vector3{
 	}
 	mixColor(color, progress=0.5){
 		let mixed = this.clone().add( color.clone().sub(this).multiplyScalar(progress) );
-		
+
 		let mixedCol = new Color(mixed.x, mixed.y, mixed.z);
 		return mixedCol;
 	}
@@ -31,9 +33,9 @@ class Color extends THREE.Vector3{
 class WaitingBar extends Component{
 	constructor(props){
 		super(props);
-		
+
 		this.nextFrame = this.nextFrame.bind(this);
-		
+
 		this.canvas = React.createRef();
 	}
 	goToArduinoHomepage(){
@@ -43,47 +45,47 @@ class WaitingBar extends Component{
    	this.ctx = this.canvas.current.getContext('2d');
    	this.ctx.fillStyle = '#00ff00';
 		this.ctx.strokeStyle = '#0000ff';
-		
+
 		this.initRotation = 0;
 		this.rotation = this.initRotation;
 		this.rotationSpeed = 0;
 		this.curRotationSpeedIncrmnt = 0;
 		this.rotationSpeedIncrmnt = 0.01;
 		this.maxRotationSpeed = 0.002;
-		
+
 		this.minScale = 0.9;
 		this.maxScale = 1.0;
 		this.scale = this.maxScale;
 		this.curScaleIncrmnt = 0;
-		
+
 		this.selectedId = 0;
 		this.selectedIdProgress = 0;
-		
+
 		this.setCanvasSize({
 			width: 1000,
 			height: 1000
 		});
-   	
+
 		this.nextFrame();
 	}
 	evalSelectedFillColor(){
 		return !!this.props.selectedFillColor ?
-				   this.props.selectedFillColor : 
+				   this.props.selectedFillColor :
 					new Color(0, 255, 0);
 	}
 	evalSelectedStrokeColor(){
-		return !!this.props.strokeColor ? 
-				   this.props.strokeColor : 
+		return !!this.props.strokeColor ?
+				   this.props.strokeColor :
 				   this.evalSelectedFillColor();//new Color(0, 255 ,0);
 	}
 	evalFillColor(){
-		return !!this.props.fillColor ? 
-					this.props.fillColor : 
+		return !!this.props.fillColor ?
+					this.props.fillColor :
 					new Color(150,150,150);
 	}
 	evalStrokeColor(){
-		return !!this.props.strokeColor ? 
-			      this.props.strokeColor : 
+		return !!this.props.strokeColor ?
+			      this.props.strokeColor :
 				   this.evalFillColor();//new Color(0,0,0);
 	}
 	evalFragmentCount(){
@@ -111,11 +113,11 @@ class WaitingBar extends Component{
 			this.selectedIdProgress = 0;
 			this.selectedId = (this.selectedId + 1) % this.evalFragmentCount();
 		}
-		
+
 		this.rotation = (this.rotation + this.rotationSpeed) % (Math.PI * 2);
 /*		this.curRotationSpeedIncrmnt = this.curRotationSpeedIncrmnt + this.rotationSpeedIncrmnt ;
 		this.rotationSpeed = Math.sin( this.curRotationSpeedIncrmnt ) * this.maxRotationSpeed;*/
-		
+
 		this.curScaleIncrmnt = (this.curScaleIncrmnt + this.evalScaleSpeed()) % 1;
 		this.scale = (this.maxScale + this.minScale) * 0.5 + (this.maxScale - this.minScale) * Math.sin(this.curScaleIncrmnt * Math.PI * 2) * 0.5;
 	}
@@ -138,13 +140,13 @@ class WaitingBar extends Component{
 		}
 		this.ctx.fillStyle = '#00ff00';
 		this.ctx.strokeStyle = '#0000ff';
-		
+
 		let frgmnts = this.evalFragmentCount();
 		let padding = this.evalFragmentPadding();
 		let angleRange = ((Math.PI * 2) - (padding * frgmnts)) / frgmnts;
 		let angle0 = 0;
 		let angle1 = 0;
-		
+
 		for(let i=0; i < frgmnts; ++i){
 			this.setFragmentColor(i);
 			angle0 = -Math.PI / 2 + this.evalFragmentPadding() * 0.5 + + i * (angleRange + padding) + this.rotation;
@@ -155,10 +157,10 @@ class WaitingBar extends Component{
 	setFragmentColor(fragmentId){
 		if(fragmentId === this.selectedId){
 			let progress = !!this.props.fading ? Math.sin(this.selectedIdProgress * Math.PI): 1;
-			
+
 			let selProgrCol = this.evalFillColor().mixColor(this.evalSelectedFillColor(), progress);
 			this.ctx.fillStyle = '#' + selProgrCol.toHexString();
-			
+
 			let selStrkCol = this.evalStrokeColor().mixColor(this.evalSelectedStrokeColor(), progress);
 			this.ctx.strokeStyle = '#' + selStrkCol.toHexString();
 		}else{
@@ -168,17 +170,19 @@ class WaitingBar extends Component{
 	}
 	drawCirleFragment(angle0, angle1){
 		let ctx = this.ctx;
-		
-		let outerRad = this.props.outerRadius * this.scale;
-		let innerRad = this.props.innerRadius * this.scale;
-		
-		let center = [ctx.width * 0.5, ctx.height * 0.5];
-		
+
+		const validateVal = (val)=>(val != undefined && val != null);
+
+		let outerRad = (validateVal(this.props.outerRadius )? this.props.outerRadius : 0.4 ) * cw * this.scale;
+		let innerRad = (validateVal(this.props.innerRadius) ? this.props.innerRadius : 0.35) * ch * this.scale;
+
+		let center = [cw * 0.5, ch * 0.5];
+
 		let p0 = [center[0] + Math.cos(angle0) * innerRad, center[1] + Math.sin(angle0) * innerRad];
 		let p1 = [center[0] + Math.cos(angle0) * outerRad, center[1] + Math.sin(angle0) * outerRad];
 		let p2 = [center[0] + Math.cos(angle1) * outerRad, center[1] + Math.sin(angle1) * outerRad];
 		let p3 = [center[0] + Math.cos(angle1) * innerRad, center[1] + Math.sin(angle1) * innerRad];
-		
+
 		let avgAngl = (angle0 + angle1) * 0.5;
 		let curvedRadFctr = 1.05;
 		let c0, c1;
@@ -188,11 +192,11 @@ class WaitingBar extends Component{
 		if(this.props.outerCurved){
 			c1 = [center[0] + Math.cos(avgAngl) * outerRad * curvedRadFctr, center[1] + Math.sin(avgAngl) * outerRad * curvedRadFctr];
 		}
-		
+
 		ctx.beginPath();
 		ctx.moveTo(p0[0], p0[1]);
 		ctx.lineTo(p1[0], p1[1]);
-		
+
 		if(this.props.outerCurved){
 			ctx.quadraticCurveTo(c1[0], c1[1], p2[0], p2[1]);
 		}else{
@@ -208,9 +212,9 @@ class WaitingBar extends Component{
 	}
 	render(){
 		return (
-			<div className="WaitingBar">				
+			<div className="WaitingBar">
 				<canvas className="WaitingBarCanvas"
-							 width="1000" height="1000"
+							 width={cw} height={ch}
 						  ref={this.canvas}>
 				</canvas>
 			</div>
@@ -219,4 +223,3 @@ class WaitingBar extends Component{
 }
 
 export {WaitingBar, Color};
-

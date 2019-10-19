@@ -1,7 +1,7 @@
 import React, {Component, useState, useEffect, useLayoutEffect} from 'react';
 import './WaveWaitingBar.css';
 
-const [cw, ch] = [1000, 1000];
+const [cw, ch] = [500, 500];
 const [cw2, ch2] = [
   cw * 0.5,
   ch * 0.5
