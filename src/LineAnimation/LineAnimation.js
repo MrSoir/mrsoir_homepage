@@ -8,7 +8,7 @@ import './LineAnimation.css';
 
 let MATERIAL_COLOR = 0x00aa00;
 let USE_PHONG = false;
-let POINT_COUNT = 100;
+let POINT_COUNT = 10;
 
 //-------------------constants-------------------
 
@@ -27,21 +27,21 @@ let windowHeight 	= window.innerHeight;
 class Webgl {
 	constructor(w, h) {
 		this.meshListeners = [];
-		
+
 		this.renderer = new WebGLRenderer({ antialias: true, alpha: true });
 		this.renderer.setPixelRatio(window.devicePixelRatio);
-		
+
 		this.scene = new Scene();
-		
+
 		let cameraZ = 500;
-		
+
 		this.camera = new PerspectiveCamera(45, w / h, 1, 1000);
 		this.camera.position.set(0, 0, cameraZ);
-		
+
 		this.light = new THREE.DirectionalLight( 0xffffff );
 		this.light.position.set( -300, 0, cameraZ );
 		this.scene.add(this.light);
-		
+
 		this.dom = this.renderer.domElement;
 		this.update = this.update.bind(this);
 		this.resize = this.resize.bind(this);
@@ -71,13 +71,13 @@ class Webgl {
 	}
 	remove(mesh) {
 		this.scene.remove(mesh);
-		
+
 		const idx = this.meshListeners.indexOf(mesh.update);
 		if (idx < 0){
 			return;
 		}
 		this.meshListeners.splice(idx, 1);
-	
+
 	}
 	update() {
 		for(let i=0; i < this.meshListeners.length; ++i){
@@ -102,10 +102,10 @@ const COLOR_IDS = [
 	0x00ff00,
 ];
 
-function genMaterial(materialOptions={color: MATERIAL_COLOR, 
-							metalness: 0.0, 
+function genMaterial(materialOptions={color: MATERIAL_COLOR,
+							metalness: 0.0,
 							roughness: 0.25}){
-	return (USE_PHONG 
+	return (USE_PHONG
 				? new THREE.MeshPhongMaterial(materialOptions)
 				: new THREE.MeshBasicMaterial(materialOptions) );
 }
@@ -125,27 +125,27 @@ class PipeCurve extends THREE.Curve{
 		}else if(t === this.points.length-1){
 			return this.points[this.points.length-1];
 		}
-		
+
 		let pid = this.evalPointId(t);
 		let lid = Math.floor(pid);
 		let uid = lid + 1;
 		let offs = pid % 1;
-		
+
 		if(uid === this.points.length){
 			return this.points[uid-1];
 		}
-		
+
 /*		console.log('t: ', t, '	points.length: ', this.points.length,
 						'	pid: ', pid, '	lid: ', lid, '	uid: ', uid, '	offs: ', offs);*/
-		
+
 		let lp = this.points[lid].clone();
 		let up = this.points[uid].clone();
-		
+
 		let dst = up.clone().sub(lp);
-		
+
 		return lp.add( dst.multiplyScalar(offs) );
-		
-		
+
+
 /*		console.log('t: ', t);
 		let tx = t * 3 - 1.5;
 		let ty = Math.sin( 2 * Math.PI * t );
@@ -164,13 +164,13 @@ class Pipe extends Mesh {
 						color = MATERIAL_COLOR
 					}={}){
 		let path = new PipeCurve(points);
-		
+
 		let geometry = new THREE.TubeGeometry( path, tubularSegments, radius, radialSegments, closed );
-		
+
 		let material = genMaterial({color});
-		
+
 		super(geometry, material);
-		
+
 		this.points = points;
 	}
 }
@@ -182,46 +182,46 @@ class Pipe extends Mesh {
 class LineAnimation extends Component{
 	constructor(props){
 		super(props);
-		
+
 		this.mainDivRef = React.createRef();
-		
+
 		this.MAX_DIST = 500;
 		this.WEBGL_BOUNDARIES_WIDTH  = 1000;
 		this.WEBGL_BOUNDARIES_HEIGHT = 500;
 		this.WEBGL_BOUNDARIES_DEPTH = 800;
-		
+
 		this.XMIN = -this.WEBGL_BOUNDARIES_WIDTH * 0.5;
 		this.XMAX =  this.WEBGL_BOUNDARIES_WIDTH * 0.5;
 		this.YMIN = -this.WEBGL_BOUNDARIES_HEIGHT * 0.4;
 		this.YMAX =  this.WEBGL_BOUNDARIES_HEIGHT * 0.4;
 		this.ZMIN = -this.WEBGL_BOUNDARIES_DEPTH * 0.4;
 		this.ZMAX =  this.WEBGL_BOUNDARIES_DEPTH * 0.4;
-		
+
 		this.QUADRANT_COUNT = 4;
 		this.QUADRANT_COMPARISON_OFFS = 2;
-		
+
 		this.LIGHT_VEL = 1;
-		
+
 		this.MIN_VEL = -0.01;
 		this.MAX_VEL =  0.01;
-		
+
 		this.Z_VEL_FCTR = 2;
 		this.useZ = false;
-		
+
 		this.PIPE_RADIUS = 1;
 		this.SPHERE_RADIUS = 3;
-		
+
 		this.POINT_COUNT = POINT_COUNT;
-		
+
 		this.LIFE_GROWTH_RATE = 0.05;
-		
+
 		this.update = this.update.bind(this);
 		this.init = this.init.bind(this);
 	}
 	componentDidMount(){
 		this.webgl = new Webgl(windowWidth, windowHeight);
 		this.mainDivRef.current.appendChild(this.webgl.dom);
-		
+
 		const onResize = ()=>{
 			windowWidth = window.innerWidth;
 			windowHeight = window.innerHeight;
@@ -229,46 +229,46 @@ class LineAnimation extends Component{
 		};
 		window.addEventListener('resize', onResize);
 		window.addEventListener('orientationchange', onResize);
-		
+
 		this.init();
 		this.webgl.update();
-		
+
 		requestAnimationFrame(this.update);
 	}
-	init(){		
+	init(){
 		this.vecId = 0;
-		
+
 		this.points 			= [];
 		this.quadrants			= new Map();
 		this.pipeIds 			= new Map();
 		this.killedPipes 		= [];
 		this.closestPoints 	= new Map();
-		
+
 		for(let i=0; i < this.POINT_COUNT; ++i){
 			this.createPoint();
 		}
-		
+
 		this.genCircles();
-		
+
 		this.createPipePoints();
-		
+
 //		console.log('this.points: ', this.points);
 	}
 	//--------------------------------------------------------------------------__
-	createPoint(){		
+	createPoint(){
 		const vec = new THREE.Vector3( genRandomFloat(this.XMIN, this.XMAX),
 									 			 genRandomFloat(this.YMIN, this.YMAX),
 									 			 (this.useZ ? genRandomFloat(this.ZMIN, this.ZMAX) : 0) );
 		vec.id = this.vecId;
 		this.vecId += 1; // keep track of all points and ensure unique id for every point
-		
+
 		vec.vel = new THREE.Vector3( genRandomFloat(this.MIN_VEL, this.MAX_VEL),
 											  genRandomFloat(this.MIN_VEL, this.MAX_VEL),
 											  (this.useZ ? genRandomFloat(this.MIN_VEL, this.MAX_VEL) * this.Z_VEL_FCTR : 0) );
 		this.points.push( vec );
-		
 
-		
+
+
 		return vec;
 	}
 	//--------------------------------------------------------------------------__
@@ -300,7 +300,7 @@ class LineAnimation extends Component{
 	killPipe(pipe){
 		let pipeId = pipe.cpId;
 		pipe.kill = true;
-		
+
 		this.pipeIds.delete(pipeId);
 		this.killedPipes.push(pipe);
 	}
@@ -312,19 +312,19 @@ class LineAnimation extends Component{
 		const qoffs = this.QUADRANT_COMPARISON_OFFS;
 		let minx = Math.max(quadrant.x - qoffs, 0);
 		let maxx = Math.min(quadrant.x + qoffs, this.QUADRANT_COUNT-1);
-		
+
 		let miny = Math.max(quadrant.y - qoffs, 0);
 		let maxy = Math.min(quadrant.y + qoffs, this.QUADRANT_COUNT-1);
-		
+
 		let minz = Math.max(quadrant.z - qoffs, 0);
 		let maxz = Math.min(quadrant.z + qoffs, this.QUADRANT_COUNT-1);
-		
+
 		let points = [];
 		for(let qx=minx; qx <= maxx; ++qx){
 			for(let qy=miny; qy <= maxy; ++qy){
 				for(let qz=minz; qz <= maxz; ++qz){
 					let quadrantPoints = this.quadrants.get( this.evalQuadrantId(qx,qy,qz) );
-					
+
 					points.push.apply(points, quadrantPoints);
 				}
 			}
@@ -333,28 +333,28 @@ class LineAnimation extends Component{
 	}
 	updateClosestPoints(){
 		this.closestPoints.clear();
-		
+
 		let qdrntsPnts = [...this.quadrants.values()];
 		qdrntsPnts.forEach(qrdntPnts=>{
 			let points = qrdntPnts;
-			
+
 			if(points.length <= 0){
 				return;
 			}
-			
+
 			let comprPnts = this.evalComparePoints(points[0].quadrant);
-			
+
 			for(let i=0; i < points.length; ++i){
 				const v0 = points[i];
-				
+
 				let mindst = this.evalSquaredDist(v0, comprPnts[0]);
 				let id = 0;
-				
+
 				let cmpCnt = comprPnts.length;//Math.floor(points.length * 0.5);
-				
+
 				for(let j=1; j < cmpCnt; ++j){
 					let v1 = comprPnts[j];
-					
+
 					if(v0 !== v1){
 						let curdst = this.evalSquaredDist(v0, v1);
 						if(curdst < mindst){
@@ -373,7 +373,7 @@ class LineAnimation extends Component{
 	}
 	keepPointInBoundaries(vec){
 		let [minx, miny, minz, maxx, maxy, maxz] = this.evalWebGlBoundaries();
-		
+
 		if(vec.x < minx){
 			vec.x = minx;
 			vec.vel.x *= -1;
@@ -381,15 +381,15 @@ class LineAnimation extends Component{
 			vec.x = maxx;
 			vec.vel.x *= -1;
 		}
-		
+
 		if(vec.y < miny){
 			vec.y = miny;
 			vec.vel.y *= -1;
 		}else if(vec.y > maxy){
 			vec.y = maxy;
 			vec.vel.y *= -1;
-		}	
-		
+		}
+
 		if(vec.z < minz){
 			vec.z = minz;
 			vec.vel.z *= -1;
@@ -407,17 +407,17 @@ class LineAnimation extends Component{
 		let [wc, dc, hc]= [sgmnts, sgmnts, sgmnts];
 		const [minx, miny, minz, maxx, maxy, maxz] = this.evalWebGlBoundaries();
 		let [x,y,z] = [vec.x, vec.y, vec.z];
-		
+
 		let qx = Math.floor( (x - minx) / ((maxx - minx) / wc) );
 		let qy = Math.floor( (y - miny) / ((maxy - miny) / hc) );
 		let qz = Math.floor( (z - minz) / ((maxz - minz) / dc) );
-		
+
 /*		if(id===0){
 			console.log('x: ', x, 'y: ', y, 'z: ', z);
 			console.log('qx: ', qx, 'qy: ', qy, 'qz: ', qz);
 			console.log('minx: ', minx, 'miny: ', miny, 'minz: ', minz, 'maxx: ', maxx, 'maxy: ', maxy, 'maxz: ', maxz);
 		}*/
-		
+
 		return {
 			id: this.evalQuadrantId(qx, qy, qz),
 			x: qx,
@@ -427,7 +427,7 @@ class LineAnimation extends Component{
 	}
 	addPointToQuadrant(quadrant, vec){
 		vec.quadrant = quadrant;
-		
+
 		if( !this.quadrants.has(quadrant.id) ){
 			this.quadrants.set(quadrant.id, []);
 		}
@@ -436,11 +436,11 @@ class LineAnimation extends Component{
 	movePoints(dt){
 		if(dt > 0){
 			this.quadrants.clear();
-			
+
 			this.points.forEach((vec)=>{
 				vec.add(vec.vel.clone().multiplyScalar(dt));
 				this.keepPointInBoundaries(vec);
-				
+
 				let quadrant = this.evalQuadrant(vec);
 				this.addPointToQuadrant(quadrant, vec);
 			});
@@ -477,17 +477,17 @@ class LineAnimation extends Component{
 						} = {}){
 //		let geometry = new THREE.CircleGeometry(radius, segments);
 		let geometry = new THREE.SphereGeometry(radius, widthSegments, heightSegments);
-		
+
 		let material = genMaterial({color});
-		
+
 		let circle = new THREE.Mesh( geometry, material );
 		circle.position.set(p0.x, p0.y,p0.z);
-		
+
 		this.webgl.addCircle( circle );
-		
+
 		return circle;
 	}
-	
+
 	//--------------------------------------------------------------------------__
 	evalAngle(v0, v1){
 		return Math.atan2(v1.y, v1.x) - Math.atan2(v0.y, v0.x);
@@ -495,12 +495,12 @@ class LineAnimation extends Component{
 	evalQuaternion(v0, v1){
 		let vref = new THREE.Vector3(1,0,0);
 		let vtar   = v1.clone().sub(v0.clone()).normalize();
-		
+
 		let cross = vref.clone().cross(vtar).normalize();
 		let angle = vref.clone().angleTo(vtar);
-		
+
 		let quat = new THREE.Quaternion().setFromAxisAngle( cross, angle );
-		
+
 		return quat;
 	}
 	evalRotation(v0, v1){
@@ -509,11 +509,11 @@ class LineAnimation extends Component{
 		if(v0.y > v1.y){
 			angle = Math.PI * 2 - angle;
 		}
-		
+
 		dst = dst.normalize();
-		
+
 		let vref = new THREE.Vector3(1,0,0);
-		
+
 		let dot = dst.dot(vref);
 
 //		let angle = this.evalAngle(v1,v0);
@@ -531,12 +531,12 @@ class LineAnimation extends Component{
 	}
 	updatedKilledPipes(){
 		let kps = this.killedPipes;
-		
+
 		for(let i=0; i < kps.length; ){
 			let pipe = kps[i];
-			
+
 			pipe.life -= this.LIFE_GROWTH_RATE * 2;
-			
+
 			if(pipe.life <= 0.0){
 				this.removePipe(i);
 			}else{
@@ -549,7 +549,7 @@ class LineAnimation extends Component{
 	updatePipe(pipe){
 		let v0 = pipe.v0.clone();
 		let v1 = pipe.v1.clone();
-		
+
 		let quat = this.evalQuaternion(v0, v1);
 //		let rot = this.evalRotation(v0, v1);
 		let dst = v1.clone().sub(v0).length();
@@ -557,20 +557,20 @@ class LineAnimation extends Component{
 		let offs = v0.clone().add(v1.clone().sub(v0).multiplyScalar(0.5));
 		let pos = pipe.pos;
 		let relOffs = offs.clone().sub(pos);
-		
+
 		pipe.rotation.setFromQuaternion( quat );
-		
+
 		let tarScl = scl * pipe.life;
 		if(tarScl > 0.1){
 			// only scale if tarScle is greater than threshold -> otherwiese determinant === zero!!
 			pipe.scale.set( tarScl, 1, 1 );
 		}
-		
+
 		pipe.position.set(offs.x, offs.y, offs.z);
-		
+
 		pipe.pos.add(relOffs);
 		pipe.scl = scl;
-		
+
 		if(pipe.life < 1.0){
 			pipe.life = Math.min(pipe.life + this.LIFE_GROWTH_RATE, 1.0);
 		}
@@ -579,7 +579,7 @@ class LineAnimation extends Component{
 		let curtime = new Date().getTime();
 		let dt = !!this.lasttime ? curtime - this.lasttime : 0;
 		this.lasttime = curtime;
-		
+
 		if(dt > 100){
 			dt = 100;
 		}
@@ -587,14 +587,14 @@ class LineAnimation extends Component{
 	}
 	updatePipes(){
 		this.updateClosestPoints();
-		
+
 		let pipes = [...this.pipeIds.values()];
 		pipes.forEach(pipe=>{
 			if( !this.closestPoints.has(pipe.cpId) ){
 				this.killPipe(pipe);
 			}
 		});
-		
+
 		let it = this.closestPoints[Symbol.iterator]();
 		for(let [id, [v0,v1]] of it){
 			if( !this.pipeIds.has(id) ){
@@ -603,7 +603,7 @@ class LineAnimation extends Component{
 			let pipe = this.pipeIds.get(id);
 			this.updatePipe(pipe);
 		}
-		
+
 		this.updatedKilledPipes();
 	}
 	evalWebGlBoundaries(){
@@ -621,15 +621,15 @@ class LineAnimation extends Component{
 	}
 	update(){
 		let dt = this.evalDT();
-		
+
 		this.movePoints(dt);
 //		this.updateLight(dt);
-		
+
 		this.updatePipes();
 
-		
+
 		this.webgl.update();
-		
+
 		requestAnimationFrame(this.update);
 	}
 	//--------------------------------------------------------------------------__

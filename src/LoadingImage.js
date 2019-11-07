@@ -50,7 +50,7 @@ function LoadingImage(props){
       setTimeout(()=>{
         showImage();
         hideWaitingBar();
-      }, 2000);
+      }, 500);
     };
     ir.src = props.src;
 
@@ -67,18 +67,18 @@ function LoadingImage(props){
                       b={0}
                       elementCount={80}
                       stop={waitingBarStopped}
-                      roundedEdges={true}
+                      roundedEdges={false}
       />
     : <WAITINGBAR.WaitingBar
-                innerRadius={0.31}
+                innerRadius={0.44}
     						outerRadius={0.5}
     						fading={true}
-    						fragmentCount={3}
-    						progressSpeed={0.05}
+    						fragmentCount={5}
+    						progressSpeed={0.035}
     						scaleSpeed={0.015}
     						fillColor={new WAITINGBAR.Color(80,80,80)}
     						selectedFillColor={new WAITINGBAR.Color(0,180,0)}
-    						outerCurved={false}
+    						outerCurved={true}
     						innerCurved={true}
                 stop={waitingBarStopped}
       />;

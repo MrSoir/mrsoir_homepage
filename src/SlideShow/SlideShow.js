@@ -265,7 +265,7 @@ class SlideShow extends Component{
 								r={0}
 								g={1}
 								b={0}
-								roundedEdges={true}
+								roundedEdges={false}
 								stop={this.state.stopWaitingBar}
 							/>
 				    </div>

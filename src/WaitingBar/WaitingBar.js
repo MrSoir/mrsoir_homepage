@@ -101,7 +101,7 @@ class WaitingBar extends Component{
 		return !!this.props.progressSpeed ? this.props.progressSpeed : 0.03;
 	}
 	nextFrame(loop=true){
-	  	this.drawWaitingBar();
+	  this.drawWaitingBar();
    	this.incrementProgress();
    	if(loop && !this.props.stop){
    		window.requestAnimationFrame(this.nextFrame);

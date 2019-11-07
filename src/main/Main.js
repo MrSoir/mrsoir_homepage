@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
-import {readTextFile} from '../StaticFunctions';
 import MainImagePreview from '../MainImagePreview';
-import meta_info from './info.txt';
+import loadPreviews from './MainPreviewTextLoader';
 import './Main.css';
+
 
 class MainPage extends Component{
 	constructor(){
@@ -14,63 +14,22 @@ class MainPage extends Component{
 		this.updatePreviewsToState = this.updatePreviewsToState.bind(this);
 		this.onScroll = this.onScroll.bind(this);
 		this.updateFocusedPreview = this.updateFocusedPreview.bind(this);
-		
+
 		this.state = {
 			previews: [],
 			focusedPreviews: []
 		}
 	}
-	getIndicators(programs){
-		let f = (progrm)=>{
-			let text_path = process.env.PUBLIC_URL + '/MainPage/indicators/' + progrm + '.txt';
-			let txt = readTextFile(text_path);
-			let lines = txt.split('\n').filter((tn)=>!!tn);
-			return {
-				heading: lines[0],
-				description: lines.slice(1).join('')
-			};
-		};
-		let indicators = programs.map(p=>f(p));
-		return indicators;
-	}
-	loadPreviews(){
-		let txt = readTextFile(meta_info);
-		let programs = txt.split('\n').filter((tn)=>!!tn).map((tn)=>{
-			let splt = tn.split('_|_').map(v=>v.trim());
-			let name = splt[0];
-			let url = splt.length > 1 ? splt[1] : name.replace(' ', '');
-			return {
-				name,
-				url
-			};
-		});
-		
-   	let f = (pi) => {
-   		let text_path = process.env.PUBLIC_URL + '/MainPage/texts/' + pi.name + '.txt';
-   		let prev_text = readTextFile(text_path);
-   		return {name: pi.name,
-   				  url: pi.url,
-   				  image_path: process.env.PUBLIC_URL + '/MainPage/pics/' + pi.name + '.png',
-   				  text: prev_text };
-   	};
-   	let prev_programs = programs.map( p => f(p) );
-   	
-   	let indicators = this.getIndicators(programs.map(p=>p.name));
-   	prev_programs.forEach((p, id)=>{
-   		p['heading'] = indicators[id].heading;
-   		p['description'] = indicators[id].description;
-   	});
-   	
-   	this.updatePreviewsToState(prev_programs);
-   	
-//   	this.loadGIFs();
+
+	loadPreviews_hlpr(){
+		this.updatePreviewsToState( loadPreviews() );
 	}
    componentDidMount(){
-   	this.loadPreviews();
-   	
+   	this.loadPreviews_hlpr();
+
    	window.scrollTo(0, 0);
    	window.addEventListener('scroll', this.onScroll);
-   	
+
    	setTimeout(this.updateFocusedPreview, 1000);
    }
    componentWillUnmount(){
@@ -79,7 +38,7 @@ class MainPage extends Component{
    updatePreviewsToState(previews){
   		let newstate = this.state;
    	newstate.previews = previews;
-   	
+
    	this.setState(newstate);
    }
    loadGIFs(){
@@ -87,9 +46,9 @@ class MainPage extends Component{
 			let dotID = filePath.lastIndexOf('.');
 			return filePath.slice(0, dotID);
 		};
-		
+
    	let prev_programs = this.state.previews;
-   	
+
    	prev_programs.map((p)=>{
    		let basePath = getBaseFilePath(p.image_path);
    		let gifImgPath = basePath + '.gif';
@@ -120,15 +79,15 @@ class MainPage extends Component{
 	}
 	updateFocusedPreview(){
 		let scrOffs = Math.max(document.body.scrollTop, document.documentElement.scrollTop);
-		
+
 		let previews = document.getElementsByClassName('MainPrevDiv');
-		
+
 		let focusedPreviews = [];
-		
+
 		[...previews].forEach((prev, id)=>{
 			let br = prev.getBoundingClientRect();
 			let [top, btm, y, x] = [br.top, br.bottom, br.y, br.x];
-			
+
 			let viewPortHeight = window.innerHeight;
 
 			if(y > 50 && btm < (viewPortHeight-50)){
@@ -177,4 +136,3 @@ class MainPage extends Component{
 }
 
 export default withRouter(MainPage);
-

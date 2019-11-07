@@ -1,0 +1,40 @@
+
+.MainFIP{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.FragmentAnimatorFIP{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+.FragmentAnimatorFIP{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+
+.PositionedPreviewLabelsFIP{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.AnimatedLabelFIP{
+  position: absolute;
+  color: white;
+  font-size: 20px;
+  transform: translate(-50%, -50%);
+  font-weight: bold;
+  opacity: 0;
+}

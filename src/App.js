@@ -15,6 +15,7 @@ import SlideShow from './SlideShow/SlideShow';
 import ArduinoFullstack from './ArduinoFullstack/ArduinoFullstack';
 import LineAnimation from './LineAnimation/LineAnimation';
 import ReactShowCase from './ReactShowCase/ReactShowCase';
+import LandingPage from './LandingPage/LandingPage';
 
 class App extends Component {
   constructor() {
@@ -43,9 +44,9 @@ class App extends Component {
       let [name, path] = ti.split(' | ');
       return {name, path, selected: false};
     });
-    if (tabs.length > 0) {
-      tabs[0].selected = true;
-    }
+    // if (tabs.length > 0) {
+    //   tabs[0].selected = true;
+    // }
     this.setState({tabs: tabs});
     this.updateTabSelection();
   }
@@ -62,10 +63,10 @@ class App extends Component {
 
     if(!curRelPath){
       // landing page - curRelPath is empty!
-      if(tabs.length > 0 && !tabs[0].selected){
-        tabs[0].selected = true;
-        selectionChanged = true;
-      }
+      // if(tabs.length > 0 && !tabs[0].selected){
+      //   tabs[0].selected = true;
+      //   selectionChanged = true;
+      // }
     }else{
       tabs.forEach(t => {
         let slctd = curRelPath.startsWith(t.path);
@@ -123,45 +124,50 @@ class App extends Component {
   render() {
     return (<div className="App">
 
+      <div className="LinaAnimationDivApp">
       {
         window.mobilecheck()
           ? ""
-          : <LineAnimation/>
+          : ''//<LineAnimation/>
       }
-
-      <div className="App-header" ref={this.header}>
-        <TabBar tabs={this.state.tabs} tabCallback={this.tabClicked}/>
       </div>
+      <div className="ContentDivApp">
+        <div className="App-header" ref={this.header}>
+          <TabBar tabs={this.state.tabs} tabCallback={this.tabClicked}/>
+        </div>
 
-      <div className="LogoHeader Show" ref={this.logoHeader}>
-        <div id="LogoHeaderText" className="MrSoirHeading">Welcome to the World of</div>
-        <div id="LogoHeaderImageDiv">
-          <img id="LogoHeaderImage" src={logo} alt="logo"/>
+        <div className="LogoHeader Show" ref={this.logoHeader}>
+          <div id="LogoHeaderText" className="MrSoirHeading">Welcome to the World of</div>
+          <div id="LogoHeaderImageDiv">
+            <img id="LogoHeaderImage" src={logo} alt="logo"/>
+          </div>
+        </div>
+
+        <div className="MainDivAPP" ref={this.body}>
+          <Switch>
+            <Route exact="exact" path='/' component={LandingPage}/>
+            <Route exact="exact" path='/ReactShowCase' component={ReactShowCase}/>
+            <Route exact="exact" path='/Main' component={MainPage}/>
+            <Route exact="exact" path='/ArduinoFullstack' component={ArduinoFullstack}/>
+            <Route exact="exact" path='/Ballin' component={Ballin}/>
+            <Route exact="exact" path='/Kubu' component={Kubu}/>
+            <Route exact="exact" path='/ReferenceManager' component={ReferenceManager}/>
+            <Route exact="exact" path='/Notes' component={Notes}/>
+            <Route exact="exact" path='/SlideShow' component={SlideShow}/>
+          </Switch>
+        </div>
+
+        <div className="ContactInfoBox">
+          <div className="ContactHeading">CONTACT</div>
+          _____
+          <br/><br/>
+          <div className="ContactText">MrSoir</div>
+          <div className="ContactText">support@MrSoir.com</div>
+          <div className="ContactText">Tel. +49 157 703 458 32</div>
         </div>
       </div>
 
-      <div className="MainDivAPP" ref={this.body}>
-        <Switch>
-          <Route exact="exact" path='/' component={MainPage}/>
-          <Route exact="exact" path='/ReactShowCase' component={ReactShowCase}/>
-          <Route exact="exact" path='/Main' component={MainPage}/>
-          <Route exact="exact" path='/ArduinoFullstack' component={ArduinoFullstack}/>
-          <Route exact="exact" path='/Ballin' component={Ballin}/>
-          <Route exact="exact" path='/Kubu' component={Kubu}/>
-          <Route exact="exact" path='/ReferenceManager' component={ReferenceManager}/>
-          <Route exact="exact" path='/Notes' component={Notes}/>
-          <Route exact="exact" path='/SlideShow' component={SlideShow}/>
-        </Switch>
-      </div>
 
-      <div className="ContactInfoBox">
-        <div className="ContactHeading">CONTACT</div>
-        _____
-        <br/><br/>
-        <div className="ContactText">MrSoir</div>
-        <div className="ContactText">support@MrSoir.com</div>
-        <div className="ContactText">Tel. +49 157 703 458 32</div>
-      </div>
     </div>);
   }
 }
