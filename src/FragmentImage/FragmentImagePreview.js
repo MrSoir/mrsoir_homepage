@@ -165,11 +165,12 @@ function PositionedPreviewLabels({imgLabels, previewId,
   let cumulFadeOutDelay = imgLabels ? FADE_OUT_DELAY * (imgLabels.length-1) : 0;
 
   const labelDivs = imgLabels && imgLabels.length > previewId && imgLabels[previewId]
-        ? imgLabels[previewId].map((label)=>{
+        ? imgLabels[previewId].map((label, id)=>{
             cumulFadeInDelay  += FADE_IN_DELAY;
             cumulFadeOutDelay -= FADE_OUT_DELAY;
             return (
-              <AnimatedLabel label={label}
+              <AnimatedLabel key={id}
+                             label={label}
                              fadeInDelay={cumulFadeInDelay}
                              fadeOutDelay={cumulFadeOutDelay}
                              fadeIn={fadeIn}
