@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {FragmentAnmiator} from './FragmentImage';
 import EasingFunctions from './EasingFunctions';
+import * as WAITINGBAR from '../WaitingBar/WaitingBar';
 import './FragmentImagePreview.scss';
 
 function LabelComp({text, fontSize, textAlignCenter}){
@@ -42,9 +43,10 @@ function genFadingComponent(component, x=50, y=50, xpx=0, ypx=0, vertFadeIn=fals
   };
 }
 
-function AnimatedLabel({label, fadeInDelay=0, fadeOutDelay, fadeIn, fadeOut}){
+function AnimatedLabel({label, fadeInDelay=0, fadeOutDelay, fadeIn, fadeOut,
+                        startAnimations}){
   const labelRef = useRef();
-  let stopAnimations = false;
+  let stopAnimations = useRef(false);
 
   function validNumb(x){
     return !(x === undefined || x === null);
@@ -61,7 +63,7 @@ function AnimatedLabel({label, fadeInDelay=0, fadeOutDelay, fadeIn, fadeOut}){
 
   function animatePosition(label, sxprct, syprct, exprct, eyprct, xpx, ypx, sop, eop){
     const lbl = labelRef.current;
-    if(!lbl || stopAnimations){
+    if(!lbl || stopAnimations.current){
       return;
     }
 
@@ -89,7 +91,7 @@ function AnimatedLabel({label, fadeInDelay=0, fadeOutDelay, fadeIn, fadeOut}){
     }
     function runAnimPos(){
       const lbl = labelRef.current;
-      if(!lbl || stopAnimations){
+      if(!lbl || stopAnimations.current){
         return;
       }
       animPos();
@@ -106,10 +108,9 @@ function AnimatedLabel({label, fadeInDelay=0, fadeOutDelay, fadeIn, fadeOut}){
 
   function fadeInAnim(){
     const lbl = labelRef.current;
-    if(!lbl || stopAnimations){
+    if(!lbl || stopAnimations.current){
       return;
     }
-    const [x,y] = [label.x, label.y];
     setTimeout(()=>{
       animatePosition(label,
                       label.x + FADE_IN_OFFS_X, label.y + FADE_IN_OFFS_Y,
@@ -119,7 +120,6 @@ function AnimatedLabel({label, fadeInDelay=0, fadeOutDelay, fadeIn, fadeOut}){
     }, fadeInDelay);
   }
   function fadeOutAnim(){
-    const [x,y] = [label.x, label.y];
     setTimeout(()=>{
       animatePosition(label,
                       label.x, label.y,
@@ -131,11 +131,14 @@ function AnimatedLabel({label, fadeInDelay=0, fadeOutDelay, fadeIn, fadeOut}){
 
   useEffect(()=>{
     return ()=>{
-      stopAnimations = true;
+      stopAnimations.current = true;
     }
   }, []);
   useEffect(()=>{
-    if(stopAnimations){
+    if(stopAnimations.current){
+      return;
+    }
+    if(!startAnimations){
       return;
     }
     if(fadeIn){
@@ -143,7 +146,7 @@ function AnimatedLabel({label, fadeInDelay=0, fadeOutDelay, fadeIn, fadeOut}){
     }else if(fadeOut){
       fadeOutAnim();
     }
-  }, [fadeIn, fadeOut]);
+  }, [fadeIn, fadeOut, startAnimations]);
 
   return (
     <div className="AnimatedLabelFIP"
@@ -154,7 +157,8 @@ function AnimatedLabel({label, fadeInDelay=0, fadeOutDelay, fadeIn, fadeOut}){
 }
 
 function PositionedPreviewLabels({imgLabels, previewId,
-                                  fadeIn, fadeOut}){
+                                  fadeIn, fadeOut,
+                                  startAnimations}){
   const FADE_IN_DELAY  = 500;
   const FADE_OUT_DELAY = 250;
   let cumulFadeInDelay = 0;
@@ -170,6 +174,7 @@ function PositionedPreviewLabels({imgLabels, previewId,
                              fadeOutDelay={cumulFadeOutDelay}
                              fadeIn={fadeIn}
                              fadeOut={fadeOut}
+                             startAnimations={startAnimations}
               />
             );
           })
@@ -181,24 +186,106 @@ function PositionedPreviewLabels({imgLabels, previewId,
   );
 }
 function FragmentImagePreview({imgPaths, imgLabels}){
+  function genArr(n, val){
+    const arr = [];
+    for(let i=0; i < n; ++i){
+      arr.push( val );
+    }
+    return arr;
+  }
   const [previewId, setPreviewId] = useState(0);
   const [labelFadeInOut, setLabelFadeInOut] = useState([false, false]);
   const [initialized, setInitialized] = useState(false);
+  const [firstPrevIdIncrmntIntercepted, setFirstPrevIdIncrmntIntercepted] = useState(false);
+  const loadedImages = useRef(genArr(imgPaths.length, false));
+  const [newImageLoaded, setNewImageLoaded] = useState(-1);
+  const [waitingBarStopped, setWaitingBarStopped] = useState(false);
+
+  const mainRef = useRef();
+  const waitingBarRef= useRef();
+
+
+  function evalMainDivSize(){
+    let mdc = mainRef.current;
+    return [mdc.offsetWidth, mdc.offsetHeight];
+  }
+
+  function setWaitingBarDims(){
+    const [mdw, mdh] = evalMainDivSize();
+    let mwh = Math.min(300, Math.min(mdw, mdh) * 0.5);
+    const wb = waitingBarRef.current;
+    const pixelmwh = `${mwh}px`;
+    wb.style.width  = pixelmwh;
+    wb.style.height = pixelmwh;
+    wb.style.opacity = 1;
+  }
+
+  function onFirstFewImagesLoaded(){
+    setWaitingBarStopped(true);
+    setInitialized(true);
+  }
+
+  function loadImages(){
+    imgPaths.forEach((ip, id)=>{
+      const img = new Image();
+      img.onload = ()=>{
+        loadedImages.current[id] = true;
+        setNewImageLoaded( id );
+      };
+      img.src = ip;
+    });
+  }
 
   useEffect(()=>{
-    setInitialized(true);
+    setWaitingBarDims();
+    loadImages();
   }, []);
+
+  useEffect(()=>{
+    if(loadedImages.current[0] && loadedImages.current[1]){
+      onFirstFewImagesLoaded();
+    }
+  }, [newImageLoaded]);
+  useEffect(()=>{
+    if(waitingBarStopped){
+      const wb = waitingBarRef.current;
+      wb.style.opacity = 0;
+    }
+  }, [waitingBarStopped]);
+  useEffect(()=>{
+  }, [previewId]);
 
   function incrementPreviewId(){
     if(initialized){
-      setPreviewId( (previewId + 1) % imgLabels.length );
+      if(firstPrevIdIncrmntIntercepted){
+        const nxtPrevId = (previewId + 1) % imgLabels.length;
+        setPreviewId( nxtPrevId );
+      }else{
+        setFirstPrevIdIncrmntIntercepted(true);
+      }
     }
   }
 
   const imageTimeoutDuration = 5000;
 
+  const waitingBarElmnt = <WAITINGBAR.WaitingBar
+              innerRadius={0.45}
+              outerRadius={0.5}
+              fading={true}
+              fragmentCount={5}
+              progressSpeed={0.035}
+              scaleSpeed={0.0075}
+              fillColor={new WAITINGBAR.Color(80,80,80)}
+              selectedFillColor={new WAITINGBAR.Color(0,180,0)}
+              outerCurved={true}
+              innerCurved={true}
+              stop={waitingBarStopped}
+    />;
+
   return (
-    <div className="MainFIP">
+    <div className="MainFIP"
+         ref={mainRef}>
+
       <div className="PreviewFIP">
         <FragmentAnmiator imgPaths={imgPaths}
                           imageTimeoutDuration={imageTimeoutDuration}
@@ -209,6 +296,7 @@ function FragmentImagePreview({imgPaths, imgLabels}){
                               setLabelFadeInOut( [false, true] );
                             }, imageTimeoutDuration - 250);
                           }}
+                          startAnimations={initialized}
         />
       </div>
       <div className="FragmentAnimatorFIP">
@@ -216,7 +304,12 @@ function FragmentImagePreview({imgPaths, imgLabels}){
                                  previewId={previewId}
                                  fadeIn ={labelFadeInOut[0]}
                                  fadeOut={labelFadeInOut[1]}
+                                 startAnimations={initialized}
         />
+      </div>
+      <div ref={waitingBarRef}
+           className="WaitingBarFIP">
+        {waitingBarElmnt}
       </div>
     </div>
   );

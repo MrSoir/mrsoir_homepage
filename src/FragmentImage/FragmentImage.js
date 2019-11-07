@@ -11,15 +11,10 @@ const FRAGMENT_ANIMATION = {
 };
 
 function FragmentImage({imgPath, fragmentCount, padding=1, paddingColor='#442222', fragmentDuration=500, fragmentDelay=200,
-                        onAnimationFinished=()=>{}, fragmentAnimation=FRAGMENT_ANIMATION.VERTICAL_EASE_IN}){
+                        onAnimationFinished=()=>{}, fragmentAnimation=FRAGMENT_ANIMATION.VERTICAL_EASE_IN,
+                        startAnimations}){
 
-  let stopAnimations = false;
-
-  useEffect(()=>{
-    return ()=>{
-      stopAnimations = true;
-    }
-  }, []);
+  let stopAnimations = useRef(false);
 
   const initOffsets = [];
   for(let i=0; i < fragmentCount; ++i){
@@ -115,7 +110,7 @@ function FragmentImage({imgPath, fragmentCount, padding=1, paddingColor='#442222
     const ctx = getContext();
     const img = getImage();
 
-    if(stopAnimations || !ctx || !img){
+    if(stopAnimations.current || !ctx || !img){
       return;
     }
 
@@ -123,7 +118,7 @@ function FragmentImage({imgPath, fragmentCount, padding=1, paddingColor='#442222
                        tx, ty, tdx, tdy);
   }
   function paintPadding(i, ctx){
-    if(stopAnimations || !ctx){
+    if(stopAnimations.current || !ctx){
       return;
     }
     let fragmentWidth = eval_fragmentWidth();
@@ -132,7 +127,7 @@ function FragmentImage({imgPath, fragmentCount, padding=1, paddingColor='#442222
   }
   function paintPaddings(){
     const ctx = getContext();
-    if(stopAnimations || !ctx){
+    if(stopAnimations.current || !ctx){
       return;
     }
     ctx.strokeStyle = paddingColor;
@@ -148,7 +143,7 @@ function FragmentImage({imgPath, fragmentCount, padding=1, paddingColor='#442222
     return (fragmentWidth + padding) * i + frgmntXOffsts[i] * fragmentWidth;
   }
   function evalAndDrawFragment(i){
-    if(stopAnimations){
+    if(stopAnimations.current){
       return;
     }
     let sdx = imgWidth / fragmentCount;
@@ -174,7 +169,7 @@ function FragmentImage({imgPath, fragmentCount, padding=1, paddingColor='#442222
   }
   function clearCanvas(){
     const ctx = getContext();
-    if(stopAnimations || !ctx){
+    if(stopAnimations.current || !ctx){
       return;
     }
     ctx.clearRect(0,0, cnvsWidth, cnvsHeight);
@@ -203,7 +198,7 @@ function FragmentImage({imgPath, fragmentCount, padding=1, paddingColor='#442222
   }
 
   function easeIn_hlpr(tarArr){
-    if(stopAnimations){
+    if(stopAnimations.current){
       return;
     }
     for(let i=0; i < tarArr.length; ++i){
@@ -225,7 +220,7 @@ function FragmentImage({imgPath, fragmentCount, padding=1, paddingColor='#442222
     }
   }
   function easeOut_hlpr(tarArr){
-    if(stopAnimations){
+    if(stopAnimations.current){
       return;
     }
     for(let i=0; i < tarArr.length; ++i){
@@ -248,7 +243,7 @@ function FragmentImage({imgPath, fragmentCount, padding=1, paddingColor='#442222
   }
 
   function incrementAnimation(){
-    if(stopAnimations){
+    if(stopAnimations.current){
       return;
     }
     let dt = eval_dt();
@@ -271,14 +266,14 @@ function FragmentImage({imgPath, fragmentCount, padding=1, paddingColor='#442222
   }
 
   function _onAnimationFinished(){
-    if(stopAnimations){
+    if(stopAnimations.current){
       return;
     }
     onAnimationFinished();
   }
 
   function nextAnimationFrame(){
-    if(stopAnimations){
+    if(stopAnimations.current){
       return;
     }
     incrementAnimation();
@@ -290,7 +285,7 @@ function FragmentImage({imgPath, fragmentCount, padding=1, paddingColor='#442222
     }
   }
   function startAnimation(){
-    if(stopAnimations){
+    if(stopAnimations.current){
       return;
     }
     nextAnimationFrame();
@@ -298,7 +293,7 @@ function FragmentImage({imgPath, fragmentCount, padding=1, paddingColor='#442222
 
 
   function setImagePathAndRunAnimation(){
-    if(stopAnimations){
+    if(stopAnimations.current){
       return;
     }
     const img = getImage();
@@ -311,11 +306,20 @@ function FragmentImage({imgPath, fragmentCount, padding=1, paddingColor='#442222
   }
 
   useEffect(()=>{
-    if(stopAnimations){
+    if(stopAnimations.current){
+      return;
+    }
+    if(!startAnimations){
       return;
     }
     setImagePathAndRunAnimation();
-  }, [fragmentAnimation]);
+  }, [fragmentAnimation, startAnimations]);
+
+  useEffect(()=>{
+    return ()=>{
+      stopAnimations.current = true;
+    }
+  }, []);
 
   return (
     <div className="MainFI">
@@ -339,8 +343,8 @@ function FragmentAnmiator({imgPaths,
                            fragmentDelay=150,
                            indiatorFadeOutDuration=300,
                            fragmentCount=7,
+                           startAnimations
                           }){
-
   const [pathCntr, setPathCntr] = useState(0);
   const [imgPath, setImgPath] = useState( getNextPath() );
   const [fadeInToggle, setFadeInToggle] = useState(true);
@@ -348,7 +352,7 @@ function FragmentAnmiator({imgPaths,
   const [initialized, setInitialized] = useState(false);
   const indicatorRef = useRef();
 
-  let stopAnimations = false;
+  let stopAnimations = useRef(false);
 
   function evalTotalAnimationDuration(){
     return (fragmentDelay + interAnimDelay) * (fragmentCount - 1) + fragmentDuration;
@@ -376,7 +380,7 @@ function FragmentAnmiator({imgPaths,
     const totalDuration = indiatorFadeOutDuration;
     let st = new Date().getTime();
     const indctr = indicatorRef.current;
-    if(!indctr || stopAnimations){
+    if(!indctr || stopAnimations.current){
       return;
     }
     indctr.style.opacity = '1';
@@ -401,7 +405,7 @@ function FragmentAnmiator({imgPaths,
   }
   function startInidatorAnimation(){
     const indctr = indicatorRef.current;
-    if(!indctr || stopAnimations){
+    if(!indctr || stopAnimations.current){
       return;
     }
 
@@ -428,7 +432,7 @@ function FragmentAnmiator({imgPaths,
   }
   function nextImage(){
     const indctr = indicatorRef.current;
-    if(!indctr || stopAnimations){
+    if(!indctr || stopAnimations.current){
       return;
     }
     indctr.style.width = '0%';
@@ -458,17 +462,20 @@ function FragmentAnmiator({imgPaths,
 
   useEffect(()=>{
     return ()=>{
-      stopAnimations = true;
+      stopAnimations.current = true;
     }
   }, []);
   useEffect(()=>{
-    if(stopAnimations){
+    if(stopAnimations.current || !startAnimations){
       return;
     }
     setNextPath();
   }, [pathCntr]);
   useEffect(()=>{
-    if(stopAnimations){
+    if(stopAnimations.current){
+      return;
+    }
+    if(!startAnimations){
       return;
     }
     if(initialized){
@@ -477,7 +484,7 @@ function FragmentAnmiator({imgPaths,
       startInidatorAnimation();
       setInitialized(true);
     }
-  }, [fadeInToggle]);
+  }, [fadeInToggle, startAnimations]);
 
   return (
     <div className="FragmentAnmiator">
@@ -501,6 +508,7 @@ function FragmentAnmiator({imgPaths,
                          setTimeout(toggleFadeIn, interAnimDelay);
                        }
                      }}
+                     startAnimations={startAnimations}
       />
     </div>
   );

@@ -32,3 +32,14 @@
   background-color: #006644;
   z-index: 999;
 }
+
+.WaitingBarFIP{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  height: 50%;
+  opacity: 0;
+  transition-duration: 1s;
+}
