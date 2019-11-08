@@ -65,6 +65,54 @@
 /*  	border: 1px solid #00FF00;*/
 }
 
+.MinimizedTabBarTB{
+
+}
+.MenuItemsDivTB{
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 0px;
+	overflow: hidden;
+
+	background-color: black;
+	box-sizing: border-box;
+	border: 0px solid var(--main-bg-color);
+
+	transition-duration: 0.5s;
+}
+.ListMTB{
+	display: flex;
+	flex-direction: column;
+}
+.MenuButtonDivTB{
+	position: sticky;
+	top: 0;
+	left: 0;
+	width: 100%;
+	padding: 10px 0;
+}
+.MenuButtonTB{
+	margin: auto;
+	position: relative;
+	width: 80px;
+	height: 40px;
+	border-radius: 10px;
+	border: 3px solid var(--main-bg-color);
+	box-sizing: border-box;
+	cursor: pointer;
+}
+.MenuButtonItemTB{
+	position: absolute;
+	left: 50%;
+	width: 80%;
+	height: 10%;
+	max-height: 3px;
+	transform: translate(-50%, -50%);
+	background-color: var(--main-bg-color);
+}
+
 @keyframes indicator_fading {
   0%   {background-color: transparent;}
   100% {background-color: var(--main-bg-color-dark);}
