@@ -4,26 +4,26 @@ import loadPreviews from '../main/MainPreviewTextLoader';
 import './LandingPage.scss';
 
 
-function LandingPage({}){
+function LandingPage({onPreviewClicked}){
 
   const [previewComponents, setPreviewComponents] = useState([]);
 
   function evalOffsets(id){
     switch(id){
       case 1:
-        return [[0, 35, 50, 0], [0, 35, 50, 100], [false, true], [50, 20], false]; // react
+        return [[0, 35, 50, 0], [0, 35, 50, 100], [false, true], [50, 25], false]; // react
       case 2:
-        return [[50, 50], [50, 50, 0, 100], [true, true], [50, 30], true]; // arduino
+        return [[50, 50], [50, 50, 0, 100], [true, true], [50, 25], true]; // arduino
       case 3:
-        return [[50, 50], [50, 50, 0, 100], [true, true], [50, 30], true]; // Ballin
+        return [[50, 50], [50, 50, 0, 100], [true, true], [50, 25], true]; // Ballin
       case 4:
-        return [[20, 40], [20, 40, 0, 100], [false, true], [50, 30], false]; // slideshow
+        return [[20, 40], [20, 40, 0, 100], [false, true], [50, 25], false]; // slideshow
       case 5:
-        return [[50, 40], [50, 40, 0, 100], [true, true], [50, 30], true]; // Kubu
+        return [[50, 40], [50, 40, 0, 100], [true, true], [50, 25], true]; // Kubu
       case 6:
-        return [[0, 60, 100], [0, 60, 100, 100], [false, true], [50, 30], false]; // notes
+        return [[0, 60, 100], [0, 60, 100, 100], [false, true], [50, 25], false]; // notes
       case 7:
-        return [[50, 50], [50, 50, 0, 100], [true, true], [50, 30], true]; // reference manager
+        return [[50, 50], [50, 50, 0, 100], [true, true], [50, 25], true]; // reference manager
     }
   }
   function genPreviewComponentFromPrevProgram(prevProgrm, id){
@@ -46,8 +46,8 @@ function LandingPage({}){
 			and mainly serves me to test concepts of modern
 			single page application development.
 		`;
-    const headingLbl = genFadingComponent(genLabelComp(hdngTxt, 50), 50, 50, 0, 0, true, true, true);
-    const descrLbl = genFadingComponent(genLabelComp(dscrTxt, 20), 50, 50, 0, 150, true, true, true);
+    const headingLbl = genFadingComponent(genLabelComp(hdngTxt, 50), 50, 20, 0, 0, true, true, true);
+    const descrLbl = genFadingComponent(genLabelComp(dscrTxt, 20), 50, 20, 0, 50, true, true, false);
     return [headingLbl, descrLbl];
   }
 
@@ -59,6 +59,13 @@ function LandingPage({}){
     previewData.unshift( genInfoPreviewComponents() );
     setPreviewComponents( previewData );
   }
+
+  function _onPreviewClicked(id){
+    if(onPreviewClicked){
+      onPreviewClicked(id);
+    }
+  }
+
 
   useEffect(()=>{
     loadPreviewTexts();
@@ -80,6 +87,7 @@ function LandingPage({}){
     <div className="MainLP">
       <FragmentImagePreview imgPaths={imgPaths}
                             imgLabels={previewComponents}
+                            onPreviewClicked={_onPreviewClicked}
       />
     </div>
   );

@@ -6,9 +6,10 @@ import './FragmentImagePreview.scss';
 
 function LabelComp({text, fontSize, textAlignCenter}){
   let styl = {
-    fontSize: ('' + fontSize + 'px'),
+    // fontSize: ('' + fontSize + 'px'),
     textAlign: (textAlignCenter ? 'center' : 'left'),
   }
+  const clsName = fontSize >= 40 ? 'HeadingLCFIP' : 'DescriptionLCFIP';
   function splitTextToMaxLineWidth(wordsPerLine=5){
     let splt = text.replace(/\s/g, ' ').split(' ').map(x=>x.trim()).filter(x=>x);
     let tar = '';
@@ -19,12 +20,13 @@ function LabelComp({text, fontSize, textAlignCenter}){
     tar = tar.trim();
     return tar;
   }
-  text = splitTextToMaxLineWidth();
+  // text =css  splitTextToMaxLineWidth();
   return (
-    <div style={styl}>
-      <pre>
+    <div style={styl}
+         className={clsName}>
+      <p>
         {text}
-      </pre>
+      </p>
     </div>
   );
 }
@@ -186,7 +188,7 @@ function PositionedPreviewLabels({imgLabels, previewId,
     </div>
   );
 }
-function FragmentImagePreview({imgPaths, imgLabels}){
+function FragmentImagePreview({imgPaths, imgLabels, onPreviewClicked}){
   function genArr(n, val){
     const arr = [];
     for(let i=0; i < n; ++i){
@@ -267,6 +269,12 @@ function FragmentImagePreview({imgPaths, imgLabels}){
     }
   }
 
+  function _onPreviewClicked(){
+    if(onPreviewClicked){
+      onPreviewClicked(previewId);
+    }
+  }
+
   const imageTimeoutDuration = 5000;
 
   const waitingBarElmnt = <WAITINGBAR.WaitingBar
@@ -285,7 +293,8 @@ function FragmentImagePreview({imgPaths, imgLabels}){
 
   return (
     <div className="MainFIP"
-         ref={mainRef}>
+         ref={mainRef}
+         onClick={_onPreviewClicked}>
 
       <div className="PreviewFIP">
         <FragmentAnmiator imgPaths={imgPaths}

@@ -29,6 +29,7 @@ class App extends Component {
     this.initTabs = this.initTabs.bind(this);
     this.updateTabSelection = this.updateTabSelection.bind(this);
     this.onScroll = this.onScroll.bind(this);
+    this.onPreviewClicked = this.onPreviewClicked.bind(this);
 
     this.header = React.createRef();
     this.body = React.createRef();
@@ -121,6 +122,9 @@ class App extends Component {
       this.lastYScroll = y;
     }
   }
+  onPreviewClicked(id){
+    this.tabClicked(id);
+  }
   render() {
     return (<div className="App">
 
@@ -145,9 +149,9 @@ class App extends Component {
 
         <div className="MainDivAPP" ref={this.body}>
           <Switch>
-            <Route exact="exact" path='/' component={LandingPage}/>
-            <Route exact="exact" path='/ReactShowCase' component={ReactShowCase}/>
+            <Route exact="exact" path='/' render={()=><LandingPage onPreviewClicked={this.onPreviewClicked}/>}/>
             <Route exact="exact" path='/Main' component={MainPage}/>
+            <Route exact="exact" path='/ReactShowCase' component={ReactShowCase}/>
             <Route exact="exact" path='/ArduinoFullstack' component={ArduinoFullstack}/>
             <Route exact="exact" path='/Ballin' component={Ballin}/>
             <Route exact="exact" path='/Kubu' component={Kubu}/>
