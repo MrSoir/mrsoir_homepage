@@ -51,7 +51,7 @@ function MenuButton({showButton=false,
 
 	let btnStyls = [];
 	for(let i=0; i < 3; ++i){
-		btnStyls.push( showButton ? genShowBarsStyle(i) : genHideBarsStyle(i) );
+		btnStyls.push( showButton || !window.mobilecheck() ? genShowBarsStyle(i) : genHideBarsStyle(i) );
 	}
 	return (
 		<div className="MenuButtonTB"
