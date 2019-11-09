@@ -7,6 +7,7 @@ import './LandingPage.scss';
 function LandingPage({onPreviewClicked}){
 
   const [previewComponents, setPreviewComponents] = useState([]);
+  const [previews, setPreviews] = useState([]);
 
   function evalOffsets(id){
     switch(id){
@@ -53,6 +54,7 @@ function LandingPage({onPreviewClicked}){
 
   function loadPreviewTexts(){
     const prev_programs = loadPreviews();
+    setPreviews( prev_programs );
     const previewData = prev_programs.map((prgrm, id)=>{
       return genPreviewComponentFromPrevProgram(prgrm, id+1);
     });
@@ -61,8 +63,14 @@ function LandingPage({onPreviewClicked}){
   }
 
   function _onPreviewClicked(id){
-    if(onPreviewClicked){
-      onPreviewClicked(id);
+    if(id === 0){
+      window.hist.push('/main');
+    }else{
+      const relURL = previews[id-1].url;
+      if (!!window.hist)
+      {
+        window.hist.push('/' + relURL);
+      }
     }
   }
 

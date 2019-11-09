@@ -36,7 +36,7 @@ class MainPage extends Component{
    	window.removeEventListener('scroll', this.onScroll);
    }
    updatePreviewsToState(previews){
-  		let newstate = this.state;
+  	let newstate = this.state;
    	newstate.previews = previews;
 
    	this.setState(newstate);
@@ -107,6 +107,7 @@ class MainPage extends Component{
 			and mainly serves me to test concepts of modern
 			single page application development.
 		`;
+
 		return (
 			<div id="MainDivMN">
 				<div id="DescriptionMN"

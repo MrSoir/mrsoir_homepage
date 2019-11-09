@@ -149,15 +149,15 @@ class App extends Component {
 
         <div className="MainDivAPP" ref={this.body}>
           <Switch>
-            <Route exact="exact" path='/' render={()=><LandingPage onPreviewClicked={this.onPreviewClicked}/>}/>
-            <Route exact="exact" path='/Main' component={MainPage}/>
-            <Route exact="exact" path='/ReactShowCase' component={ReactShowCase}/>
-            <Route exact="exact" path='/ArduinoFullstack' component={ArduinoFullstack}/>
-            <Route exact="exact" path='/Ballin' component={Ballin}/>
-            <Route exact="exact" path='/Kubu' component={Kubu}/>
-            <Route exact="exact" path='/ReferenceManager' component={ReferenceManager}/>
-            <Route exact="exact" path='/Notes' component={Notes}/>
-            <Route exact="exact" path='/SlideShow' component={SlideShow}/>
+            <Route exact={true} path='/Main' component={MainPage}/>
+            <Route exact={true} path='/ReactShowCase' component={ReactShowCase}/>
+            <Route exact={true} path='/ArduinoFullstack' component={ArduinoFullstack}/>
+            <Route exact={true} path='/Ballin' component={Ballin}/>
+            <Route exact={true} path='/Kubu' component={Kubu}/>
+            <Route exact={true} path='/ReferenceManager' component={ReferenceManager}/>
+            <Route exact={true} path='/Notes' component={Notes}/>
+            <Route exact={true} path='/SlideShow' component={SlideShow}/>
+            <Route exact={false} path='/' render={()=><LandingPage onPreviewClicked={this.onPreviewClicked}/>}/>
           </Switch>
         </div>
 
