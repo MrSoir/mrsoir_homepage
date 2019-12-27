@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
 import MainImagePreview from '../MainImagePreview';
 import loadPreviews from './MainPreviewTextLoader';
+import logo from '../MrSoir_grass.png';
 import './Main.css';
 
 
 class MainPage extends Component{
 	constructor(){
 		super();
+
 		this.onPreviewClicked = this.onPreviewClicked.bind(this);
 		this.loadGIFs = this.loadGIFs.bind(this);
 		this.loadImage = this.loadImage.bind(this);
@@ -27,7 +29,8 @@ class MainPage extends Component{
    componentDidMount(){
    	this.loadPreviews_hlpr();
 
-   	window.scrollTo(0, 0);
+	window.scrollTo(0, 0);
+	this.lastYScroll = 0;
    	window.addEventListener('scroll', this.onScroll);
 
    	setTimeout(this.updateFocusedPreview, 1000);
@@ -110,6 +113,13 @@ class MainPage extends Component{
 
 		return (
 			<div id="MainDivMN">
+				<div className="LogoHeader Show">
+					<div id="LogoHeaderText" className="MrSoirHeading">Welcome to the World of</div>
+					<div id="LogoHeaderImageDiv">
+						<img id="LogoHeaderImage" src={logo} alt="logo"/>
+					</div>
+				</div>
+
 				<div id="DescriptionMN"
 					  className="ProgramDescription">
 					{description}

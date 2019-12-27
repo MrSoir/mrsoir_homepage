@@ -22,10 +22,10 @@ class CarrouselDiaShowRSC extends Component {
   render() {
     const heading = 'Carousel Image Gallery';
     const description = <div>
-      This responsive carousel image gallery exclusively uses html-image-tags. It does not use a canvas to render the images.<br/>
-      It uses 5 image-tags: 3 are visible, 2 are used for caching. You can auto-rotate the carrousel and/or rotate the carousel left (right) by clicking on the left (right) aligned image.<br/>
-      You can specify the rotation speed and the images' image ratio. In the demo the ratio is set to 16:9. The images are automatically resized to retain the image ratio whenever the carousel-component is resized. It therefore relies on the ResizeObserver-interface. Unfortunately this interface isn't available on Safari and IE/Edge and Android Firefox as of this writing.<br/>
-      You can jump to an image by clicking on the respective round indicator at the bottom of the carousel image gallery.
+      This responsive carousel image gallery uses a canvas to render the images.<br/>
+      The user can click on the images to scroll back and forth and let the carousel rotate automatically.<br/>
+      You can specify the rotation speed and the image ratio. In the demo the ratio is set to 16:9. The images are automatically resized to retain the ratio whenever the carousel-component is resized.<br/>
+      You can jump to a specific image by clicking on the respective indicator at the bottom section of the carousel.
     </div>;
 
     return (<div id="CarrouselDiaShoMainDivwRSC">

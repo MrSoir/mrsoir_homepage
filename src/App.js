@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
 import {Switch, Route, withRouter} from "react-router-dom";
-import logo from './MrSoir_grass.png';
-//import logo from './logo.svg';
 import './App.css';
 import tabs_info from './info.txt';
 import TabBar from './TabBar';
@@ -28,12 +26,7 @@ class App extends Component {
     this.tabClicked = this.tabClicked.bind(this);
     this.initTabs = this.initTabs.bind(this);
     this.updateTabSelection = this.updateTabSelection.bind(this);
-    this.onScroll = this.onScroll.bind(this);
     this.onPreviewClicked = this.onPreviewClicked.bind(this);
-
-    this.header = React.createRef();
-    this.body = React.createRef();
-    this.logoHeader = React.createRef();
   }
   initTabs() {
     window.hist = this.props.history;
@@ -89,12 +82,9 @@ class App extends Component {
     this.initTabs();
 
     window.scrollTo(0, 0);
-    window.addEventListener('scroll', this.onScroll);
-    this.lastYScroll = 0;
   }
 
   componentWillUnmount() {
-    window.removeEventListener('scroll', this.onScroll);
   }
   tabClicked(id) {
     let tabs = this.state.tabs;
@@ -105,22 +95,6 @@ class App extends Component {
     this.props.history.push('/' + path);
 
     this.setState(tabs);
-  }
-  onScroll() {
-    let y = window.scrollY;
-    const logohdr = this.logoHeader.current;
-    const offset = 1;
-    if (y > offset && this.lastYScroll <= offset) {
-      //logohdr.style.opacity = '0';
-      logohdr.classList.add('Hide');
-      logohdr.classList.remove('Show');
-      this.lastYScroll = y;
-    } else if (y <= offset && this.lastYScroll > offset) {
-      //logohdr.style.opacity = '100';
-      logohdr.classList.add('Show');
-      logohdr.classList.remove('Hide');
-      this.lastYScroll = y;
-    }
   }
   onPreviewClicked(id){
     this.tabClicked(id);
@@ -136,18 +110,11 @@ class App extends Component {
       }
       </div>
       <div className="ContentDivApp">
-        <div className="App-header" ref={this.header}>
+        <div className="App-header">
           <TabBar tabs={this.state.tabs} tabCallback={this.tabClicked}/>
         </div>
 
-        <div className="LogoHeader Show" ref={this.logoHeader}>
-          <div id="LogoHeaderText" className="MrSoirHeading">Welcome to the World of</div>
-          <div id="LogoHeaderImageDiv">
-            <img id="LogoHeaderImage" src={logo} alt="logo"/>
-          </div>
-        </div>
-
-        <div className="MainDivAPP" ref={this.body}>
+        <div className="MainDivAPP">
           <Switch>
             <Route exact={true} path='/Main' component={MainPage}/>
             <Route exact={true} path='/ReactShowCase' component={ReactShowCase}/>
