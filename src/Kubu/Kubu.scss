@@ -209,35 +209,7 @@ $descrTxtCol: #aaa;
 
 
 
-.MainANIMGIF{
-	width: 100%;
-	height: 100%;
-	position: relative;
 
-	.WaitingBarKUBU{
-		width: 100%;
-		height: 100%;
-		max-width:  200px;
-		max-height: 200px;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		position: absolute;
-		transition-duration: 1s;
-
-		&.fadingOut{
-			opacity: 0;
-		}
-	}
-	.ImgANIMGIF{
-		width: 100%;
-		height: 100%;
-		top: 0;
-		left: 0;
-		position: absolute;
-		transition-duration: 1s;
-	}
-}
 
 .DescrKubu{
 	color: $descrTxtCol;

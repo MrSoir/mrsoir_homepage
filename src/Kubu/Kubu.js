@@ -1,107 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { withRouter } from "react-router-dom";
-import meta_info from './info.txt';
-import ImagedPreviews from '../ImagedPreviews/ImagedPreviews';
 import Carousel from '../CarouselDiaShow/Carousel';
 import KubuIcon from './Kubu_icon.png';
 import {WaitingBar} from '../WaitingBar/WaitingBar';
+import AnimatedGif from '../AnimatedGif';
+import AnimatedVideo from '../AnimatedVideo';
 import './Kubu.scss';
 
-function AnimatedGif({gifPath, imgPath}){
-	const imgRef  = useRef();
-	const mainRef = useRef();
-	const [imgLoaded, setImgLoaded] = useState(false);
-	const [gifLoaded, setGifLoaded] = useState(false);
-	const [waitinBarFadedOut, setWaitinBarFadedOut] = useState(false);
-	const runGif = useRef(false);
-
-	useEffect(()=>{
-		const sttcImg = new Image();
-		sttcImg.src = imgPath;
-		sttcImg.onload = ()=>{
-			setImgLoaded( true );
-			if(!gifLoaded){
-				setImageSrcPath(imgPath);
-			}
-		};
-
-		const gifImg = new Image();
-		gifImg.src = gifPath;
-		gifImg.onload = ()=>{
-			setTimeout(()=>{
-				setGifLoaded( true );
-				if(runGif.current){
-					setImageSrcPath(gifPath);
-				}
-			}, 2000);
-		};
-	}, []);
-	useEffect(()=>{
-		document.addEventListener('scroll', onScroll);
-		return ()=>{
-			document.removeEventListener('scroll', onScroll);
-		}
-	});
-
-	useEffect(()=>{
-		if(imgLoaded && gifLoaded){
-			setTimeout(()=>{
-				setWaitinBarFadedOut(true);
-			}, 1000);
-		}
-	}, [imgLoaded, gifLoaded]);
-
-	function onScroll(e){
-		const md = mainRef.current;
-		if(!md)return;
-
-		const bdngRct = md.getBoundingClientRect();
-		const b = bdngRct.bottom;
-
-		if( b < (window.screen.height * 0.8) ){
-			setRunGif(true);
-		}
-	}
-	function setRunGif(rg){
-		runGif.current = rg;
-		if(rg && gifLoaded){
-			setImageSrcPath(gifPath);
-		}
-	}
-
-	function setImageSrcPath(path){
-		const img = imgRef.current;
-		if(img){
-			img.src = path;
-		}
-	}
-
-	const waitingBrCls = 'WaitingBarKUBU' + (imgLoaded && gifLoaded ? ' fadingOut' : '');
-    const waitingBar = imgLoaded && gifLoaded && waitinBarFadedOut
-        ? ''
-        : (
-            <div className={waitingBrCls}>
-                <WaitingBar
-                    fragmentCount={4}
-                    outerCurved={true}
-    				innerCurved={true}
-                />
-            </div>
-        );
-
-	return (
-		<div className="MainANIMGIF"
-			 ref={mainRef}>
-			<img className="ImgANIMGIF"
-				 ref={imgRef}
-			/>
-			{waitingBar}
-		</div>
-	);
-}
 
 function kubuImageGnrtr(tag, fileType){
 	return process.env.PUBLIC_URL + '/Kubu/pics/Kubu' + tag + fileType;
+}
+function kubuVideoGnrtr(tag, fileType){
+	return process.env.PUBLIC_URL + '/Kubu/videos/Kubu' + tag + fileType;
 }
 function getCheckImgPath(){
 	return process.env.PUBLIC_URL + '/icons/check.png';
@@ -117,7 +28,6 @@ function getDebIconPath(){
 }
 
 function GiffedDescription({descrOnLeft, imgPath, gifPath, heading, descrComps}){
-
 
 	const headingDiv = (
 		<div className="HeadingGFDDSCR">
@@ -137,9 +47,6 @@ function GiffedDescription({descrOnLeft, imgPath, gifPath, heading, descrComps})
 		</div>
 	);
 
-	const frstCmp =  descrOnLeft ? descr : gif;
-	const scndCmp = !descrOnLeft ? descr : gif;
-
 	const mainCls = 'MainGFDDSCR' + (descrOnLeft ? ' descrOnLeft' : ' descrOnRight');
 	return (
 		<div className={mainCls}>
@@ -149,6 +56,36 @@ function GiffedDescription({descrOnLeft, imgPath, gifPath, heading, descrComps})
 		</div>
 	)
 }
+function VideodDescription({descrOnLeft, imgPath, videoPath, heading, descrComps}){
+
+	const headingDiv = (
+		<div className="HeadingGFDDSCR">
+			{heading}
+		</div>
+	);
+	const video = (
+		<div className="GifGFDDSCR">
+			<AnimatedVideo imgPath={imgPath}
+						   videoPath={videoPath}
+			/>
+		</div>
+	);
+	const descr = (
+		<div className="DescrGFDDSCR">
+			{descrComps}
+		</div>
+	);
+
+	const mainCls = 'MainGFDDSCR' + (descrOnLeft ? ' descrOnLeft' : ' descrOnRight');
+	return (
+		<div className={mainCls}>
+			{headingDiv}
+			{video}
+			{descr}
+		</div>
+	)
+}
+
 function Kubu({}){
 	const [imgPaths, setImgPaths] = useState([]);
 	const [imgRatio, setImgRatio] = useState({w: 16, h: 9});
@@ -345,9 +282,9 @@ function Kubu({}){
 			</div>
 			
 			<div className="GifedDescrDivKUBU even">
-				<GiffedDescription
+				<VideodDescription
 					descrOnLeft={false}
-					gifPath={ kubuImageGnrtr('_elapsing', '.gif') }
+					videoPath={ kubuVideoGnrtr('_elapse', '.mp4') }
 					imgPath={ kubuImageGnrtr('_inspect', '.jpg') }
 					heading={elapsingDescrHdng}
 					descrComps={elapsingDescr}
@@ -355,9 +292,9 @@ function Kubu({}){
 			</div>
 
 			<div className="GifedDescrDivKUBU odd">
-				<GiffedDescription
+				<VideodDescription
 					descrOnLeft={true}
-					gifPath={ kubuImageGnrtr('_elapsing', '.gif') }
+					videoPath={ kubuVideoGnrtr('_fileManip', '.mp4') }
 					imgPath={ kubuImageGnrtr('_inspect', '.jpg') }
 					heading={fileManipHdng}
 					descrComps={fileManipDescr}
@@ -365,9 +302,9 @@ function Kubu({}){
 			</div>
 
 			<div className="GifedDescrDivKUBU even">
-				<GiffedDescription
+				<VideodDescription
 					descrOnLeft={false}
-					gifPath={ kubuImageGnrtr('_elapsing', '.gif') }
+					videoPath={ kubuVideoGnrtr('_elapse', '.mp4') }
 					imgPath={ kubuImageGnrtr('_search', '.jpg') }
 					heading={deepSearchHdng}
 					descrComps={deepSearchDescr}
@@ -376,9 +313,9 @@ function Kubu({}){
 
 
 			<div className="GifedDescrDivKUBU odd">
-				<GiffedDescription
+				<VideodDescription
 					descrOnLeft={true}
-					gifPath={ kubuImageGnrtr('_elapsing', '.gif') }
+					videoPath={ kubuVideoGnrtr('_windowing', '.mp4') }
 					imgPath={ kubuImageGnrtr('_windowing', '.jpg') }
 					heading={mltiWndwHdng}
 					descrComps={mltiWndwDescr}
