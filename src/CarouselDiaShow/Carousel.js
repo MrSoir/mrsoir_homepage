@@ -429,7 +429,16 @@ function CarouselCanvas({
     );
 }
 
-function Carousel({imgPaths, imgRatio, onLoaded, stopAnimation, onSelectedImgIdChanged}){
+function Carousel({
+    imgPaths, 
+    imgRatio = {
+        w: 4,
+        h: 3
+    }, 
+    delay,
+    animDur,
+    onLoaded, stopAnimation, onSelectedImgIdChanged
+}){
     const [loaded, setLoaded] = useState(false);
     const carouselRef = useRef();
 
@@ -477,6 +486,8 @@ function Carousel({imgPaths, imgRatio, onLoaded, stopAnimation, onSelectedImgIdC
                     stopAnimation={stopAnimation}
                     onLoaded={_onLoaded}
                     imgRatio={imgRatio}
+                    delay={delay}
+                    animDur={animDur}
                     onSelectedImgIdChanged={onSelectedImgIdChanged}
                 />
             </div>

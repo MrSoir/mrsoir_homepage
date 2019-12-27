@@ -1,0 +1,265 @@
+
+$textCol: #999;
+$textHglghtCol: #ddd;
+$descrTxtCol: #aaa;
+
+.MainKUBU{
+	width: 100%;
+	background-color: #444;
+
+	#CarouselDivKUBU{
+		display: grid;
+		grid-template-columns: 2fr 1fr;
+		align-items: center;
+		width: 90%;
+		column-gap: 25px;
+		max-width: 1000px;
+		margin: auto;
+		margin-bottom: 40px;
+
+		#CarouselKUBU{
+			width: 100%;
+			margin: auto;
+		}
+		#CarouselDescrKubu{
+			text-align: center;
+
+			#DescrHeadingKUBU{
+				margin-bottom: 15px;
+
+				.ProgramNameKUBU{
+					color: $textHglghtCol;
+					font-size: 30px;
+					font-weight: bold;
+					margin-right: 0.3em;
+				}
+				.ProgramHeadingKUBU{
+					color: $textCol;
+					font-size: 30px;
+					font-weight: lighter;
+				}
+			}
+			.CarouselDescrTxtKubu{
+				text-align: left;
+				color: $textCol;
+			}
+		}
+	}
+
+	.KubuSeparator{
+		background-color: #555;
+	}
+
+	.GifedDescrDivKUBU{
+		width: 100%;
+		height: 500px;
+		padding: 50px 0;
+		box-sizing: border-box;
+
+		margin: auto;
+
+		&.even{
+			background-color: #ffffff02;
+		}
+		&.odd{
+			background-color: #ffffff05;
+		}
+
+		.MainGFDDSCR{
+			width: 100%;
+			max-width: 1000px;
+			height: 100%;
+
+			display: grid;
+			column-gap: 20px;
+			grid-template-rows: 1fr 4fr;
+
+			margin: auto;
+			border-radius: 10px;
+			box-sizing: border-box;
+			padding: 10px 40px;
+			
+
+			background-color: #F2D16B22;
+
+			&.descrOnLeft{
+				grid-template-areas: "heading gif" "descr gif";
+				grid-template-columns: 1fr 2fr;
+			}
+			&.descrOnRight{
+				grid-template-areas: "gif heading" "gif descr";
+				grid-template-columns: 2fr 1fr;
+			}
+
+			.HeadingGFDDSCR{
+				grid-area: heading;
+				align-self: center;
+				text-decoration: underline;
+				text-decoration-color: $descrTxtCol;
+			}
+			.DescrGFDDSCR{
+				grid-area: descr;
+			}
+			.GifGFDDSCR{
+				grid-area: gif;
+			}
+		}
+	}
+
+	#DownloadsDivKUBU{
+		width: 100%;
+		// background-color: #333;
+		padding: 60px 0;
+
+		#DownloadsHeadingKUBU{
+			color: $descrTxtCol;
+			font-size: 30px;
+			font-weight: bold;
+			text-decoration: underline;
+			text-decoration-color: $descrTxtCol;
+			padding-bottom: 20px;
+		}
+
+		#DownloadButtonsGrid{
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+			grid-template-rows: 150px;
+			width: 800px;
+			max-width: 100%;
+			justify-content: flex-end;
+			// justify-items: center;
+			// align-items: center;
+			// align-content: center;
+			// justify-content: center;
+			grid-gap: 10px;
+			margin: auto;
+			background-color: #aaa3;
+			box-sizing: border-box;
+			border-radius: 20px;
+			padding: 10px;
+
+			.DownloadBtnKUBU{
+				width: 100%;
+				height: 100%;
+				display: grid;
+				grid-template-rows: 3fr 1fr;
+				align-items: center;
+				border: 2px solid grey;
+				border-radius: 10px;
+				padding: 20px;
+				box-sizing: border-box;
+				cursor: pointer;
+
+				.DownloadBtnTxtKUBU{
+					color: $descrTxtCol;
+					font-size: 1em;
+				}
+			}
+		}
+		#DownloadsFooterKUBU{
+			color: $descrTxtCol;
+			padding-top: 20px;
+		}
+		.DownloadBtnImgDivKUBU{
+			width:  70px;
+			height: 70px;
+			align-self: center;
+			justify-self: center;
+			.DownloadBtnImgKUBU{
+				width: 100%;
+				height: 100%;
+			}
+		}
+
+	}
+}
+
+.DescrHeadingKubu{
+	color: $descrTxtCol;
+	font-weight: bold;
+	font-size: 23px;
+}
+
+
+#KubuProgramDescriptionDiv{
+	margin-bottom: 2em;
+	color: #888;
+}
+
+#KubuIconContainer{
+	position: relative;
+	width: 100%;
+	height: 30vh;
+	max-height: 40vw;
+
+	margin: 50px 0;
+}
+#KubuIcon{
+	position: relative;
+	height: 90%;
+	top: 5%;
+}
+
+.FakeDivKUBU{
+	width: 100%;
+	height: 500px;
+	background-color: grey;
+}
+
+
+
+
+.MainANIMGIF{
+	width: 100%;
+	height: 100%;
+	position: relative;
+
+	.WaitingBarKUBU{
+		width: 100%;
+		height: 100%;
+		max-width:  200px;
+		max-height: 200px;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		position: absolute;
+		transition-duration: 1s;
+
+		&.fadingOut{
+			opacity: 0;
+		}
+	}
+	.ImgANIMGIF{
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		position: absolute;
+		transition-duration: 1s;
+	}
+}
+
+.DescrKubu{
+	color: $descrTxtCol;
+	text-align: left;
+}
+
+.CheckedDescrArg{
+	
+	.IconCHCKDDESCRARG{
+		$checkSize: 15px;
+		width:  $checkSize;
+		height: $checkSize;
+	}
+	.BoldCHCKDDESCRARG{
+		padding: 0 5px;
+
+		color: $descrTxtCol;
+		font-weight: bold;
+		// white-space: nowrap;
+	}
+	.PlainCHCKDDESCRARG{
+		color: $descrTxtCol;
+		// white-space: nowrap;
+	}
+}
