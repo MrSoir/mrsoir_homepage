@@ -34,20 +34,20 @@ class ReactShowCase extends Component{
 		this.addFullScreenChangeListener();
 
 		this.state = {
-			selectedPreviewId: 2,
+			selectedPreviewId: 0,
 			previewImagePaths: this.getPreviewImagePaths(),
 			fullScreen: false
 		}
 	}
 	getPreviewImagePaths(){
 		let basePath = process.env.PUBLIC_URL + '/ReactShowCase/previews/';
-		return [basePath + 'Carousel.png',
-						basePath + 'WaitingBar.png',
-						basePath + 'WaveWaitingBar.png',
-				  	basePath + 'DataVisualization.png',
-				  	basePath + 'SpinningSelector.png',
-				  	basePath + 'FlipSelector.png',
-				  	basePath + 'SlideBar2.png'
+		return [basePath + 'Carousel.jpg',
+				basePath + 'WaitingBar.jpg',
+				basePath + 'WaveWaitingBar.jpg',
+				basePath + 'DataVisualization.jpg',
+				basePath + 'SpinningSelector.jpg',
+				basePath + 'FlipSelector.jpg',
+				basePath + 'SlideBar2.jpg'
 				  ];
 	}
    componentDidMount(){

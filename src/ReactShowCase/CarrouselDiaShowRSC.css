@@ -23,6 +23,7 @@
   width: 100%;
   height: 100%;
 }
-#SettingsCDS{
-
+#CarouselDivRSC{
+  width: 80%;
+  max-width: 800px;
 }

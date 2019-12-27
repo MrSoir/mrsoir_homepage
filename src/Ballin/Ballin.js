@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {withRouter} from "react-router-dom";
 import {readTextFile} from '../StaticFunctions';
 import SlideShow from '../SlideShow';
-import CarrouselDiaShow from '../CarrouselDiaShow/CarrouselDiaShow';
+import Carousel from '../CarouselDiaShow/Carousel';
 import meta_info from './info.txt';
 import './Ballin.css';
 import CurtainButton from '../CurtainButton';
@@ -23,10 +23,14 @@ class Ballin extends Component {
     this.state = {
       ballin_gl_pics,
       ballin_orig_pics,
-      glCarrouselAspectRatio: [
-        16, 9
-      ],
-      origCarrouselAspectRatio: [4, 3]
+      glCarrouselAspectRatio: {
+        w: 16,
+        h: 9
+      },
+      origCarrouselAspectRatio: {
+        w: 4,
+        h: 3
+      }
     };
   }
   launchBallinGL() {
@@ -58,53 +62,8 @@ class Ballin extends Component {
   }
   componentDidMount() {
     window.scrollTo(0, 0);
-
-    this.resizeCarrouselDivs();
-
-    try {
-      if (ResizeObserver) {
-        this.resizeObserver = new ResizeObserver(entries => {
-          this.resizeCarrouselDivs();
-        });
-        this.resizeObserver.observe(this.BallinMainRef.current);
-      }
-    } catch (error) {
-      console.log('ResizeObserver error: ', error);
-    }
   }
   componentWillUnmount() {
-    if (this.resizeObserver) {
-      this.resizeObserver.disconnect();
-    }
-  }
-  resizeCarrouselDivs() {
-    const mainDiv = this.BallinMainRef.current;
-    const [mdw, mdh] = [mainDiv.offsetWidth, mainDiv.offsetHeight];
-
-    let BallinGLCarrouselDiv = this.BallinGLCarrouselDiv.current;
-    let [glw, glh] = [BallinGLCarrouselDiv.offsetWidth, BallinGLCarrouselDiv.offsetHeight];
-
-    let BallinOrigCarrouselDiv = this.BallinOrigCarrouselDiv.current;
-    let [origw, origh] = [BallinOrigCarrouselDiv.offsetWidth, BallinOrigCarrouselDiv.offsetHeight];
-
-    let glTarh = 0;
-    let origTarh = 0;
-
-    let glStyle = {};
-    let origStyle = {};
-
-    glTarh = (glw - 20) * 0.6 / this.state.glCarrouselAspectRatio[0] * this.state.glCarrouselAspectRatio[1];
-    glStyle = {
-      height: `${glTarh}px`
-    };
-
-    origTarh = (origw - 20) * 0.6 / this.state.origCarrouselAspectRatio[0] * this.state.origCarrouselAspectRatio[1];
-    origStyle = {
-      height: `${origTarh}px`
-    };
-
-    Object.assign(BallinGLCarrouselDiv.style, glStyle);
-    Object.assign(BallinOrigCarrouselDiv.style, origStyle);
   }
   onImageClick(id) {
     this.launchBallinGL();
@@ -121,8 +80,12 @@ class Ballin extends Component {
     return (<div className="Ballin" ref={this.BallinMainRef}>
       <div className="ProgramHeading">Ballin' GL</div>
 
-      <div className="CarrouselDiaShowBallin" ref={this.BallinGLCarrouselDiv}>
-        <CarrouselDiaShow imgPaths={this.state.ballin_gl_pics.map(pathObj => pathObj.img_path)} autoplay={true} aspectRatio={this.glCarrouselAspectRatio}/>
+      <div className="CarrouselDiaShowBallin">
+        <Carousel 
+          imgPaths={this.state.ballin_gl_pics.map(pathObj => pathObj.img_path)} 
+          stopAnimation={false} 
+          imgRatio={this.state.glCarrouselAspectRatio}
+        />
       </div>
 
       {infoText_GL}
@@ -133,10 +96,13 @@ class Ballin extends Component {
 
       <div className="ProgramHeading">Ballin' Original</div>
 
-      <div className="CarrouselDiaShowBallin" ref={this.BallinOrigCarrouselDiv}>
-        <CarrouselDiaShow imgPaths={this.state.ballin_orig_pics.map(pathObj => pathObj.img_path)} autoplay={true} aspectRatio={this.origCarrouselAspectRatio}/>
+      <div className="CarrouselDiaShowBallin">
+        <Carousel 
+          imgPaths={this.state.ballin_orig_pics.map(pathObj => pathObj.img_path)}
+          stopAnimation={false}
+          imgRatio={this.state.origCarrouselAspectRatio}
+        />
       </div>
-
       {infoText_Orig}
 
       <CurtainButton text="Download" onClick={this.downloadBallinOriginal}/>

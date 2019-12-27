@@ -17,9 +17,9 @@
 }
 
 .CarrouselDiaShowBallin{
-	width: calc(100% - 20px);
-	height: 400px;
-	max-height: 50vh;
+	width: 90%;
+	max-width: 800px;
+	margin: auto;
 }
 
 .Button{

@@ -79,7 +79,6 @@ function WaveWaitingBar(props) {
   let elementCount = !!props.elementCount ? props.elementCount : (window.mobilecheck() ? 50 : 200);
 
 	useEffect(()=>{
-    console.log('initializing!');
 		initializeBounces(r,g,b);
 	}, []);
 
@@ -98,9 +97,7 @@ function WaveWaitingBar(props) {
 		setUpdateCanvasState( !updateCanvasState ); // simply toggle state...
 		if( !props.stop ){
 			requestAnimationFrame(()=>{updateTime(curTime)});
-		}else{
-      console.log('stopping animation!!!');
-    }
+		}
   }, [lastRenderTime, bounces]);
 
 	// render the canvas:

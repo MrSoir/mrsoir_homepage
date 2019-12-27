@@ -13,7 +13,4 @@ git add ./pushToGit.sh
 
 git commit -m "bashed commit"
 
-git remote rm origin
-git remote add origin https://github.com/MrSoir/mrsoir_homepage.git
-
 git push -u origin master

@@ -37,6 +37,7 @@ class WaitingBar extends Component{
 		this.nextFrame = this.nextFrame.bind(this);
 
 		this.canvas = React.createRef();
+		this.unmounted = false;
 	}
 	goToArduinoHomepage(){
 	}
@@ -67,6 +68,9 @@ class WaitingBar extends Component{
 		});
 
 		this.nextFrame();
+	}
+	componentWillUnmount(){
+		this.unmounted = true;
 	}
 	evalSelectedFillColor(){
 		return !!this.props.selectedFillColor ?
@@ -101,11 +105,12 @@ class WaitingBar extends Component{
 		return !!this.props.progressSpeed ? this.props.progressSpeed : 0.03;
 	}
 	nextFrame(loop=true){
-	  this.drawWaitingBar();
-   	this.incrementProgress();
-   	if(loop && !this.props.stop){
-   		window.requestAnimationFrame(this.nextFrame);
-   	}
+		if( this.unmounted )return;
+	  	this.drawWaitingBar();
+		this.incrementProgress();
+		if(loop && !this.props.stop){
+			window.requestAnimationFrame(this.nextFrame);
+		}
 	}
 	incrementProgress(){
 		this.selectedIdProgress += this.evalProgressSpeed();
