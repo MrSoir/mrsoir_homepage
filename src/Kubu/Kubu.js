@@ -8,6 +8,13 @@ import AnimatedVideo from '../AnimatedVideo';
 import './Kubu.scss';
 
 
+
+const snapURL	  = 'https://snapcraft.io/kubu';
+const appImageURL = 'https://www.dropbox.com/s/tp05tllhuiuvk7d/kubu-0.1.0.AppImage?dl=0';
+const debURL	  = 'https://www.dropbox.com/s/f847kdundgfpqd6/kubu_0.1.0_amd64.deb?dl=0';
+
+
+
 function kubuImageGnrtr(tag, fileType){
 	return process.env.PUBLIC_URL + '/Kubu/pics/Kubu' + tag + fileType;
 }
@@ -211,9 +218,6 @@ function Kubu({}){
 		)
 	}
 
-	const snapURL = 'https://snapcraft.io/kubu';
-	const debURL = 'https://www.dropbox.com/s/f847kdundgfpqd6/kubu_0.1.0_amd64.deb?dl=0';
-
 	function genSnapStoreDownloadButton(){
 		return (
 			<a href={snapURL}>
@@ -238,7 +242,7 @@ function Kubu({}){
 		openInNewTabOrWindow( snapURL );
 	}
 	function onAppImageCLicked(){
-		openInNewTabOrWindow( snapURL );
+		openInNewTabOrWindow( appImageURL );
 	}
 	function onDebClicked(){
 		openInNewTabOrWindow( debURL );
@@ -359,7 +363,7 @@ function Kubu({}){
 					Downloads
 				</div>
 				<div id="DownloadButtonsGrid">
-					{genDownloadButton(genSnapStoreDownloadButton(), 'Linux 64-bit', onSnapClicked)}
+					{genDownloadButton(genSnapStoreDownloadButton(), 'Linux snap 64-bit', onSnapClicked)}
 					{genDownloadButton(appImgBtn, 'Linux AppImage 64-bit', onAppImageCLicked)}
 					{genDownloadButton(debBtn, 'Linux deb-package 64-bit', onDebClicked)}
 				</div>

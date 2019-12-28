@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Switch, Route, withRouter} from "react-router-dom";
-import './App.css';
+import './App.scss';
 import tabs_info from './info.txt';
 import TabBar from './TabBar';
 import {readTextFile, arraysEqual} from './StaticFunctions';

@@ -1,6 +1,6 @@
 import React, { Component, useState, useEffect, useRef } from 'react';
 import { withRouter } from "react-router-dom";
-import './TabBar.css';
+import './TabBar.scss';
 
 
 function MenuButton({showButton=false,

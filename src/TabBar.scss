@@ -1,0 +1,125 @@
+@import "App.css";
+@import "MainColors";
+
+
+.TabBar {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	box-sizing: border-box;
+	background-color: $tabBarBackgroundColor;
+}
+.TabSeparator{
+	height: 2px;
+	width: 90%;
+	background-color: $separatorColor;
+	margin: auto;
+	margin-bottom: 0px;
+}
+.TabElement{
+}
+.TabElement.acitve{
+}
+.TabElement:hover{
+	cursor: pointer;
+}
+.TabIndicator{
+	height: 2px;
+	width: 50%;
+	margin: auto;
+	background-color: transparent;
+	transition: 0.5s;
+	margin-bottom: 10px;
+	margin-top: 0px;
+	transition-duration: 1s;
+}
+.TabIndicator.Hovered{
+	background-color: $main-bg-color-lightdark;
+}
+.TabIndicator.Selected{
+}
+
+.TabLink {
+	border-right: 1px solid $main-bg-color-light;
+	background-color: transparent;
+	color: $main-bg-color;
+/*  	font-size: calc(10px + 2vmin);*/
+  	font-family: hand_written_font;
+  	padding: 0px 15px;
+  	animation-name: example;
+   animation-duration: 5s;
+   margin: 1px;
+   display:block;
+   outline: none;
+	 transition-duration: 0.6s;
+}
+.LastTabElement{
+	border-right: none;
+}
+
+.TabLink:hover {
+}
+.TabLink.Selected {
+	background-color: $main-bg-color-dark;
+	color: white;
+}
+.TabLink:active {
+/*  	border: 1px solid #00FF00;*/
+}
+
+.MinimizedTabBarTB{
+
+}
+.MenuItemsDivTB{
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 0px;
+	overflow: hidden;
+
+	background-color: black;
+	box-sizing: border-box;
+	border: 0px solid $main-bg-color;
+
+	transition-duration: 0.5s;
+}
+.ListMTB{
+	display: flex;
+	flex-direction: column;
+}
+.MenuButtonDivTB{
+	position: sticky;
+	top: 0;
+	left: 0;
+	width: 100%;
+	padding: 10px 0;
+}
+.MenuButtonTB{
+	margin: auto;
+	position: relative;
+	width: 80px;
+	height: 40px;
+	border-radius: 10px;
+	border: 3px solid $main-bg-color;
+	box-sizing: border-box;
+	cursor: pointer;
+}
+.MenuButtonItemTB{
+	position: absolute;
+	left: 50%;
+	width: 80%;
+	height: 10%;
+	max-height: 3px;
+	transform: translate(-50%, -50%);
+	background-color: $main-bg-color;
+}
+
+@keyframes indicator_fading {
+  0%   {background-color: transparent;}
+  100% {background-color: $main-bg-color-dark;}
+}
+@keyframes indicator_fading_out {
+  0%   {background-color: $main-bg-color-dark;}
+  100% {background-color: transparent;}
+}

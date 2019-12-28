@@ -1,25 +1,10 @@
 @import url('https://fonts.googleapis.com/css?family=Ubuntu&display=swap');
-
-:root {
-  --main-bg-color: #00AA00;
-  --main-bg-color-dark: #005500;
-  --main-bg-color-lightdark: #008800;
-  --main-bg-color-light: #00ff00;
-  --headerLogoMaxHeight: 300px;
-  --fontColor: #00AA00;
-  --separatorColor: #66CC66;
-
-  --Nili-color: #ff00ff;
-  --Nili-color-dark: #aa00aa;
-  --Nili-color-light: #ffaaff;
-  --Nili-color-border: #ff88ff33;
-  --Nili-color-tableHighlight: #ff00ff22;
-  --Nili-color-blockBorder: #ff00ff88;
-}
+@import "MainColors";
 
 .App {
 	text-align: center;
   position: relative;
+  background-color: $mainBackgroundColor;
 }
 .LinaAnimationDivApp{
   display: static;
@@ -31,7 +16,7 @@
   overflow: hidden;
 
   z-index: -9999;
-  background-color: #333;
+  background-color: $mainBackgroundColor;
 }
 
 .App-logo {
@@ -55,7 +40,7 @@
 /*-----------------------------------------*/
 
 .ProgramHeading{
-	color: var(--fontColor);
+	color: $fontColor;
 	font-family: Times;
 	margin-bottom: 30px;
 }
@@ -74,7 +59,7 @@
 	width: 27%;
 
 	text-align: left;
-	color: var(--fontColor);
+	color: $fontColor;
 	font-family: hand_written_font;
 
 	overflow-y: auto;
@@ -193,7 +178,7 @@
 	max-width: 1500px;
 	text-align: justify;
 
-	color: var(--fontColor);
+	color: $fontColor;
 	font-family: hand_written_font;
 }
 
@@ -207,7 +192,7 @@
 	max-width: 1500px;
 	text-align: justify;
 
-	color: var(--fontColor);
+	color: $fontColor;
 	font-family: hand_written_font;
 }
 
@@ -219,7 +204,7 @@
 	width: 80vw;
 
 
-	color: var(--fontColor);
+	color: $fontColor;
 	font-family: hand_written_font;
 }
 
@@ -248,7 +233,7 @@
 .App-header{
 	font-size: calc(10px + 2vmin);
 	color: white;
-  background-color: black;
+  background-color: $mainBackgroundColor;
 
 	position: sticky;
 	left: 0;
@@ -281,13 +266,13 @@
 	margin: auto;
 	width: 80%;
 	height: 2px;
-	background-color: var(--separatorColor);
+	background-color: $separatorColor;
 }
 .LogoHeader.Hide{
 	max-height: 0px;
 }
 .LogoHeader.Show{
-	max-height: var(--headerLogoMaxHeight);
+	max-height: $headerLogoMaxHeight;
 }
 
 .App-link {
@@ -299,7 +284,7 @@
 	display: inline-block;
 	width: 80vw;
 	height: 2px;
-	background-color: var(--separatorColor);
+	background-color: $separatorColor;
 	margin-top: 1em;
 	margin-bottom: 1em;
 }
@@ -307,20 +292,20 @@
 	display: inline-block;
 	width: 80vw;
 	height: 2px;
-	background-color: var(--separatorColor);
+	background-color: $separatorColor;
 	margin-top: 5px;
 }
 .SmallSeparator{
 	width: 60vw;
 	height: 1px;
 
-	background-color: var(--separatorColor);
+	background-color: $separatorColor;
 
 	margin: 50px auto;
 }
 
 .MrSoirHeading {
-	color: var(--main-bg-color);/*#FFB76B;*/
+	color: $main-bg-color;/*#FFB76B;*/
 	font-family: hand_written_font;
 	font-weight: lighter;
 	font-size: min(10vmin, 50);
@@ -350,10 +335,10 @@
 
 @keyframes indicator_fading {
   0%   {background-color: transparent;}
-  100% {background-color: var(--main-bg-color);}
+  100% {background-color: $main-bg-color;}
 }
 @keyframes indicator_fading_out {
-  0%   {background-color: var(--main-bg-color);}
+  0%   {background-color: $main-bg-color;}
   100% {background-color: transparent;}
 }
 

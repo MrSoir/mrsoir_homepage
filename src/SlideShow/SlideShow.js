@@ -180,6 +180,7 @@ class SlideShow extends Component{
 	onImagesLoaded(){
 		setTimeout(()=>{
 			const loadingDiv = this.loadingDiv.current;
+			if(!loadingDiv)return;
 			loadingDiv.style.display = 'none';
 			loadingDiv.style.animationPlayState = 'paused';
 			this.setState({stopWaitingBar: true});
