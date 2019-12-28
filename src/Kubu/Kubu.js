@@ -11,8 +11,24 @@ import './Kubu.scss';
 function kubuImageGnrtr(tag, fileType){
 	return process.env.PUBLIC_URL + '/Kubu/pics/Kubu' + tag + fileType;
 }
-function kubuVideoGnrtr(tag, fileType){
+function kubuVideoPathGnrtr(tag, fileType){
 	return process.env.PUBLIC_URL + '/Kubu/videos/Kubu' + tag + fileType;
+}
+function kubuVideoGnrtr(tag){
+	return [
+		{
+			type: 'mp4',
+			path: kubuVideoPathGnrtr(tag, '.mp4')
+		},
+		{
+			type: 'webm',
+			path: kubuVideoPathGnrtr(tag, '.webm')
+		},
+		{
+			type: 'm4v',
+			path: kubuVideoPathGnrtr(tag, '.m4v')
+		}
+	];
 }
 function getCheckImgPath(){
 	return process.env.PUBLIC_URL + '/icons/check.png';
@@ -56,7 +72,7 @@ function GiffedDescription({descrOnLeft, imgPath, gifPath, heading, descrComps})
 		</div>
 	)
 }
-function VideodDescription({descrOnLeft, imgPath, videoPath, heading, descrComps}){
+function VideodDescription({descrOnLeft, imgPath, videoPaths, heading, descrComps}){
 
 	const headingDiv = (
 		<div className="HeadingGFDDSCR">
@@ -66,7 +82,7 @@ function VideodDescription({descrOnLeft, imgPath, videoPath, heading, descrComps
 	const video = (
 		<div className="GifGFDDSCR">
 			<AnimatedVideo imgPath={imgPath}
-						   videoPath={videoPath}
+						   videoPaths={videoPaths}
 			/>
 		</div>
 	);
@@ -101,7 +117,6 @@ function Kubu({}){
 		for(let i=0; i < 5; ++i){
 			pths.push( kubuImageGnrtr(i, '.jpg') );
 		}
-		console.log('pths: ', pths);
 		return pths;
 	}
 
@@ -196,23 +211,40 @@ function Kubu({}){
 		)
 	}
 
+	const snapURL = 'https://snapcraft.io/kubu';
+	const debURL = 'https://www.dropbox.com/s/f847kdundgfpqd6/kubu_0.1.0_amd64.deb?dl=0';
+
 	function genSnapStoreDownloadButton(){
 		return (
-			<a href="https://snapcraft.io/kubu">
+			<a href={snapURL}>
 				<img alt="Get it from the Snap Store" src="https://snapcraft.io/static/images/badges/en/snap-store-black.svg" />
 			</a>
 		);
 	}
 
-	function genDownloadButton(button, descr){
+	function genDownloadButton(button, descr, onClicked){
 		return (
-			<div className="DownloadBtnKUBU">
+			<div className="DownloadBtnKUBU"
+				 onClick={onClicked}
+			>
 				{button}
 				<div className="DownloadBtnTxtKUBU">
 					{descr}
 				</div>
 			</div>
 		);
+	}
+	function onSnapClicked(){
+		openInNewTabOrWindow( snapURL );
+	}
+	function onAppImageCLicked(){
+		openInNewTabOrWindow( snapURL );
+	}
+	function onDebClicked(){
+		openInNewTabOrWindow( debURL );
+	}
+	function openInNewTabOrWindow(url){
+		window.open( url, "_blank"); 
 	}
 	const elapsingDescrHdng = genDescrHeading('Inspect Subfolders');
 	const elapsingDescr = genElapsingDescr();
@@ -284,7 +316,7 @@ function Kubu({}){
 			<div className="GifedDescrDivKUBU even">
 				<VideodDescription
 					descrOnLeft={false}
-					videoPath={ kubuVideoGnrtr('_elapse', '.mp4') }
+					videoPaths={ kubuVideoGnrtr('_elapse') }
 					imgPath={ kubuImageGnrtr('_inspect', '.jpg') }
 					heading={elapsingDescrHdng}
 					descrComps={elapsingDescr}
@@ -294,7 +326,7 @@ function Kubu({}){
 			<div className="GifedDescrDivKUBU odd">
 				<VideodDescription
 					descrOnLeft={true}
-					videoPath={ kubuVideoGnrtr('_fileManip', '.mp4') }
+					videoPaths={ kubuVideoGnrtr('_fileManip') }
 					imgPath={ kubuImageGnrtr('_inspect', '.jpg') }
 					heading={fileManipHdng}
 					descrComps={fileManipDescr}
@@ -304,7 +336,7 @@ function Kubu({}){
 			<div className="GifedDescrDivKUBU even">
 				<VideodDescription
 					descrOnLeft={false}
-					videoPath={ kubuVideoGnrtr('_elapse', '.mp4') }
+					videoPaths={ kubuVideoGnrtr('_elapse') }
 					imgPath={ kubuImageGnrtr('_search', '.jpg') }
 					heading={deepSearchHdng}
 					descrComps={deepSearchDescr}
@@ -315,7 +347,7 @@ function Kubu({}){
 			<div className="GifedDescrDivKUBU odd">
 				<VideodDescription
 					descrOnLeft={true}
-					videoPath={ kubuVideoGnrtr('_windowing', '.mp4') }
+					videoPaths={ kubuVideoGnrtr('_windowing') }
 					imgPath={ kubuImageGnrtr('_windowing', '.jpg') }
 					heading={mltiWndwHdng}
 					descrComps={mltiWndwDescr}
@@ -327,9 +359,9 @@ function Kubu({}){
 					Downloads
 				</div>
 				<div id="DownloadButtonsGrid">
-					{genDownloadButton(genSnapStoreDownloadButton(), 'Linux 64-bit')}
-					{genDownloadButton(appImgBtn, 'Linux AppImage 64-bit')}
-					{genDownloadButton(debBtn, 'Linux deb-package 64-bit')}
+					{genDownloadButton(genSnapStoreDownloadButton(), 'Linux 64-bit', onSnapClicked)}
+					{genDownloadButton(appImgBtn, 'Linux AppImage 64-bit', onAppImageCLicked)}
+					{genDownloadButton(debBtn, 'Linux deb-package 64-bit', onDebClicked)}
 				</div>
 				<div id="DownloadsFooterKUBU">
 					(Kubu will soon be available for Windows and iOS)

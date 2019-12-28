@@ -2,10 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import {WaitingBar} from './WaitingBar/WaitingBar';
 import './AnimatedVideo.scss';
 
-function AnimatedVideo({videoPath, imgPath}){
+function AnimatedVideo({videoPaths, imgPath}){
 	const imgRef   = useRef();
 	const videoRef = useRef();
-	const videoSrcRef = useRef();
 	const mainRef  = useRef();
 	const [imgLoaded, setImgLoaded] = useState(false);
 	const [videoLoaded, setVideoLoaded] = useState(false);
@@ -21,34 +20,36 @@ function AnimatedVideo({videoPath, imgPath}){
 				setImageSrcPath(imgPath);
 			}
 		};
-
-		console.log('vidoePath: ', videoPath);
-
-		const video    = videoRef.current;
-		const videoSrc = videoSrcRef.current;
-		if(!video || !videoSrc)return;
-		videoSrc.src = videoPath;
-		video.onloadstart = ()=>{
-			setTimeout(()=>{
-				setVideoLoaded( true );
-				showVideo();
-			}, 2000);
-		};
 	}, []);
 	useEffect(()=>{
+		if(imgLoaded && videoLoaded){
+			setWaitinBarFadedOut(true);
+		}
+	}, [imgLoaded, videoLoaded]);
+	useEffect(()=>{
 		document.addEventListener('scroll', onScroll);
+
+		const video    = videoRef.current;
+		if(video){
+			video.addEventListener('loadeddata', onVideoDataLoaded);
+		}
 		return ()=>{
+			if(video){
+				video.removeEventListener('loadeddata', onVideoDataLoaded);
+			}
 			document.removeEventListener('scroll', onScroll);
 		}
 	});
 
-	useEffect(()=>{
-		if(imgLoaded && videoLoaded){
-			setTimeout(()=>{
-				setWaitinBarFadedOut(true);
-			}, 1000);
+	function onVideoDataLoaded(){
+		const video = videoRef.current;
+		if(!video)return;
+
+		if(video.readyState >= 2){
+			setVideoLoaded( true );
+			showVideo();
 		}
-	}, [imgLoaded, videoLoaded]);
+	}
 
 	function onScroll(e){
 		const md = mainRef.current;
@@ -57,7 +58,7 @@ function AnimatedVideo({videoPath, imgPath}){
 		const bdngRct = md.getBoundingClientRect();
 		const b = bdngRct.bottom;
 
-		if( b < (window.screen.height * 0.8) ){
+		if( b < (window.screen.height * 0.9) ){
 			if( !videoPlaying.current ){
 				playVideo(true);
 			}
@@ -103,6 +104,7 @@ function AnimatedVideo({videoPath, imgPath}){
                     fragmentCount={4}
                     outerCurved={true}
     				innerCurved={true}
+					fading={true}
                 />
             </div>
         );
@@ -118,10 +120,15 @@ function AnimatedVideo({videoPath, imgPath}){
 				   ref={videoRef}
 				   width="320" height="176"
 			>
-				<source 
-					ref={videoSrcRef}
-					type="video/mp4"
-				/>
+				{videoPaths.map((vp, id)=>{
+					return (
+						<source
+							key={id}
+							type={`video/${vp.type}`}
+							src={vp.path}
+						/>
+					)
+				})}
 			</video>
 			{waitingBar}
 		</div>

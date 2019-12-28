@@ -37,14 +37,10 @@ function CarouselCanvas({
     const killAnimation = useRef(false);
 
     useEffect(()=>{
-
-        console.log('Carousel-"constructor"');
-
         Promise.all( imgPaths.map(ip=>genImagePromise(ip)) )
             .then(()=>{
                 // setTimeout(()=>{ // timeout for testing
                     imgsLoaded.current = true;
-                    console.log('images loaded!');
                     onLoaded && onLoaded();
                     _drawImgs();
                     if( !stopAnimation ){
@@ -471,6 +467,7 @@ function Carousel({
                     fragmentCount={4}
                     outerCurved={true}
     				innerCurved={true}
+                    fading={true}
                 />
             </div>
         );

@@ -5,8 +5,6 @@ import Grid from './GridThree';
 
 if ( WEBGL.isWebGL2Available() === false ) {
 	console.log('no webgl2 available');
-}else{
-	console.log('ready for three.js - WebGL2!');
 }
 
 function formatDateToStr(date){

@@ -53,7 +53,7 @@ function AnimatedGif({gifPath, imgPath}){
 		const bdngRct = md.getBoundingClientRect();
 		const b = bdngRct.bottom;
 
-		if( b < (window.screen.height * 0.8) ){
+		if( b < (window.screen.height * 0.9) ){
 			setRunGif(true);
 		}
 	}
