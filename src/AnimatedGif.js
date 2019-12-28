@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import {WaitingBar} from './WaitingBar/WaitingBar';
 import './AnimatedGif.scss';
 
+const START_ANIM_ON_VIEWPORT_PRCTG = 0.8;
+
 function AnimatedGif({gifPath, imgPath}){
 	const imgRef  = useRef();
 	const mainRef = useRef();
@@ -53,7 +55,7 @@ function AnimatedGif({gifPath, imgPath}){
 		const bdngRct = md.getBoundingClientRect();
 		const b = bdngRct.bottom;
 
-		if( b < (window.screen.height * 0.9) ){
+		if( b < (window.screen.height * START_ANIM_ON_VIEWPORT_PRCTG) ){
 			setRunGif(true);
 		}
 	}

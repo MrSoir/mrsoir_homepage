@@ -79,6 +79,43 @@ function GiffedDescription({descrOnLeft, imgPath, gifPath, heading, descrComps})
 		</div>
 	)
 }
+function ResizingVideo({imgPath, videoPaths}){
+	const mainRef = useRef();
+
+	useEffect(()=>{
+		onWindowResized();
+	});
+	useEffect(()=>{
+		window.addEventListener('resize', onWindowResized);
+		return ()=>{
+			window.removeEventListener('resize', onWindowResized);
+		};
+	});
+
+	function onWindowResized(){
+		const md = mainRef.current;
+		if(!md)return;
+
+		const wdth = md.offsetWidth;
+		const hght = md.offsetWidth / 16 * 9;
+
+		console.log('VideoDescr: ', wdth, hght);
+
+		md.style.height = `${hght}px`;
+		// md.style.maxHeight = `${hght}px`;
+	}
+
+	return (
+		<div className="ResizingVideoGFDDSCR"
+			 ref={mainRef}
+		>
+			<AnimatedVideo 
+				imgPath={imgPath}
+				videoPaths={videoPaths}
+			/>
+		</div>
+	);
+}
 function VideodDescription({descrOnLeft, imgPath, videoPaths, heading, descrComps}){
 
 	const headingDiv = (
@@ -88,7 +125,7 @@ function VideodDescription({descrOnLeft, imgPath, videoPaths, heading, descrComp
 	);
 	const video = (
 		<div className="GifGFDDSCR">
-			<AnimatedVideo imgPath={imgPath}
+			<ResizingVideo imgPath={imgPath}
 						   videoPaths={videoPaths}
 			/>
 		</div>
@@ -109,6 +146,23 @@ function VideodDescription({descrOnLeft, imgPath, videoPaths, heading, descrComp
 	)
 }
 
+function VideoDescr({even, descrOnLeft, videoPaths, imgPath, heading, descrComps}){
+
+	const mainCls = `GifedDescrDivKUBU ${even ? 'even' : 'odd'}`;
+
+	return (
+		<div className={mainCls}>
+			<VideodDescription
+				descrOnLeft={descrOnLeft}
+				videoPaths={ videoPaths }
+				imgPath={ imgPath }
+				heading={heading}
+				descrComps={descrComps}
+			/>
+		</div>
+	);
+}
+
 function Kubu({}){
 	const [imgPaths, setImgPaths] = useState([]);
 	const [imgRatio, setImgRatio] = useState({w: 16, h: 9});
@@ -118,6 +172,17 @@ function Kubu({}){
 
 		setImgPaths( getImagePaths() );
 	}, []);
+
+	useEffect(()=>{
+		window.addEventListener('resize', onWindowResized);
+		return ()=>{
+			window.removeEventListener('resize', onWindowResized);
+		};
+	});
+
+	function onWindowResized(){
+		console.log('window.width: ', window.innerWidth);
+	}
 
 	function getImagePaths(){
 		const pths = [];
@@ -317,15 +382,14 @@ function Kubu({}){
 				</div>
 			</div>
 			
-			<div className="GifedDescrDivKUBU even">
-				<VideodDescription
-					descrOnLeft={false}
-					videoPaths={ kubuVideoGnrtr('_elapse') }
-					imgPath={ kubuImageGnrtr('_inspect', '.jpg') }
-					heading={elapsingDescrHdng}
-					descrComps={elapsingDescr}
-				/>
-			</div>
+			<VideoDescr
+				even={true}
+				descrOnLeft={false}
+				videoPaths={ kubuVideoGnrtr('_elapse') }
+				imgPath={ kubuImageGnrtr('_inspect', '.jpg') }
+				heading={elapsingDescrHdng}
+				descrComps={elapsingDescr}
+			/>
 
 			<div className="GifedDescrDivKUBU odd">
 				<VideodDescription

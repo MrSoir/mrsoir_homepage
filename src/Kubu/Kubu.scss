@@ -3,6 +3,9 @@ $textCol: #999;
 $textHglghtCol: #ddd;
 $descrTxtCol: #aaa;
 
+$break-small:  800px;
+$break-large:  800px;
+
 .MainKUBU{
 	width: 100%;
 	background-color: #444;
@@ -52,7 +55,7 @@ $descrTxtCol: #aaa;
 
 	.GifedDescrDivKUBU{
 		width: 100%;
-		height: 500px;
+		// height: 500px;
 		padding: 50px 0;
 		box-sizing: border-box;
 
@@ -67,29 +70,40 @@ $descrTxtCol: #aaa;
 
 		.MainGFDDSCR{
 			width: 100%;
-			max-width: 1000px;
 			height: 100%;
-
+			max-width: 1000px;
+			// min-height: 400px;
+			
 			display: grid;
-			column-gap: 20px;
-			grid-template-rows: 1fr 4fr;
 
 			margin: auto;
 			border-radius: 10px;
 			box-sizing: border-box;
 			padding: 10px 40px;
 			
-
 			background-color: #F2D16B22;
 
-			&.descrOnLeft{
-				grid-template-areas: "heading gif" "descr gif";
-				grid-template-columns: 1fr 2fr;
-			}
-			&.descrOnRight{
-				grid-template-areas: "gif heading" "gif descr";
-				grid-template-columns: 2fr 1fr;
-			}
+
+			@media screen and (max-width: $break-small) {
+				grid-template-rows: 1fr auto auto;
+				grid-template-areas: "heading" "gif" "descr";
+				align-items: center;
+				gap: 10px;
+			  }
+			  @media screen and (min-width: $break-large) {
+				grid-template-rows: 1fr 4fr;
+				column-gap: 20px;
+
+
+				&.descrOnLeft{
+					grid-template-areas: "heading gif" "descr gif";
+					grid-template-columns: 1fr 2fr;
+				}
+				&.descrOnRight{
+					grid-template-areas: "gif heading" "gif descr";
+					grid-template-columns: 2fr 1fr;
+				}
+			  }
 
 			.HeadingGFDDSCR{
 				grid-area: heading;
@@ -99,9 +113,11 @@ $descrTxtCol: #aaa;
 			}
 			.DescrGFDDSCR{
 				grid-area: descr;
+				align-self: flex-start;
 			}
 			.GifGFDDSCR{
 				grid-area: gif;
+				align-self: center;
 			}
 		}
 	}
@@ -172,6 +188,11 @@ $descrTxtCol: #aaa;
 		}
 
 	}
+}
+
+.ResizingVideoGFDDSCR{
+	width: 100%;
+	height: 100%;
 }
 
 .DescrHeadingKubu{
