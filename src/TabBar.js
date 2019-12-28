@@ -4,8 +4,8 @@ import './TabBar.scss';
 
 
 function MenuButton({showButton=false,
-	 									 onMenuEntered=()=>{},
-									   onMenuClicked=()=>{}}){
+					onMenuEntered=()=>{},
+					onMenuClicked=()=>{}}){
 	function genShowBarsStyle(id){
 		let style = {
 			top: '25%',
@@ -13,7 +13,6 @@ function MenuButton({showButton=false,
 			width: '80%',
 			opacity: '1',
 			transform: 'translate(-50%, -50%)',
-			backgroundColor: 'var(--main-bg-color)'
 		};
 		switch(id){
 			case 1:
@@ -30,7 +29,6 @@ function MenuButton({showButton=false,
 			top: '50%',
 			left: '50%',
 			width: '50%',
-			backgroundColor: 'red'
 		};
 		switch(id){
 			case 0:
@@ -51,7 +49,7 @@ function MenuButton({showButton=false,
 
 	let btnStyls = [];
 	for(let i=0; i < 3; ++i){
-		btnStyls.push( showButton || !window.mobilecheck() ? genShowBarsStyle(i) : genHideBarsStyle(i) );
+		btnStyls.push( showButton ? genShowBarsStyle(i) : genHideBarsStyle(i) );
 	}
 	return (
 		<div className="MenuButtonTB"
@@ -71,12 +69,20 @@ function MinimizedTabBar({tabs, tabClicked}){
 	const menuItemsDiv = useRef();
 	const [showMenuItems, setShowMenuItems] = useState(false);
 
+	function _tabClicked(id){
+		setShowMenuItems( false );
+		if(tabClicked){
+			tabClicked(id);
+		}
+	}
+
 	function onMenuEntered(){
-		if( window.mobilecheck() )return;
-		setShowMenuItems(true);
+		// if( window.mobilecheck() )return;
+		// setShowMenuItems(true);
 	}
 	function onMenuClicked(){
-		if( !window.mobilecheck() )return;
+		console.log('menu clicked!');
+		// if( !window.mobilecheck() )return;
 		setShowMenuItems(!showMenuItems);
 	}
 	function hideMenuItemsDiv(){
@@ -110,22 +116,30 @@ function MinimizedTabBar({tabs, tabClicked}){
 				 ref={mainRef}>
 			<div className="MenuButtonDivTB">
 				<MenuButton onMenuEntered={onMenuEntered}
-										onMenuClicked={onMenuClicked}
-										showButton={!showMenuItems}/>
+					onMenuClicked={onMenuClicked}
+					showButton={!showMenuItems}
+				/>
 			</div>
-			<div className="MenuItemsDivTB  TabBar HeadingTextSize"
+			<div className="MenuItemsDivTB"
 					 ref={menuItemsDiv}
 					 onMouseLeave={onMouseMenuItemsLeft}>
-				<div className="ListMTB">
-					{tabs.map((tab, i)=>{
-						return <TabElement key={i}
+				<div className="MenuItemsGrid">
+					<MenuButton 
+						onMenuEntered={onMenuEntered}
+						onMenuClicked={onMenuClicked}
+						showButton={!showMenuItems}
+					/>
+					<div className="ListMTB">
+						{tabs.map((tab, i)=>{
+							return <TabElement key={i}
 											isLast={true}
 											tab={tab}
 											tabid={i}
-											tabClicked={tabClicked}
+											tabClicked={_tabClicked}
 											selected={(i % 2 ? true : false)}
-						/>
-					})}
+							/>
+						})}
+					</div>
 				</div>
 			</div>
 		</div>
@@ -185,11 +199,12 @@ function TabBar({tabCallback, tabs}){
 	return minimize ? createMinimizedTabBar() : createBigTabBar();
 }
 
-function TabElement({tab, isLast, tabid, tabClicked=()=>{}}){
+function TabElement({tab, isLast, tabid, tabClicked=()=>{}, minimized=true}){
 	const indicator = React.createRef();
 
 	function tabSelected(){
 		const ind = indicator.current;
+		if(!ind)return;
 		if ( !tab.selected ) {
 			ind.classList.add('Selected');
 		}else{
@@ -199,12 +214,14 @@ function TabElement({tab, isLast, tabid, tabClicked=()=>{}}){
 	function tabMouseEnter(){
 		if ( !tab.selected ) {
 			const ind = indicator.current;
+			if(!ind)return;
 			ind.classList.add('Hovered');
 		}
 	}
 	function tabMouseOut(){
 		if ( !tab.selected ) {
 			const ind = indicator.current;
+			if(!ind)return;
 			ind.classList.remove('Hovered');
 		}
 	}
@@ -215,6 +232,17 @@ function TabElement({tab, isLast, tabid, tabClicked=()=>{}}){
 		tabLinkClass += ' Selected';
 		tabElementClass += ' Selected';
 	}
+	if(minimized){
+		tabElementClass += ' Minimized';
+	}
+
+	const indctrComp = minimized
+		? ''
+		: (
+			<div className={"TabIndicator" + (tab.selected ? " Selected" : "")}
+				ref={indicator}>
+			</div>
+		);
 
 
 	return(
@@ -228,9 +256,7 @@ function TabElement({tab, isLast, tabid, tabClicked=()=>{}}){
 						onMouseOut={()=>tabMouseOut()}>
     			{tab.name}
     		</div>
-    		<div className={"TabIndicator" + (tab.selected ? " Selected" : "")}
-    			  ref={indicator}>
-				</div>
+			{indctrComp}
  		</div>
 	);
 }

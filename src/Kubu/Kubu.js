@@ -99,10 +99,7 @@ function ResizingVideo({imgPath, videoPaths}){
 		const wdth = md.offsetWidth;
 		const hght = md.offsetWidth / 16 * 9;
 
-		console.log('VideoDescr: ', wdth, hght);
-
 		md.style.height = `${hght}px`;
-		// md.style.maxHeight = `${hght}px`;
 	}
 
 	return (
@@ -172,17 +169,6 @@ function Kubu({}){
 
 		setImgPaths( getImagePaths() );
 	}, []);
-
-	useEffect(()=>{
-		window.addEventListener('resize', onWindowResized);
-		return ()=>{
-			window.removeEventListener('resize', onWindowResized);
-		};
-	});
-
-	function onWindowResized(){
-		console.log('window.width: ', window.innerWidth);
-	}
 
 	function getImagePaths(){
 		const pths = [];

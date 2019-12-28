@@ -1,3 +1,0 @@
-Multi-Windowing and Tabbing
-display up to 4 windows simultaneously.
-You can even open several tabs as in most modern web-browsers.

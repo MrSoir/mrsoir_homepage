@@ -85,15 +85,14 @@ $break-large:  800px;
 
 
 			@media screen and (max-width: $break-small) {
-				grid-template-rows: 1fr auto auto;
+				// grid-template-rows: 1fr auto auto;
 				grid-template-areas: "heading" "gif" "descr";
 				align-items: center;
 				gap: 10px;
 			  }
 			  @media screen and (min-width: $break-large) {
-				grid-template-rows: 1fr 4fr;
+				// grid-template-rows: 1fr 4fr;
 				column-gap: 20px;
-
 
 				&.descrOnLeft{
 					grid-template-areas: "heading gif" "descr gif";

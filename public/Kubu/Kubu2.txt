@@ -1,2 +1,0 @@
-Multi-Windowing
-resizing windows

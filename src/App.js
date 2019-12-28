@@ -91,6 +91,12 @@ class App extends Component {
 
     tabs.forEach((t, i) => t.selected = (id === i));
 
+    // if(!this.state || 
+    //    !this.state.tabs ||
+    //    !this.state.tabs.length || 
+    //     this.state.tabs.length >= id ||
+    //    !this.state.tabs[id])return;
+
     let path = this.state.tabs[id].path;
     this.props.history.push('/' + path);
 
