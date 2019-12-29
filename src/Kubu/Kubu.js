@@ -172,7 +172,7 @@ function Kubu({}){
 
 	function getImagePaths(){
 		const pths = [];
-		for(let i=0; i < 5; ++i){
+		for(let i=0; i < 8; ++i){
 			pths.push( kubuImageGnrtr(i, '.jpg') );
 		}
 		return pths;
@@ -390,7 +390,7 @@ function Kubu({}){
 			<div className="GifedDescrDivKUBU even">
 				<VideodDescription
 					descrOnLeft={false}
-					videoPaths={ kubuVideoGnrtr('_elapse') }
+					videoPaths={ kubuVideoGnrtr('_search') }
 					imgPath={ kubuImageGnrtr('_search', '.jpg') }
 					heading={deepSearchHdng}
 					descrComps={deepSearchDescr}
