@@ -13,7 +13,11 @@
 		transform: translate(-50%, -50%);
 		position: absolute;
 		transition-duration: 1s;
+		opacity: 1;
 
+		&.imgLoaded{
+			opacity: 0.2;
+		}
 		&.fadingOut{
 			opacity: 0;
 		}

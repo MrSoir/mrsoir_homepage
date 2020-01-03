@@ -24,16 +24,16 @@ function kubuVideoPathGnrtr(tag, fileType){
 function kubuVideoGnrtr(tag){
 	return [
 		{
-			type: 'mp4',
-			path: kubuVideoPathGnrtr(tag, '.mp4')
-		},
-		{
 			type: 'webm',
 			path: kubuVideoPathGnrtr(tag, '.webm')
 		},
 		{
 			type: 'm4v',
 			path: kubuVideoPathGnrtr(tag, '.m4v')
+		},
+		{
+			type: 'mp4',
+			path: kubuVideoPathGnrtr(tag, '.mp4')
 		}
 	];
 }

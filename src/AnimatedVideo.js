@@ -18,10 +18,12 @@ function AnimatedVideo({videoPaths, imgPath}){
 		const sttcImg = new Image();
 		sttcImg.src = imgPath;
 		sttcImg.onload = ()=>{
-			setImgLoaded( true );
-			if(!videoLoaded){
-				setImageSrcPath(imgPath);
-			}
+			// setTimeout(()=>{
+				setImgLoaded( true );
+				if(!videoLoaded){
+					setImageSrcPath(imgPath);
+				}
+			// }, 2000);
 		};
 	}, []);
 	useEffect(()=>{
@@ -49,8 +51,10 @@ function AnimatedVideo({videoPaths, imgPath}){
 		if(!video)return;
 
 		if(video.readyState >= 2){
-			setVideoLoaded( true );
-			showVideo();
+			// setTimeout(()=>{
+				setVideoLoaded( true );
+				showVideo();
+			// }, 5000);
 		}
 	}
 
@@ -98,7 +102,7 @@ function AnimatedVideo({videoPaths, imgPath}){
 		}
 	}
 
-	const waitingBrCls = 'WaitingBarKUBU' + (imgLoaded && videoLoaded ? ' fadingOut' : '');
+	const waitingBrCls = 'WaitingBarKUBU' + (imgLoaded && !videoLoaded ? ' imgLoaded' : '') + (imgLoaded && videoLoaded ? ' fadingOut' : '');
     const waitingBar = imgLoaded && videoLoaded && waitinBarFadedOut
         ? ''
         : (
