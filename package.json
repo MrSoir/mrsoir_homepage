@@ -14,7 +14,7 @@
     "react-scripts": "^3.1.2",
     "redux": "^4.0.4",
     "slideshowgl": "latest",
-    "three": "^0.107.0",
+    "three": "^0.137.0",
     "video-react": "^0.14.1",
     "webgl-utils": "^1.0.1"
   },
